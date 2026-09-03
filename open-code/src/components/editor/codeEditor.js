@@ -22,7 +22,7 @@ import {Themes} from "../../utils/constants";
  */
 function CodeEditor(params) {
     const editorRef = useRef(null);
-    const {workspace, currentProjectXml, category, drawer} = useContext(StoreContext);
+    const {workspace, currentProjectXml, category, drawer, setEditorCode} = useContext(StoreContext);
     const themes = useTheme();// Get the current theme breakpoints using useTheme hook
     const isMobile = useMediaQuery(themes.breakpoints.down('sm'));// Determine if the screen is a mobile device using useMediaQuery hook
     const {theme} = useContext(ThemeContext);
@@ -54,10 +54,21 @@ function CodeEditor(params) {
         }
         editor.session.setMode(mode);
         editor.setOption("useWorker", false);
-        editor.setReadOnly(true);
+        editor.setReadOnly(false);
         editor.setTheme(theme === Themes.dark ? "ace/theme/one_dark" : "ace/theme/textmate");
         editor.session.setMode(mode);
-        editor.setValue(code);
+        editor.setValue(code, -1);
+
+        // Store the code currently shown in the editor.
+        // This allows Upload Code to use manually typed JavaScript.
+        setEditorCode(code);
+
+        const handleEditorChange = () => {
+            setEditorCode(editor.getValue());
+        };
+
+        editor.session.on("change", handleEditorChange);
+
         const gutterEl = editor.renderer.$gutter;
         editor.renderer.$printMarginEl.style.width = "0px"
         gutterEl.style.color = theme === "dark" ? "white" : "black";
@@ -66,6 +77,7 @@ function CodeEditor(params) {
         cursor.style.color = theme === "dark" ? "white" : "black";
         editor.renderer.$gutterLayer.element.style.marginLeft = "8px"
         return () => {
+            editor.session.off("change", handleEditorChange);
             editor.destroy();
         };
     }, [workspace, currentProjectXml, category, drawer, theme]);

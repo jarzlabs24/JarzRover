@@ -45,6 +45,7 @@ export const BottomBar = () => {
         generate,
         setGenerateCode,
         setCode,
+        editorCode,
         setDrawer,
         workspace,
         isError,
@@ -99,9 +100,11 @@ export const BottomBar = () => {
                 setDrawer(false);
                 setIsLoader(true);
                 //javaScript generator
-                let code = javascriptGenerator.workspaceToCode(
-                    workspace
-                );
+                // Prefer manually typed JavaScript from the code editor.
+                // If the editor is empty, fall back to Blockly-generated code.
+                let code = editorCode && editorCode.trim().length > 0
+                    ? editorCode
+                    : javascriptGenerator.workspaceToCode(workspace);
                 const start = workspace.getBlocksByType(PlaygroundConstants.start);
                 const forever = workspace.getBlocksByType(PlaygroundConstants.forever);
                 const detection = workspace.getBlocksByType(PlaygroundConstants.detectionOrUndetection);

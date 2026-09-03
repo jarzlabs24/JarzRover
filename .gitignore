@@ -7,6 +7,17 @@ composer.lock
 Thumbs.db
 wandb/
 
+# JarzLabs local development and training artifacts
+.venv*/
+*.backup
+*.backup2
+*.broken
+*.old
+ball_dataset/
+OpenBot Colored Ball Detector.v1i.yolov5pytorch.zip
+OpenBot Colored Ball Detector.v1i.yolov5pytorch/
+yolov5-training/
+
 # IDE's
 .idea/
 /.vscode

@@ -53,7 +53,7 @@ public class DetectorYoloV5 extends Detector {
 
   @Override
   protected String getLabelPath() {
-    return "networks/coco.txt";
+    return "networks/ball_labels.txt";
   }
 
   @Override

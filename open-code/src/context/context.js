@@ -31,6 +31,7 @@ export default ({
     const [drawer, setDrawer] = useState(false);
     const [logOut, setLogOut] = useState(false);
     const [code, setCode] = useState({});
+    const [editorCode, setEditorCode] = useState("");
     const [generate, setGenerateCode] = useState(false);
     const [currentProjectXml, setCurrentProjectXml] = useState(savedProjectXml);
     const [fileId, setFileId] = useState(savedFileId);
@@ -47,6 +48,7 @@ export default ({
         logOut, setLogOut,
         category, setCategory,
         code, setCode,
+        editorCode, setEditorCode,
         generate, setGenerateCode,
         currentProjectXml, setCurrentProjectXml,
         fileId, setFileId,

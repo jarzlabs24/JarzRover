@@ -77,6 +77,63 @@ public class ObjectNavFragment extends CameraFragment {
   private long lastProcessingTimeMs = -1;
   private long frameNum = 0;
 
+  // JarzLabs demo patrol settings
+  private static final float PATROL_SPEED = 0.40f;
+
+  // Initial timing estimates - calibrate on the actual floor
+  private static final long LONG_SIDE_MS = 5000;
+  private static final long SHORT_SIDE_MS = 3300;
+  private static final long TURN_MS = 1300;
+
+  // 0=long, 1=turn, 2=short, 3=turn,
+  // 4=long, 5=turn, 6=short, 7=turn
+  private int patrolState = 0;
+  private long patrolStateStartMs = 0;
+
+  // Ball behavior settings
+  private static final float GREEN_PUSH_SPEED = 0.40f;
+
+  // Use a strong short pivot instead of slow continuous corrections.
+  private static final float GREEN_TURN_SPEED = 0.50f;
+  private static final float GREEN_CENTER_TOLERANCE = 0.12f;
+  private static final long GREEN_CENTER_PULSE_MS = 250;
+  private static final int GREEN_MAX_CENTER_ATTEMPTS = 2;
+
+  // Ball must appear quite large before stopping.
+  private static final float GREEN_STOP_WIDTH_FRACTION = 0.55f;
+  private static final long GREEN_MIN_APPROACH_MS = 1000;
+
+  private boolean greenLocked = false;
+  private long greenApproachStartMs = 0;
+
+  private boolean greenCenterPulseActive = false;
+  private long greenCenterPulseStartMs = 0;
+  private int greenCenterDirection = 0;
+  private int greenCenterAttempts = 0;
+
+  // Ignore balls that appear too small/far away.
+  // Ball must occupy at least 12% of the camera frame width.
+  private static final float MIN_BALL_WIDTH_FRACTION = 0.12f;
+
+  // Blue: stop, then make approximately a 45-degree right turn
+  private static final long BLUE_STOP_MS = 750;
+  private static final float BLUE_REVERSE_SPEED = 0.40f;
+  private static final long BLUE_REVERSE_MS = 800;
+  private static final long BLUE_TURN_MS = 2600;
+
+  private boolean blueActionActive = false;
+  private boolean blueLatched = false;
+  private long blueActionStartMs = 0;
+
+  // Wall avoidance
+  private static final float WALL_DISTANCE_CM = 30.0f;
+  private static final long WALL_STOP_MS = 400;
+  private static final long WALL_TURN_MS = 650;  // approximately 45 degrees
+
+  private boolean wallActionActive = false;
+  private boolean wallLatched = false;
+  private long wallActionStartMs = 0;
+
   private final boolean isBenchmarkMode = false;
   private long processedFrames = 0;
   private final int movingAvgSize = 100;
@@ -466,7 +523,7 @@ public class ObjectNavFragment extends CameraFragment {
               Timber.i("Running detection on image %s", frameNum);
               final long startTime = SystemClock.elapsedRealtime();
               final List<Detector.Recognition> results =
-                  detector.recognizeImage(croppedBitmap, classType);
+                  detector.recognizeImage(croppedBitmap, null);
               lastProcessingTimeMs = SystemClock.elapsedRealtime() - startTime;
 
               if (!results.isEmpty())
@@ -500,11 +557,212 @@ public class ObjectNavFragment extends CameraFragment {
               }
 
               tracker.trackResults(mappedRecognitions, frameNum);
-              Control target = tracker.updateTarget();
-              if (mirrorControl) {
-                handleDriveCommand(target.mirror());
+
+              boolean redDetected = false;
+              boolean greenDetected = false;
+              boolean blueDetected = false;
+              RectF greenBallLocation = null;
+
+              float frameWidth = getMaxAnalyseImageSize().getWidth();
+              float minimumBallWidth = frameWidth * MIN_BALL_WIDTH_FRACTION;
+
+              for (Detector.Recognition result : mappedRecognitions) {
+                RectF ballLocation = result.getLocation();
+
+                // Keep drawing all detections, but only react to nearby balls.
+                if (ballLocation == null || ballLocation.width() < minimumBallWidth) {
+                  continue;
+                }
+
+                if ("red-ball".equals(result.getTitle())) {
+                  redDetected = true;
+                } else if ("green-ball".equals(result.getTitle())) {
+                  greenDetected = true;
+                  greenBallLocation = ballLocation;
+                } else if ("blue-ball".equals(result.getTitle())) {
+                  blueDetected = true;
+                }
+              }
+
+              long behaviorNow = SystemClock.elapsedRealtime();
+
+              float sonarDistance = vehicle.getSonarReading();
+              boolean wallDetected =
+                  sonarDistance > 0
+                      && sonarDistance < WALL_DISTANCE_CM;
+
+              // Start wall avoidance once when a wall first appears.
+              if (wallDetected && !greenDetected
+                  && !wallLatched && !wallActionActive) {
+                wallLatched = true;
+                wallActionActive = true;
+                wallActionStartMs = behaviorNow;
+              }
+
+              // Allow another wall action after the wall is no longer close.
+              if (!wallDetected && !wallActionActive) {
+                wallLatched = false;
+              }
+
+              // Start the blue behavior once when a blue ball first appears.
+              if (blueDetected && !blueLatched && !blueActionActive) {
+                blueLatched = true;
+                blueActionActive = true;
+                blueActionStartMs = behaviorNow;
+              }
+
+              // Allow another blue action only after the blue ball disappears.
+              if (!blueDetected && !blueActionActive) {
+                blueLatched = false;
+              }
+
+              // A nearby green ball takes priority over wall avoidance.
+              // Cancel any wall turn so the robot can center on the ball.
+              if (greenDetected && greenBallLocation != null) {
+                wallActionActive = false;
+                wallLatched = false;
+              }
+
+              if (wallActionActive) {
+                long wallElapsed = behaviorNow - wallActionStartMs;
+
+                if (wallElapsed < WALL_STOP_MS) {
+                  // WALL: stop briefly
+                  handleDriveCommand(new Control(0.0f, 0.0f));
+
+                } else if (wallElapsed < WALL_STOP_MS + WALL_TURN_MS) {
+                  // WALL: approximately 45-degree right pivot
+                  handleDriveCommand(new Control(0.50f, -0.50f));
+
+                } else {
+                  // Re-check sonar after each 45-degree turn.
+                  float currentWallDistance = vehicle.getSonarReading();
+
+                  if (currentWallDistance > 0
+                      && currentWallDistance < WALL_DISTANCE_CM) {
+                    // Still facing a wall.
+                    // Restart the wall action and turn another 45 degrees.
+                    wallActionStartMs = behaviorNow;
+                    handleDriveCommand(new Control(0.0f, 0.0f));
+
+                  } else {
+                    // Path is clear.
+                    wallActionActive = false;
+                    wallLatched = false;
+                    handleDriveCommand(
+                        new Control(PATROL_SPEED, PATROL_SPEED));
+                  }
+                }
+
+              } else if (blueActionActive) {
+                long blueElapsed = behaviorNow - blueActionStartMs;
+
+                if (blueElapsed < BLUE_STOP_MS) {
+                  // BLUE: stop briefly
+                  handleDriveCommand(new Control(0.0f, 0.0f));
+
+                } else if (blueElapsed < BLUE_STOP_MS + BLUE_REVERSE_MS) {
+                  // BLUE: reverse away from the ball
+                  handleDriveCommand(
+                      new Control(-BLUE_REVERSE_SPEED, -BLUE_REVERSE_SPEED));
+
+                } else if (blueElapsed
+                    < BLUE_STOP_MS + BLUE_REVERSE_MS + BLUE_TURN_MS) {
+                  // BLUE: approximately 180-degree right pivot
+                  handleDriveCommand(new Control(0.50f, -0.50f));
+
+                } else {
+                  // Blue action finished; resume patrol.
+                  blueActionActive = false;
+                  patrolStateStartMs = behaviorNow;
+                  handleDriveCommand(new Control(PATROL_SPEED, PATROL_SPEED));
+                }
+
+              } else if (greenDetected && greenBallLocation != null) {
+                // GREEN: ignore wall avoidance while approaching the ball.
+                wallActionActive = false;
+                wallLatched = false;
+
+                if (!greenLocked) {
+                  float imageCenterX = frameWidth / 2.0f;
+                  float ballCenterX = greenBallLocation.centerX();
+                  float centerTolerance =
+                      frameWidth * GREEN_CENTER_TOLERANCE;
+
+                  if (greenCenterPulseActive) {
+                    long pulseElapsed =
+                        behaviorNow - greenCenterPulseStartMs;
+
+                    if (pulseElapsed < GREEN_CENTER_PULSE_MS) {
+                      // Strong, short correction pulse.
+                      if (greenCenterDirection < 0) {
+                        handleDriveCommand(
+                            new Control(-GREEN_TURN_SPEED, GREEN_TURN_SPEED));
+                      } else {
+                        handleDriveCommand(
+                            new Control(GREEN_TURN_SPEED, -GREEN_TURN_SPEED));
+                      }
+                    } else {
+                      // Pulse finished. Re-check position on the next frame.
+                      greenCenterPulseActive = false;
+                      handleDriveCommand(new Control(0.0f, 0.0f));
+                    }
+
+                  } else if (Math.abs(ballCenterX - imageCenterX)
+                      <= centerTolerance
+                      || greenCenterAttempts >= GREEN_MAX_CENTER_ATTEMPTS) {
+
+                    // Close enough, or we already corrected twice.
+                    // Commit to this heading and drive straight.
+                    greenLocked = true;
+                    greenApproachStartMs = behaviorNow;
+                    handleDriveCommand(
+                        new Control(GREEN_PUSH_SPEED, GREEN_PUSH_SPEED));
+
+                  } else {
+                    // Start one short correction pulse.
+                    greenCenterDirection =
+                        ballCenterX < imageCenterX ? -1 : 1;
+                    greenCenterAttempts++;
+                    greenCenterPulseActive = true;
+                    greenCenterPulseStartMs = behaviorNow;
+
+                    if (greenCenterDirection < 0) {
+                      handleDriveCommand(
+                          new Control(-GREEN_TURN_SPEED, GREEN_TURN_SPEED));
+                    } else {
+                      handleDriveCommand(
+                          new Control(GREEN_TURN_SPEED, -GREEN_TURN_SPEED));
+                    }
+                  }
+
+                } else {
+                  // Heading is locked. Do not center again.
+                  float greenBallWidthFraction =
+                      greenBallLocation.width() / frameWidth;
+
+                  long greenApproachElapsed =
+                      behaviorNow - greenApproachStartMs;
+
+                  if (greenApproachElapsed >= GREEN_MIN_APPROACH_MS
+                      && greenBallWidthFraction >= GREEN_STOP_WIDTH_FRACTION) {
+                    // Ball is close enough after the committed approach.
+                    handleDriveCommand(new Control(0.0f, 0.0f));
+
+                  } else {
+                    // Once centered, commit to driving straight.
+                    handleDriveCommand(
+                        new Control(GREEN_PUSH_SPEED, GREEN_PUSH_SPEED));
+                  }
+                }
+
+              } else if (redDetected) {
+                // RED: pivot right while red remains visible
+                handleDriveCommand(new Control(0.50f, -0.50f));
+
               } else {
-                handleDriveCommand(target);
+                // No ball behavior active: continue rectangle patrol
+                handleDriveCommand(new Control(PATROL_SPEED, PATROL_SPEED));
               }
               binding.trackingOverlay.postInvalidate();
             }
@@ -533,6 +791,52 @@ public class ObjectNavFragment extends CameraFragment {
     processedFrames = 0;
     movingAvgProcessingTimeMs = new MovingAverage(movingAvgSize);
     requireActivity().runOnUiThread(() -> binding.inferenceInfo.setText(R.string.time_fps));
+  }
+
+  private Control getPatrolControl() {
+    long now = SystemClock.elapsedRealtime();
+
+    if (patrolStateStartMs == 0) {
+      patrolStateStartMs = now;
+    }
+
+    long elapsed = now - patrolStateStartMs;
+
+    switch (patrolState) {
+      case 0:
+      case 4:
+        // Long side
+        if (elapsed >= LONG_SIDE_MS) {
+          patrolState++;
+          patrolStateStartMs = now;
+        }
+        return new Control(PATROL_SPEED, PATROL_SPEED);
+
+      case 1:
+      case 3:
+      case 5:
+      case 7:
+        // Right turn
+        if (elapsed >= TURN_MS) {
+          patrolState = (patrolState + 1) % 8;
+          patrolStateStartMs = now;
+        }
+        return new Control(0.50f, -0.50f);
+
+      case 2:
+      case 6:
+        // Short side
+        if (elapsed >= SHORT_SIDE_MS) {
+          patrolState++;
+          patrolStateStartMs = now;
+        }
+        return new Control(PATROL_SPEED, PATROL_SPEED);
+
+      default:
+        patrolState = 0;
+        patrolStateStartMs = now;
+        return new Control(PATROL_SPEED, PATROL_SPEED);
+    }
   }
 
   protected void handleDriveCommand(Control control) {
