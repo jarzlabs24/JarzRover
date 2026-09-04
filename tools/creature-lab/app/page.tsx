@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Camera, Check, RotateCcw, ScanLine, Sparkles } from 'lucide-react';
+import { Camera, RotateCcw, ScanLine, Sparkles } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -13,6 +13,119 @@ import {
 } from '@/components/ui/card';
 
 type CameraState = 'starting' | 'ready' | 'error';
+type GenerationMode = 'ai' | 'demo';
+
+async function createDemoCreature(photo: string) {
+  const source = new Image();
+  source.src = photo;
+  await source.decode();
+
+  const canvas = document.createElement('canvas');
+  canvas.width = 1024;
+  canvas.height = 1024;
+  const context = canvas.getContext('2d');
+  if (!context) throw new Error('Could not prepare the demo creature.');
+
+  const sample = document.createElement('canvas');
+  sample.width = 1;
+  sample.height = 1;
+  const sampleContext = sample.getContext('2d');
+  sampleContext?.drawImage(source, 0, 0, 1, 1);
+  const [red = 91, green = 92, blue = 230] = sampleContext?.getImageData(0, 0, 1, 1).data ?? [];
+  const color = `rgb(${red} ${green} ${blue})`;
+  const darkColor = `rgb(${Math.max(20, red - 65)} ${Math.max(20, green - 65)} ${Math.max(20, blue - 65)})`;
+
+  const background = context.createRadialGradient(512, 420, 80, 512, 512, 700);
+  background.addColorStop(0, 'rgb(255 255 255)');
+  background.addColorStop(1, `rgb(${Math.min(255, red + 110)} ${Math.min(255, green + 110)} ${Math.min(255, blue + 110)})`);
+  context.fillStyle = background;
+  context.fillRect(0, 0, 1024, 1024);
+
+  context.save();
+  context.shadowColor = 'rgb(30 41 59 / 30%)';
+  context.shadowBlur = 45;
+  context.fillStyle = color;
+  context.beginPath();
+  context.ellipse(512, 555, 300, 330, 0, 0, Math.PI * 2);
+  context.fill();
+  context.restore();
+
+  context.save();
+  context.beginPath();
+  context.ellipse(512, 555, 280, 310, 0, 0, Math.PI * 2);
+  context.clip();
+  const scale = Math.max(560 / source.width, 620 / source.height);
+  const width = source.width * scale;
+  const height = source.height * scale;
+  context.drawImage(source, 512 - width / 2, 555 - height / 2, width, height);
+  context.fillStyle = `rgb(${red} ${green} ${blue} / 18%)`;
+  context.fillRect(210, 235, 604, 650);
+  context.restore();
+
+  context.fillStyle = color;
+  context.strokeStyle = darkColor;
+  context.lineWidth = 18;
+  for (const [x, rotation] of [[330, -0.45], [694, 0.45]] as const) {
+    context.save();
+    context.translate(x, 280);
+    context.rotate(rotation);
+    context.beginPath();
+    context.moveTo(0, 80);
+    context.quadraticCurveTo(-75, -15, 0, -120);
+    context.quadraticCurveTo(75, -15, 0, 80);
+    context.fill();
+    context.stroke();
+    context.restore();
+  }
+
+  for (const x of [405, 619]) {
+    context.fillStyle = 'white';
+    context.beginPath();
+    context.ellipse(x, 455, 78, 92, 0, 0, Math.PI * 2);
+    context.fill();
+    context.strokeStyle = darkColor;
+    context.lineWidth = 14;
+    context.stroke();
+    context.fillStyle = darkColor;
+    context.beginPath();
+    context.arc(x + 10, 472, 30, 0, Math.PI * 2);
+    context.fill();
+    context.fillStyle = 'white';
+    context.beginPath();
+    context.arc(x + 20, 460, 9, 0, Math.PI * 2);
+    context.fill();
+  }
+
+  context.strokeStyle = darkColor;
+  context.lineWidth = 18;
+  context.lineCap = 'round';
+  context.beginPath();
+  context.arc(512, 580, 95, 0.2, Math.PI - 0.2);
+  context.stroke();
+
+  context.fillStyle = color;
+  for (const x of [365, 659]) {
+    context.beginPath();
+    context.roundRect(x - 85, 820, 170, 90, 44);
+    context.fill();
+    context.strokeStyle = darkColor;
+    context.lineWidth = 16;
+    context.stroke();
+  }
+
+  context.fillStyle = 'rgb(255 255 255 / 90%)';
+  for (const [x, y, size] of [[170, 300, 18], [840, 390, 25], [830, 720, 15], [190, 680, 22]] as const) {
+    context.save();
+    context.translate(x, y);
+    context.rotate(Math.PI / 4);
+    context.fillRect(-size / 2, -size * 2, size, size * 4);
+    context.fillRect(-size * 2, -size / 2, size * 4, size);
+    context.restore();
+  }
+
+  await new Promise((resolve) => window.setTimeout(resolve, 1400));
+  return canvas.toDataURL('image/png');
+}
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -21,6 +134,7 @@ export default function Home() {
   const [photo, setPhoto] = useState<string | null>(null);
   const [accepted, setAccepted] = useState(false);
   const [creature, setCreature] = useState<string | null>(null);
+  const [generationMode, setGenerationMode] = useState<GenerationMode | null>(null);
   const [generating, setGenerating] = useState(false);
   const [generationError, setGenerationError] = useState<string | null>(null);
 
@@ -29,6 +143,7 @@ export default function Home() {
     setPhoto(null);
     setAccepted(false);
     setCreature(null);
+    setGenerationMode(null);
     setGenerationError(null);
 
     try {
@@ -50,8 +165,11 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    void startCamera();
-    return () => streamRef.current?.getTracks().forEach((track) => track.stop());
+    const frame = window.requestAnimationFrame(() => void startCamera());
+    return () => {
+      window.cancelAnimationFrame(frame);
+      streamRef.current?.getTracks().forEach((track) => track.stop());
+    };
   }, [startCamera]);
 
   function takePhoto() {
@@ -73,6 +191,7 @@ export default function Home() {
     setPhoto(null);
     setAccepted(false);
     setCreature(null);
+    setGenerationMode(null);
     setGenerationError(null);
   }
 
@@ -89,8 +208,15 @@ export default function Home() {
         body: JSON.stringify({ image: photo }),
       });
       const result = (await response.json()) as { image?: string; error?: string };
-      if (!response.ok || !result.image) throw new Error(result.error ?? 'Creature generation failed.');
-      setCreature(result.image);
+      if (response.ok && result.image) {
+        setCreature(result.image);
+        setGenerationMode('ai');
+      } else if (response.status === 429 || response.status === 503) {
+        setCreature(await createDemoCreature(photo));
+        setGenerationMode('demo');
+      } else {
+        throw new Error(result.error ?? 'Creature generation failed.');
+      }
     } catch (error) {
       setAccepted(false);
       setGenerationError(error instanceof Error ? error.message : 'Creature generation failed.');
@@ -209,6 +335,11 @@ export default function Home() {
                 <div className="mt-6 overflow-hidden rounded-2xl border-2 border-violet-200 bg-white p-2">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={creature} alt="AI-generated Jarz creature" className="aspect-square w-full rounded-xl object-cover" />
+                  {generationMode === 'demo' && (
+                    <p className="px-2 pb-1 pt-3 text-center text-xs font-bold uppercase tracking-wider text-violet-700">
+                      Local demo creature
+                    </p>
+                  )}
                   <Button className="mt-2 h-11 w-full" onClick={() => void startCamera()}>
                     <RotateCcw data-icon="inline-start" /> New discovery
                   </Button>
