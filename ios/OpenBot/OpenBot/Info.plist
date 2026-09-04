@@ -39,8 +39,6 @@
 			<string>ExtendedGamepad</string>
 		</dict>
 	</array>
-	<key>GCSupportsControllerUserInteraction</key>
-	<true/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>http</string>
