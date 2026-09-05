@@ -30,6 +30,12 @@ Creature morphology must be object-led rather than mascot-led. Before image gene
 
 The design target is "creature first, object inspiration second." The source object must not be copied whole and given a face. AI should reinterpret only two or three traits—material, color, texture, function, or a distinctive shape—as distributed anatomy, armor, markings, or powers, then invent the rest. Purposeful locomotion appendages are recommended unless a limbless, radial, or floating concept is genuinely stronger.
 
+## Creature Patrol architecture
+
+The Maker Faire target is a phone-controlled Creature Patrol mode: patrol, detect a stable object candidate, stop, request visitor confirmation, capture, generate, show the result, wait for removal, and only then resume. The phone must never contain the OpenAI API key; it will send approved captures to a server that performs generation.
+
+The first Android component is a hardware-independent state machine in `org.openbot.creature`. Non-zero motor commands must eventually be gated by its `allowsMotion()` result. Camera and motor integration is intentionally deferred until the state transitions pass unit tests and the object-zone strategy is selected and tested while stationary.
+
 The checked-in firmware selects `OPENBOT DIY` and `MCU NANO`. Sonar, front speed sensors, indicators, voltage-divider sensing, and OLED are disabled in the DIY block. A successful standalone ultrasonic serial test does not establish that sonar is enabled or validated in the integrated robot firmware. Confirm the actually flashed sketch before the next hardware test.
 
 ## Next implementation handoff

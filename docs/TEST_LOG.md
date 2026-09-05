@@ -68,6 +68,14 @@ Creature Lab's computer-camera flow is under active development in `tools/creatu
 - The prompt now explicitly excludes watercolor washes, paper texture, brush or pencil grain, painterly rendering, heavy gradients, photorealism, and 3D surfaces.
 - Revised rendering style remains to be tested with a new user-approved generation.
 
+## Creature Patrol state-machine scaffold — 2026-09-05
+
+- Added a hardware-independent Android state machine for patrol, stable object confirmation, capture, generation, result display, and object removal.
+- Motion is permitted only in the `PATROLLING` state; no motor-control code is connected in this scaffold.
+- Added unit coverage for motion gating, unstable detections, stable removal, and invalid transitions.
+- `./gradlew :robot:testDebugUnitTest --tests org.openbot.creature.CreaturePatrolStateMachineTest`: pass on 2026-09-05.
+- Physical rover behavior, camera capture, network upload, and object-zone detection were not run or changed in this step.
+
 Next checks should establish installed hardware and flashed firmware, then verify green-ball behavior incrementally. Record actual observations rather than marking planned checks as passed.
 
 ## Future entry template
