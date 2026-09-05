@@ -26,6 +26,10 @@
 
 OpenBot leverages smartphones as brains for low-cost robots. We have designed a small electric vehicle that costs about $50 and serves as a robot body. Our software stack for Android smartphones supports advanced robotics workloads such as person following and real-time autonomous navigation.
 
+## JarzRover / JarZLabs context
+
+This checkout is the JarzRover implementation workspace for the broader JarZLabs youth STEM and 3D-printing project. Start with [AGENTS.md](AGENTS.md) and [project context](docs/PROJECT_CONTEXT.md); see [hardware and pin mappings](docs/HARDWARE.md), [direct-wiring notes](docs/WIRING.md), and [test history and status](docs/TEST_LOG.md).
+
 ## Get started with OpenBot
 
 - Read the [Disclaimer](DISCLAIMER.md)
