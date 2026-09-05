@@ -14,11 +14,74 @@ import {
 
 type CameraState = 'starting' | 'ready' | 'error';
 type GenerationMode = 'ai' | 'demo';
+type Creature = {
+  image: string;
+  name: string;
+  type: string;
+  description: string;
+  ability: string;
+};
 
-async function createDemoCreature(photo: string) {
+async function inspectObject(photo: string) {
   const source = new Image();
   source.src = photo;
   await source.decode();
+
+  const sample = document.createElement('canvas');
+  sample.width = 6;
+  sample.height = 6;
+  const sampleContext = sample.getContext('2d');
+  if (!sampleContext) throw new Error('Could not inspect the object.');
+
+  sampleContext.drawImage(source, 0, 0, 6, 6);
+  const pixels = sampleContext.getImageData(0, 0, 6, 6).data;
+  let red = 0;
+  let green = 0;
+  let blue = 0;
+  for (let index = 0; index < pixels.length; index += 4) {
+    red += pixels[index];
+    green += pixels[index + 1];
+    blue += pixels[index + 2];
+  }
+
+  const count = pixels.length / 4;
+  return {
+    source,
+    red: Math.round(red / count),
+    green: Math.round(green / count),
+    blue: Math.round(blue / count),
+  };
+}
+
+function createCreatureDetails(red: number, green: number, blue: number) {
+  const brightness = (red + green + blue) / 3;
+  const strongest = Math.max(red, green, blue);
+  const colorFamily =
+    strongest === red ? 'Ember' : strongest === green ? 'Moss' : 'Tide';
+  const temperament = brightness > 175 ? 'Glow' : brightness < 85 ? 'Shadow' : 'Spark';
+  const seed = (red * 3 + green * 5 + blue * 7) % 4;
+  const endings = ['ling', 'aroo', 'bit', 'horn'];
+  const types = {
+    Ember: 'Flame',
+    Moss: 'Forest',
+    Tide: 'Water',
+  } as const;
+  const abilities = {
+    Ember: 'Confetti Comet',
+    Moss: 'Giggle Garden',
+    Tide: 'Bubble Bounce',
+  } as const;
+
+  return {
+    name: `${temperament}${endings[seed]}`,
+    type: `${types[colorFamily]} creature`,
+    description: `A curious ${colorFamily.toLowerCase()} explorer that turns ordinary objects into tiny adventures.`,
+    ability: abilities[colorFamily],
+  };
+}
+
+async function createDemoCreature(photo: string) {
+  const { source, red, green, blue } = await inspectObject(photo);
 
   const canvas = document.createElement('canvas');
   canvas.width = 1024;
@@ -26,12 +89,6 @@ async function createDemoCreature(photo: string) {
   const context = canvas.getContext('2d');
   if (!context) throw new Error('Could not prepare the demo creature.');
 
-  const sample = document.createElement('canvas');
-  sample.width = 1;
-  sample.height = 1;
-  const sampleContext = sample.getContext('2d');
-  sampleContext?.drawImage(source, 0, 0, 1, 1);
-  const [red = 91, green = 92, blue = 230] = sampleContext?.getImageData(0, 0, 1, 1).data ?? [];
   const color = `rgb(${red} ${green} ${blue})`;
   const darkColor = `rgb(${Math.max(20, red - 65)} ${Math.max(20, green - 65)} ${Math.max(20, blue - 65)})`;
 
@@ -124,7 +181,10 @@ async function createDemoCreature(photo: string) {
   }
 
   await new Promise((resolve) => window.setTimeout(resolve, 1400));
-  return canvas.toDataURL('image/png');
+  return {
+    image: canvas.toDataURL('image/png'),
+    ...createCreatureDetails(red, green, blue),
+  };
 }
 
 export default function Home() {
@@ -133,7 +193,7 @@ export default function Home() {
   const [cameraState, setCameraState] = useState<CameraState>('starting');
   const [photo, setPhoto] = useState<string | null>(null);
   const [accepted, setAccepted] = useState(false);
-  const [creature, setCreature] = useState<string | null>(null);
+  const [creature, setCreature] = useState<Creature | null>(null);
   const [generationMode, setGenerationMode] = useState<GenerationMode | null>(null);
   const [generating, setGenerating] = useState(false);
   const [generationError, setGenerationError] = useState<string | null>(null);
@@ -177,12 +237,25 @@ export default function Home() {
     if (!video || video.videoWidth === 0 || video.videoHeight === 0) return;
 
     const canvas = document.createElement('canvas');
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+    const cropSize = Math.min(video.videoWidth, video.videoHeight) * 0.8;
+    const cropX = (video.videoWidth - cropSize) / 2;
+    const cropY = (video.videoHeight - cropSize) / 2;
+    canvas.width = 1024;
+    canvas.height = 1024;
     const context = canvas.getContext('2d');
     if (!context) return;
 
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    context.drawImage(
+      video,
+      cropX,
+      cropY,
+      cropSize,
+      cropSize,
+      0,
+      0,
+      canvas.width,
+      canvas.height,
+    );
     setPhoto(canvas.toDataURL('image/jpeg', 0.9));
     setAccepted(false);
   }
@@ -207,11 +280,16 @@ export default function Home() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ image: photo }),
       });
-      const result = (await response.json()) as { image?: string; error?: string };
-      if (response.ok && result.image) {
-        setCreature(result.image);
+      const result = (await response.json()) as {
+        image?: string;
+        profile?: Omit<Creature, 'image'>;
+        code?: string;
+        error?: string;
+      };
+      if (response.ok && result.image && result.profile) {
+        setCreature({ image: result.image, ...result.profile });
         setGenerationMode('ai');
-      } else if (response.status === 429 || response.status === 503) {
+      } else if (result.code === 'missing_api_key') {
         setCreature(await createDemoCreature(photo));
         setGenerationMode('demo');
       } else {
@@ -275,7 +353,11 @@ export default function Home() {
               )}
 
               {!photo && cameraState === 'ready' && (
-                <div className="pointer-events-none absolute inset-[10%] rounded-3xl border-2 border-dashed border-white/75 shadow-[0_0_0_999px_rgb(2_6_23/12%)]" />
+                <div className="pointer-events-none absolute inset-y-[10%] left-1/2 aspect-square -translate-x-1/2 rounded-3xl border-2 border-dashed border-white/85 shadow-[0_0_0_999px_rgb(2_6_23/28%)]">
+                  <span className="absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-slate-950/75 px-3 py-1 text-sm font-bold text-white">
+                    Keep only the object in this box
+                  </span>
+                </div>
               )}
 
               {generating && (
@@ -293,7 +375,7 @@ export default function Home() {
 
             <div className="flex flex-col gap-3 border-t bg-white/75 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
               <p className="text-sm font-medium text-muted-foreground">
-                {photo ? 'Is the object clear and centered?' : 'Place one object inside the frame.'}
+                {photo ? 'Is the object clear with no people visible?' : 'Only the boxed area will be used.'}
               </p>
 
               <div className="flex gap-2">
@@ -334,12 +416,25 @@ export default function Home() {
               {creature ? (
                 <div className="mt-6 overflow-hidden rounded-2xl border-2 border-violet-200 bg-white p-2">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={creature} alt="AI-generated Jarz creature" className="aspect-square w-full rounded-xl object-cover" />
+                  <img src={creature.image} alt={`${creature.name}, a discovered Jarz creature`} className="aspect-square w-full rounded-xl object-cover" />
                   {generationMode === 'demo' && (
                     <p className="px-2 pb-1 pt-3 text-center text-xs font-bold uppercase tracking-wider text-violet-700">
                       Local demo creature
                     </p>
                   )}
+                  <div className="px-2 pb-2 pt-3">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <h2 className="text-xl font-black tracking-tight">{creature.name}</h2>
+                        <p className="text-sm font-bold text-violet-700">{creature.type}</p>
+                      </div>
+                      <Sparkles className="mt-1 size-5 shrink-0 text-violet-600" aria-hidden="true" />
+                    </div>
+                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{creature.description}</p>
+                    <div className="mt-3 rounded-xl bg-violet-100 px-3 py-2 text-sm text-violet-950">
+                      <span className="font-black">Special ability:</span> {creature.ability}
+                    </div>
+                  </div>
                   <Button className="mt-2 h-11 w-full" onClick={() => void startCamera()}>
                     <RotateCcw data-icon="inline-start" /> New discovery
                   </Button>
