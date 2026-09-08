@@ -103,3 +103,7 @@ Please cite our [paper](https://arxiv.org/abs/2008.10631) if you use OpenBot.
 <a href="https://www.openbot.org//" target="_blank">
   <img align="center" alt="Footer" width="100%" src="docs/images/footer.gif" />
 </a>
+
+## JarzRover planning and app-store execution
+
+Use the [JarZLabs → Codex workflow](docs/CODEX_WORKFLOW.md), [app-store milestones](docs/plans/app-store-readiness/PLAN.md), and [Dad/Aarav backlog](docs/plans/app-store-readiness/BACKLOG.md) to turn planning into bounded implementation tasks. Existing OpenBot documentation and hardware history remain relevant.

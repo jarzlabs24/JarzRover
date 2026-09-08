@@ -46,3 +46,11 @@ The checked-in firmware selects `OPENBOT DIY` and `MCU NANO`. Sonar, front speed
 4. Update these documents when a decision or verified result changes the baseline.
 
 Battery specifications, driver jumper positions, exact terminal assignments, and original test dates remain unrecorded. Do not fill these gaps with assumptions.
+
+## App-store planning handoff — 2026-09-06
+
+The user now has two work tracks: Dad prepares Google Play and Apple App Store readiness; Aarav develops ball detection and object-to-creature experiences. Green-ball behavior remains a feature goal with the evidence limits above.
+
+[Execution workflow](CODEX_WORKFLOW.md), [readiness plan](plans/app-store-readiness/PLAN.md), [issue-ready backlog](plans/app-store-readiness/BACKLOG.md), and [repository inspection](plans/app-store-readiness/REPOSITORY_AUDIT.md) extend this context without replacing hardware history. The repository contains native Android robot/controller, native iOS robot, Flutter controller, and a Creature Lab demo. Shipping apps, identifiers and iOS transport remain decisions; com.jarzlabs.jarzrover was an example, not an adopted ID.
+
+Next: Dad starts JR-001 (scope) and JR-002 (baseline). Aarav prepares JR-014/015 after baseline, with release inclusion decided through JR-016. No app code, branch/default settings, signing or store records were changed by this documentation setup.
