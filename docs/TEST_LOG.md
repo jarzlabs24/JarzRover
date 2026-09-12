@@ -115,3 +115,29 @@ Next checks should establish installed hardware and flashed firmware, then verif
 - The corrected build was installed and launched on Aarav's iPhone through Xcode. Reopening Creature Lab and testing capture/generation remain user-device checks.
 - Physical iPhone verification: pass. Creature Lab opened without crashing, captured a photo, reached the Mac-hosted server at `http://192.168.251.244:3000`, and returned an AI-generated creature result.
 - This verification used the iPhone and Mac on the same local network with the development server running; rover mounting, motor behavior, autonomous detection, and Maker Faire network reliability remain untested.
+
+## Native iOS stationary discovery prototype — 2026-09-12
+
+- Added a visible center discovery zone, empty-arena calibration, low-resolution on-device scene comparison, stable-object confirmation, and a user approval prompt before photo capture.
+- Detection sends no camera frames to the server and issues no motor commands. Generation still starts only after the visitor approves a captured photo and taps Create Creature.
+- Direct Swift type-check against the installed iPhone SDK, project plist validation, and `git diff --check`: pass.
+- Incremental Xcode build, installation, and launch on Aarav's iPhone: pass.
+- Physical calibration sensitivity, stable-object prompt timing, false positives, capture framing, and generation from the discovery flow: not yet tested.
+- Physical orientation test reported that the UIKit discovery guide rotated in landscape while the AVFoundation preview remained sideways.
+- Added explicit interface-orientation updates for the camera preview and photo-output connection. Direct Swift type-check and incremental iPhone build/install: pass; corrected landscape preview and saved-photo orientation await user verification.
+- First physical detector test: calibration completed, but a cricket ball in the discovery zone did not trigger the prompt. Local detection does not depend on the Mac server.
+- Increased the fingerprint grid from 10×8 to 20×15, reduced the changed-area threshold for smaller objects, and added a live scene-change percentage for tuning. Direct Swift type-check and incremental iPhone installation: pass; physical retest remains pending.
+
+## Native iOS rover-link investigation — 2026-09-12
+
+- User-reported physical test: Robot Info showed no connected vehicle sensors, and its manual forward/reverse commands produced no motor movement.
+- The recorded rover hardware is an ATmega328p Arduino Nano using the `OPENBOT DIY` firmware path. That path receives phone commands through USB serial and does not enable the firmware's built-in BLE server.
+- The native iOS robot app communicates solely through the OpenBot BLE service/characteristic UUIDs. Its current UI sets the global connected flag when a peripheral connects, before verifying writable/notifiable characteristics or receiving the firmware-ready message, so a connected icon alone does not prove a usable robot link.
+- User confirmed the rover has only the Lafvin/ATmega328p Arduino Nano connected by USB, with no ESP32 or separate BLE module.
+- Outcome: fail / architecture mismatch confirmed. The current native iOS app cannot use this Nano USB link for robot commands or telemetry. No motor pins, wiring, firmware, or BLE code were changed during this investigation.
+
+## Android ball-detector asset-path verification — 2026-09-12
+
+- Corrected `DetectorYoloV5` to load the tracked `networks/colored_balls.txt` asset rather than the ignored, local-only `networks/ball_labels.txt` copy. Both files contained the same blue/green/red labels on this Mac.
+- `./gradlew :robot:assembleDebug :robot:testDebugUnitTest`: pass (`BUILD SUCCESSFUL` in 22 seconds; 47 tasks, 10 executed and 37 up-to-date).
+- This verifies compilation, APK packaging, and unit tests using the tracked asset path. Physical ball detection, centering, approach, target-loss stopping, and rover motion were not run.

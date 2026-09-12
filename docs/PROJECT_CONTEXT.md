@@ -15,6 +15,7 @@ Source context: user-provided handoff from [Make Project Available](chatgpt-conv
 - Left and right motor tests were completed successfully.
 - HC-SR04 serial readings eventually worked after troubleshooting. The exact fix and test sketch were not recorded in the supplied history.
 - The Android phone can power the Nano over OTG. Full robot operation requires proper battery power for the motor system.
+- The current rover has no ESP32 or separate BLE module. The native iOS robot app is BLE-only and cannot control the installed ATmega328p Nano through its USB connection; the failed iPhone manual-control test is therefore a connection-architecture mismatch, not evidence of a motor-wiring failure.
 - Optional speed sensors, indicator LEDs, and bumper may be removed or disabled as appropriate. Do not infer installation from pin definitions.
 - Preserve known working pin mappings and prefer small changes with clear tests.
 

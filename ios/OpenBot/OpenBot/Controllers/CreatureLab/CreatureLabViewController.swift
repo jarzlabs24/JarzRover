@@ -1,10 +1,23 @@
 import AVFoundation
 import UIKit
 
-final class CreatureLabViewController: UIViewController, AVCapturePhotoCaptureDelegate, UITextFieldDelegate {
+final class CreatureLabViewController: UIViewController, AVCapturePhotoCaptureDelegate,
+    AVCaptureVideoDataOutputSampleBufferDelegate, UITextFieldDelegate
+{
     private enum Defaults {
         static let serverURL = "creatureLabServerURL"
         static let placeholderURL = "http://192.168.1.100:3000"
+    }
+
+    private enum Detection {
+        static let columns = 20
+        static let rows = 15
+        static let frameStride = 6
+        static let calibrationFrameCount = 10
+        static let changedCellThreshold = 20.0
+        static let changedCellRatio = 0.012
+        static let stableFrameDifference = 12.0
+        static let requiredStableFrames = 7
     }
 
     private struct GenerateRequest: Encodable {
@@ -29,17 +42,33 @@ final class CreatureLabViewController: UIViewController, AVCapturePhotoCaptureDe
 
     private let captureSession = AVCaptureSession()
     private let photoOutput = AVCapturePhotoOutput()
+    private let videoOutput = AVCaptureVideoDataOutput()
     private let sessionQueue = DispatchQueue(label: "org.jarzlabs.creature-lab.camera")
+    private let analysisQueue = DispatchQueue(label: "org.jarzlabs.creature-lab.analysis")
     private var previewLayer: AVCaptureVideoPreviewLayer?
     private var capturedJPEG: Data?
 
+    // Access these scene-analysis values only from analysisQueue.
+    private var analyzedFrameCount = 0
+    private var calibrationFramesRemaining = 0
+    private var calibrationSums: [Int] = []
+    private var baselineFingerprint: [UInt8]?
+    private var previousCandidateFingerprint: [UInt8]?
+    private var stableCandidateFrames = 0
+    private var isWatchingForObject = false
+    private var isWatchingOnMainThread = false
+    private var hasBaselineOnMainThread = false
+
     private let previewContainer = UIView()
+    private let discoveryGuide = UIView()
     private let imageView = UIImageView()
     private let statusLabel = UILabel()
     private let serverField = UITextField()
     private let captureButton = UIButton(type: .system)
     private let retakeButton = UIButton(type: .system)
     private let generateButton = UIButton(type: .system)
+    private let calibrateButton = UIButton(type: .system)
+    private let watchButton = UIButton(type: .system)
     private let activityIndicator = UIActivityIndicatorView(style: .large)
     private let resultStack = UIStackView()
     private let nameLabel = UILabel()
@@ -58,6 +87,20 @@ final class CreatureLabViewController: UIViewController, AVCapturePhotoCaptureDe
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         previewLayer?.frame = previewContainer.bounds
+        updateCameraOrientation()
+    }
+
+    override func viewWillTransition(
+        to size: CGSize,
+        with coordinator: UIViewControllerTransitionCoordinator
+    ) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: { [weak self] _ in
+            guard let self else { return }
+            previewLayer?.frame = previewContainer.bounds
+        }, completion: { [weak self] _ in
+            self?.updateCameraOrientation()
+        })
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -100,6 +143,35 @@ final class CreatureLabViewController: UIViewController, AVCapturePhotoCaptureDe
             imageView.bottomAnchor.constraint(equalTo: previewContainer.bottomAnchor),
         ])
 
+        discoveryGuide.layer.borderColor = UIColor.systemYellow.cgColor
+        discoveryGuide.layer.borderWidth = 3
+        discoveryGuide.layer.cornerRadius = 12
+        discoveryGuide.isUserInteractionEnabled = false
+        discoveryGuide.isHidden = true
+        discoveryGuide.translatesAutoresizingMaskIntoConstraints = false
+        previewContainer.addSubview(discoveryGuide)
+
+        let guideLabel = UILabel()
+        guideLabel.text = "DISCOVERY ZONE"
+        guideLabel.textColor = .black
+        guideLabel.backgroundColor = .systemYellow
+        guideLabel.font = .preferredFont(forTextStyle: .caption1)
+        guideLabel.textAlignment = .center
+        guideLabel.layer.cornerRadius = 5
+        guideLabel.clipsToBounds = true
+        guideLabel.translatesAutoresizingMaskIntoConstraints = false
+        discoveryGuide.addSubview(guideLabel)
+        NSLayoutConstraint.activate([
+            discoveryGuide.centerXAnchor.constraint(equalTo: previewContainer.centerXAnchor),
+            discoveryGuide.centerYAnchor.constraint(equalTo: previewContainer.centerYAnchor),
+            discoveryGuide.widthAnchor.constraint(equalTo: previewContainer.widthAnchor, multiplier: 0.62),
+            discoveryGuide.heightAnchor.constraint(equalTo: previewContainer.heightAnchor, multiplier: 0.62),
+            guideLabel.centerXAnchor.constraint(equalTo: discoveryGuide.centerXAnchor),
+            guideLabel.topAnchor.constraint(equalTo: discoveryGuide.topAnchor, constant: 6),
+            guideLabel.widthAnchor.constraint(equalToConstant: 130),
+            guideLabel.heightAnchor.constraint(equalToConstant: 24),
+        ])
+
         statusLabel.text = "Starting camera…"
         statusLabel.numberOfLines = 0
         statusLabel.textAlignment = .center
@@ -108,10 +180,16 @@ final class CreatureLabViewController: UIViewController, AVCapturePhotoCaptureDe
         styleButton(captureButton, title: "Take Photo", symbol: "camera.fill")
         styleButton(retakeButton, title: "Retake", symbol: "arrow.counterclockwise")
         styleButton(generateButton, title: "Create Creature", symbol: "sparkles")
+        styleButton(calibrateButton, title: "Learn Empty Arena", symbol: "viewfinder")
+        styleButton(watchButton, title: "Watch for Object", symbol: "eye.fill")
         captureButton.addTarget(self, action: #selector(takePhoto), for: .touchUpInside)
         retakeButton.addTarget(self, action: #selector(retakePhoto), for: .touchUpInside)
         generateButton.addTarget(self, action: #selector(generateCreature), for: .touchUpInside)
+        calibrateButton.addTarget(self, action: #selector(calibrateEmptyArena), for: .touchUpInside)
+        watchButton.addTarget(self, action: #selector(toggleObjectWatching), for: .touchUpInside)
         captureButton.isEnabled = false
+        calibrateButton.isEnabled = false
+        watchButton.isEnabled = false
         retakeButton.isHidden = true
         generateButton.isHidden = true
 
@@ -119,6 +197,11 @@ final class CreatureLabViewController: UIViewController, AVCapturePhotoCaptureDe
         buttonStack.axis = .horizontal
         buttonStack.spacing = 10
         buttonStack.distribution = .fillEqually
+
+        let discoveryButtonStack = UIStackView(arrangedSubviews: [calibrateButton, watchButton])
+        discoveryButtonStack.axis = .horizontal
+        discoveryButtonStack.spacing = 10
+        discoveryButtonStack.distribution = .fillEqually
 
         [nameLabel, typeLabel, descriptionLabel, abilityLabel].forEach {
             $0.numberOfLines = 0
@@ -141,7 +224,7 @@ final class CreatureLabViewController: UIViewController, AVCapturePhotoCaptureDe
 
         let contentStack = UIStackView(arrangedSubviews: [
             instructions, serverField, previewContainer, statusLabel,
-            buttonStack, activityIndicator, resultStack,
+            buttonStack, discoveryButtonStack, activityIndicator, resultStack,
         ])
         contentStack.axis = .vertical
         contentStack.spacing = 12
@@ -199,14 +282,21 @@ final class CreatureLabViewController: UIViewController, AVCapturePhotoCaptureDe
                   let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back),
                   let input = try? AVCaptureDeviceInput(device: camera),
                   captureSession.canAddInput(input),
-                  captureSession.canAddOutput(photoOutput) else {
+                  captureSession.canAddOutput(photoOutput),
+                  captureSession.canAddOutput(videoOutput) else {
                 captureSession.commitConfiguration()
                 DispatchQueue.main.async { self.showStatus("The rear camera could not be started.", isError: true) }
                 return
             }
 
+            videoOutput.alwaysDiscardsLateVideoFrames = true
+            videoOutput.videoSettings = [
+                kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA
+            ]
+            videoOutput.setSampleBufferDelegate(self, queue: analysisQueue)
             captureSession.addInput(input)
             captureSession.addOutput(photoOutput)
+            captureSession.addOutput(videoOutput)
             captureSession.commitConfiguration()
             captureSession.startRunning()
 
@@ -216,8 +306,11 @@ final class CreatureLabViewController: UIViewController, AVCapturePhotoCaptureDe
                 self.previewContainer.layer.insertSublayer(layer, at: 0)
                 self.previewLayer = layer
                 self.view.setNeedsLayout()
+                self.updateCameraOrientation()
                 self.captureButton.isEnabled = true
-                self.showStatus("Camera ready. Center one object in the frame.")
+                self.calibrateButton.isEnabled = true
+                self.discoveryGuide.isHidden = false
+                self.showStatus("Camera ready. Take a photo, or learn the empty arena for discovery mode.")
             }
         }
     }
@@ -227,9 +320,49 @@ final class CreatureLabViewController: UIViewController, AVCapturePhotoCaptureDe
     }
 
     @objc private func takePhoto() {
+        setWatching(false)
         captureButton.isEnabled = false
         showStatus("Taking photo…")
-        photoOutput.capturePhoto(with: AVCapturePhotoSettings(), delegate: self)
+        let orientation = captureVideoOrientation()
+        sessionQueue.async { [weak self] in
+            guard let self else { return }
+            if let connection = photoOutput.connection(with: .video),
+               connection.isVideoOrientationSupported {
+                connection.videoOrientation = orientation
+            }
+            photoOutput.capturePhoto(with: AVCapturePhotoSettings(), delegate: self)
+        }
+    }
+
+    private func updateCameraOrientation() {
+        let orientation = captureVideoOrientation()
+        if let connection = previewLayer?.connection, connection.isVideoOrientationSupported {
+            connection.videoOrientation = orientation
+        }
+        sessionQueue.async { [weak self] in
+            guard let self,
+                  let connection = photoOutput.connection(with: .video),
+                  connection.isVideoOrientationSupported else { return }
+            connection.videoOrientation = orientation
+        }
+    }
+
+    private func captureVideoOrientation() -> AVCaptureVideoOrientation {
+        guard let interfaceOrientation = view.window?.windowScene?.interfaceOrientation else {
+            return .portrait
+        }
+        switch interfaceOrientation {
+        case .portrait:
+            return .portrait
+        case .portraitUpsideDown:
+            return .portraitUpsideDown
+        case .landscapeLeft:
+            return .landscapeLeft
+        case .landscapeRight:
+            return .landscapeRight
+        default:
+            return .portrait
+        }
     }
 
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
@@ -239,26 +372,215 @@ final class CreatureLabViewController: UIViewController, AVCapturePhotoCaptureDe
             return
         }
 
-        capturedJPEG = image.jpegData(compressionQuality: 0.82)
-        imageView.image = image
-        imageView.isHidden = false
-        captureButton.isHidden = true
-        retakeButton.isHidden = false
-        generateButton.isHidden = false
-        resultStack.isHidden = true
-        showStatus("Photo accepted! You can retake it or create the creature.")
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            capturedJPEG = image.jpegData(compressionQuality: 0.82)
+            imageView.image = image
+            imageView.isHidden = false
+            discoveryGuide.isHidden = true
+            captureButton.isHidden = true
+            retakeButton.isHidden = false
+            generateButton.isHidden = false
+            calibrateButton.isEnabled = false
+            watchButton.isEnabled = false
+            resultStack.isHidden = true
+            showStatus("Photo accepted! You can retake it or create the creature.")
+        }
     }
 
     @objc private func retakePhoto() {
         capturedJPEG = nil
         imageView.image = nil
         imageView.isHidden = true
+        discoveryGuide.isHidden = false
         resultStack.isHidden = true
         captureButton.isHidden = false
         captureButton.isEnabled = true
+        calibrateButton.isEnabled = true
+        watchButton.isEnabled = hasBaselineOnMainThread
         retakeButton.isHidden = true
         generateButton.isHidden = true
-        showStatus("Camera ready. Center one object in the frame.")
+        showStatus("Camera ready. Center one object in the discovery zone.")
+    }
+
+    @objc private func calibrateEmptyArena() {
+        if capturedJPEG != nil { retakePhoto() }
+        setWatching(false)
+        calibrateButton.isEnabled = false
+        watchButton.isEnabled = false
+        hasBaselineOnMainThread = false
+        showStatus("Learning the empty arena… Keep the yellow zone clear and hold the phone still.")
+
+        analysisQueue.async { [weak self] in
+            guard let self else { return }
+            calibrationSums = []
+            calibrationFramesRemaining = Detection.calibrationFrameCount
+            baselineFingerprint = nil
+            previousCandidateFingerprint = nil
+            stableCandidateFrames = 0
+        }
+    }
+
+    @objc private func toggleObjectWatching() {
+        setWatching(!isWatchingOnMainThread)
+    }
+
+    private func setWatching(_ watching: Bool) {
+        isWatchingOnMainThread = watching
+        calibrateButton.isEnabled = !watching && capturedJPEG == nil
+        watchButton.isEnabled = capturedJPEG == nil && hasBaselineOnMainThread
+        var configuration = watchButton.configuration
+        configuration?.title = watching ? "Stop Watching" : "Watch for Object"
+        configuration?.image = UIImage(systemName: watching ? "stop.fill" : "eye.fill")
+        watchButton.configuration = configuration
+
+        if watching {
+            showStatus("Watching… Place one object inside the yellow zone, then move your hands away.")
+        }
+
+        analysisQueue.async { [weak self] in
+            guard let self else { return }
+            isWatchingForObject = watching && baselineFingerprint != nil
+            previousCandidateFingerprint = nil
+            stableCandidateFrames = 0
+        }
+    }
+
+    private func showObjectDiscoveredPrompt() {
+        setWatching(false)
+        let alert = UIAlertController(
+            title: "Object discovered!",
+            message: "The new object is holding still. Would you like to take its picture?",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "Not Yet", style: .cancel) { [weak self] _ in
+            self?.showStatus("Discovery paused. Remove the object or tap Watch for Object to continue.")
+        })
+        alert.addAction(UIAlertAction(title: "Take Picture", style: .default) { [weak self] _ in
+            self?.takePhoto()
+        })
+        present(alert, animated: true)
+    }
+
+    func captureOutput(
+        _ output: AVCaptureOutput,
+        didOutput sampleBuffer: CMSampleBuffer,
+        from connection: AVCaptureConnection
+    ) {
+        analyzedFrameCount += 1
+        guard analyzedFrameCount % Detection.frameStride == 0,
+              let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer),
+              let fingerprint = makeFingerprint(from: pixelBuffer) else { return }
+
+        if calibrationFramesRemaining > 0 {
+            if calibrationSums.isEmpty {
+                calibrationSums = Array(repeating: 0, count: fingerprint.count)
+            }
+            for index in fingerprint.indices {
+                calibrationSums[index] += Int(fingerprint[index])
+            }
+            calibrationFramesRemaining -= 1
+
+            if calibrationFramesRemaining == 0 {
+                baselineFingerprint = calibrationSums.map {
+                    UInt8($0 / Detection.calibrationFrameCount)
+                }
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    hasBaselineOnMainThread = true
+                    calibrateButton.isEnabled = true
+                    watchButton.isEnabled = true
+                    showStatus("Empty arena learned. Tap Watch for Object, then place an object in the yellow zone.")
+                }
+            }
+            return
+        }
+
+        guard isWatchingForObject, let baselineFingerprint else { return }
+        let sceneDifference = compare(fingerprint, with: baselineFingerprint)
+        if analyzedFrameCount % (Detection.frameStride * 5) == 0 {
+            let changedPercent = Int((sceneDifference.changedCellRatio * 100).rounded())
+            DispatchQueue.main.async { [weak self] in
+                guard let self, isWatchingOnMainThread else { return }
+                showStatus("Watching… Scene change: \(changedPercent)%. Place an object in the yellow zone.")
+            }
+        }
+        guard sceneDifference.changedCellRatio >= Detection.changedCellRatio else {
+            previousCandidateFingerprint = nil
+            stableCandidateFrames = 0
+            return
+        }
+
+        if let previousCandidateFingerprint {
+            let motionDifference = compare(fingerprint, with: previousCandidateFingerprint)
+            stableCandidateFrames = motionDifference.meanDifference <= Detection.stableFrameDifference
+                ? stableCandidateFrames + 1 : 0
+        } else {
+            stableCandidateFrames = 0
+        }
+        previousCandidateFingerprint = fingerprint
+
+        if stableCandidateFrames >= Detection.requiredStableFrames {
+            isWatchingForObject = false
+            stableCandidateFrames = 0
+            previousCandidateFingerprint = nil
+            DispatchQueue.main.async { [weak self] in self?.showObjectDiscoveredPrompt() }
+        }
+    }
+
+    private func makeFingerprint(from pixelBuffer: CVPixelBuffer) -> [UInt8]? {
+        guard CVPixelBufferGetPixelFormatType(pixelBuffer) == kCVPixelFormatType_32BGRA else { return nil }
+        CVPixelBufferLockBaseAddress(pixelBuffer, .readOnly)
+        defer { CVPixelBufferUnlockBaseAddress(pixelBuffer, .readOnly) }
+        guard let baseAddress = CVPixelBufferGetBaseAddress(pixelBuffer) else { return nil }
+
+        let width = CVPixelBufferGetWidth(pixelBuffer)
+        let height = CVPixelBufferGetHeight(pixelBuffer)
+        let bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer)
+        let regionX = width / 5
+        let regionY = height / 5
+        let regionWidth = width * 3 / 5
+        let regionHeight = height * 3 / 5
+        let bytes = baseAddress.assumingMemoryBound(to: UInt8.self)
+        var fingerprint: [UInt8] = []
+        fingerprint.reserveCapacity(Detection.columns * Detection.rows * 3)
+
+        for row in 0..<Detection.rows {
+            let y = regionY + ((row * 2 + 1) * regionHeight) / (Detection.rows * 2)
+            for column in 0..<Detection.columns {
+                let x = regionX + ((column * 2 + 1) * regionWidth) / (Detection.columns * 2)
+                let offset = y * bytesPerRow + x * 4
+                fingerprint.append(bytes[offset])
+                fingerprint.append(bytes[offset + 1])
+                fingerprint.append(bytes[offset + 2])
+            }
+        }
+        return fingerprint
+    }
+
+    private func compare(_ first: [UInt8], with second: [UInt8]) ->
+        (meanDifference: Double, changedCellRatio: Double)
+    {
+        guard first.count == second.count, first.count.isMultiple(of: 3), !first.isEmpty else {
+            return (.infinity, 1)
+        }
+        var totalDifference = 0
+        var changedCells = 0
+        let cellCount = first.count / 3
+
+        for offset in stride(from: 0, to: first.count, by: 3) {
+            let blue = abs(Int(first[offset]) - Int(second[offset]))
+            let green = abs(Int(first[offset + 1]) - Int(second[offset + 1]))
+            let red = abs(Int(first[offset + 2]) - Int(second[offset + 2]))
+            let cellDifference = Double(blue + green + red) / 3
+            totalDifference += blue + green + red
+            if cellDifference >= Detection.changedCellThreshold { changedCells += 1 }
+        }
+
+        return (
+            Double(totalDifference) / Double(first.count),
+            Double(changedCells) / Double(cellCount)
+        )
     }
 
     @objc private func generateCreature() {
