@@ -1,3 +1,5 @@
+import { saveRecentCreature } from '@/lib/recent-creatures';
+
 export const runtime = 'nodejs';
 
 const CREATURE_PROMPT = `Transform the single object in this photograph into one original, family-friendly fantasy creature for the Jarz Creature Lab.
@@ -37,19 +39,23 @@ First invent a creature concept, then decide how to translate only two or three 
 
 Purposeful locomotion anatomy is recommended. Prefer two to four legs, arms, wings, fins, tentacles, roots, or similar appendages unless a limbless, radial, or floating design is clearly more expressive. Consider serpentine, quadruped, many-legged, radial, floating, aquatic, plant-like, mechanical, asymmetric, and bipedal forms. Avoid repeatedly defaulting to the same upright two-arm, two-leg, ears-and-tail mascot.
 
-Return a short creature profile and private design directions. The name, creature type, description, special ability, body plan, and defining visual features must clearly relate to recognizable features, purpose, material, color, or shape of the photographed object. Do not mention Pokemon or imitate an existing character.`;
+Return a short creature profile and private design directions. Give the creature one original ability with a memorable one-to-four-word name and a separate, concise explanation of exactly what it does in battle, exploration, defense, movement, or another situation. Both the ability name and effect must clearly relate to the photographed object's recognizable features, purpose, material, color, or shape. Do not reuse an existing franchise's named ability. The creature name, creature type, description, body plan, and defining visual features must also relate to the object. Do not mention Pokemon or imitate an existing character.`;
 
 type CreatureProfile = {
   name: string;
   type: string;
   description: string;
-  ability: string;
+  abilityName: string;
+  abilityEffect: string;
   sourceObject: string;
   bodyPlan: string;
   definingFeatures: string[];
 };
 
-async function createProfile(apiKey: string, image: string): Promise<CreatureProfile> {
+async function createProfile(
+  apiKey: string,
+  image: string,
+): Promise<CreatureProfile> {
   const response = await fetch('https://api.openai.com/v1/responses', {
     method: 'POST',
     headers: {
@@ -58,13 +64,15 @@ async function createProfile(apiKey: string, image: string): Promise<CreaturePro
     },
     body: JSON.stringify({
       model: 'gpt-5.6-luna',
-      input: [{
-        role: 'user',
-        content: [
-          { type: 'input_text', text: PROFILE_PROMPT },
-          { type: 'input_image', image_url: image, detail: 'high' },
-        ],
-      }],
+      input: [
+        {
+          role: 'user',
+          content: [
+            { type: 'input_text', text: PROFILE_PROMPT },
+            { type: 'input_image', image_url: image, detail: 'high' },
+          ],
+        },
+      ],
       text: {
         format: {
           type: 'json_schema',
@@ -77,7 +85,16 @@ async function createProfile(apiKey: string, image: string): Promise<CreaturePro
               name: { type: 'string' },
               type: { type: 'string' },
               description: { type: 'string' },
-              ability: { type: 'string' },
+              abilityName: {
+                type: 'string',
+                description:
+                  'An original, memorable one-to-four-word ability name.',
+              },
+              abilityEffect: {
+                type: 'string',
+                description:
+                  'A concise explanation of exactly what the ability does and when it is useful.',
+              },
               sourceObject: { type: 'string' },
               bodyPlan: { type: 'string' },
               definingFeatures: {
@@ -91,7 +108,8 @@ async function createProfile(apiKey: string, image: string): Promise<CreaturePro
               'name',
               'type',
               'description',
-              'ability',
+              'abilityName',
+              'abilityEffect',
               'sourceObject',
               'bodyPlan',
               'definingFeatures',
@@ -112,13 +130,19 @@ async function createProfile(apiKey: string, image: string): Promise<CreaturePro
     .find((item) => item.type === 'output_text')?.text;
 
   if (!response.ok || !outputText) {
-    throw new Error(result.error?.message ?? 'The object could not be analyzed.');
+    throw new Error(
+      result.error?.message ?? 'The object could not be analyzed.',
+    );
   }
 
   return JSON.parse(outputText) as CreatureProfile;
 }
 
-async function createImage(apiKey: string, image: string, profile: CreatureProfile) {
+async function createImage(
+  apiKey: string,
+  image: string,
+  profile: CreatureProfile,
+) {
   const sourceImage = await fetch(image).then((response) => response.blob());
   const form = new FormData();
   form.append('model', 'gpt-image-2');
@@ -150,7 +174,9 @@ Follow this chosen body plan, but transform and redistribute the object traits a
   };
 
   if (!response.ok || !result.data?.[0]?.b64_json) {
-    throw new Error(result.error?.message ?? 'Creature generation did not complete.');
+    throw new Error(
+      result.error?.message ?? 'Creature generation did not complete.',
+    );
   }
 
   return `data:image/png;base64,${result.data[0].b64_json}`;
@@ -160,7 +186,10 @@ export async function POST(request: Request) {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
     return Response.json(
-      { code: 'missing_api_key', error: 'The OpenAI API key is not configured.' },
+      {
+        code: 'missing_api_key',
+        error: 'The OpenAI API key is not configured.',
+      },
       { status: 503 },
     );
   }
@@ -168,20 +197,26 @@ export async function POST(request: Request) {
   try {
     const { image } = (await request.json()) as { image?: string };
     if (!image?.startsWith('data:image/')) {
-      return Response.json({ error: 'A valid captured image is required.' }, { status: 400 });
+      return Response.json(
+        { error: 'A valid captured image is required.' },
+        { status: 400 },
+      );
     }
 
     const profile = await createProfile(apiKey, image);
     const creatureImage = await createImage(apiKey, image, profile);
+    const publicProfile = {
+      name: profile.name,
+      type: profile.type,
+      description: profile.description,
+      ability: `${profile.abilityName}: ${profile.abilityEffect}`,
+    };
+
+    saveRecentCreature(creatureImage, publicProfile);
 
     return Response.json({
       image: creatureImage,
-      profile: {
-        name: profile.name,
-        type: profile.type,
-        description: profile.description,
-        ability: profile.ability,
-      },
+      profile: publicProfile,
     });
   } catch (error) {
     const timedOut = error instanceof Error && error.name === 'TimeoutError';

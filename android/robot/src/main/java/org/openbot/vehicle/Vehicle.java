@@ -17,6 +17,8 @@ import org.openbot.utils.Enums;
 
 public class Vehicle {
 
+  static final String REVERSE_MOTOR_DIRECTION_KEY = "reverse_motor_direction";
+
   private final Noise noise = new Noise(1000, 2000, 5000);
   private boolean noiseEnabled = false;
 
@@ -426,7 +428,16 @@ public class Vehicle {
     if (noiseEnabled && noise.getDirection() > 0)
       right = (int) ((control.getRight() - noise.getValue()) * speedMultiplier);
 
+    boolean reverseMotorDirection =
+        sharedPreferences.getBoolean(REVERSE_MOTOR_DIRECTION_KEY, true);
+    left = applyMotorDirection(left, reverseMotorDirection);
+    right = applyMotorDirection(right, reverseMotorDirection);
+
     sendStringToDevice(String.format(Locale.US, "c%d,%d\n", left, right));
+  }
+
+  static int applyMotorDirection(int logicalValue, boolean reverseMotorDirection) {
+    return reverseMotorDirection ? -logicalValue : logicalValue;
   }
 
   protected void sendHeartbeat(int timeout_ms) {

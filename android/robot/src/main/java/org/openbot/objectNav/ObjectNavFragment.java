@@ -79,11 +79,14 @@ public class ObjectNavFragment extends CameraFragment {
 
   // JarzLabs demo patrol settings
   private static final float PATROL_SPEED = 0.40f;
+  // Timed pivots need enough torque to start reliably on the rover. Their
+  // durations are shortened below so the intended turn angles stay similar.
+  private static final float TIMED_TURN_SPEED = 0.75f;
 
   // Initial timing estimates - calibrate on the actual floor
   private static final long LONG_SIDE_MS = 5000;
   private static final long SHORT_SIDE_MS = 3300;
-  private static final long TURN_MS = 1300;
+  private static final long TURN_MS = 870;
 
   // 0=long, 1=turn, 2=short, 3=turn,
   // 4=long, 5=turn, 6=short, 7=turn
@@ -94,9 +97,9 @@ public class ObjectNavFragment extends CameraFragment {
   private static final float GREEN_PUSH_SPEED = 0.40f;
 
   // Use a strong short pivot instead of slow continuous corrections.
-  private static final float GREEN_TURN_SPEED = 0.50f;
+  private static final float GREEN_TURN_SPEED = TIMED_TURN_SPEED;
   private static final float GREEN_CENTER_TOLERANCE = 0.12f;
-  private static final long GREEN_CENTER_PULSE_MS = 250;
+  private static final long GREEN_CENTER_PULSE_MS = 170;
   private static final int GREEN_MAX_CENTER_ATTEMPTS = 2;
 
   // Ball must appear quite large before stopping.
@@ -119,7 +122,8 @@ public class ObjectNavFragment extends CameraFragment {
   private static final long BLUE_STOP_MS = 750;
   private static final float BLUE_REVERSE_SPEED = 0.40f;
   private static final long BLUE_REVERSE_MS = 800;
-  private static final long BLUE_TURN_MS = 2600;
+  // Physical calibration: 1730 ms produced about 270 degrees on JarzRover.
+  private static final long BLUE_TURN_MS = 1150;
 
   private boolean blueActionActive = false;
   private boolean blueLatched = false;
@@ -128,7 +132,7 @@ public class ObjectNavFragment extends CameraFragment {
   // Wall avoidance
   private static final float WALL_DISTANCE_CM = 30.0f;
   private static final long WALL_STOP_MS = 400;
-  private static final long WALL_TURN_MS = 650;  // approximately 45 degrees
+  private static final long WALL_TURN_MS = 430;  // approximately 45 degrees
 
   private boolean wallActionActive = false;
   private boolean wallLatched = false;
@@ -632,7 +636,8 @@ public class ObjectNavFragment extends CameraFragment {
 
                 } else if (wallElapsed < WALL_STOP_MS + WALL_TURN_MS) {
                   // WALL: approximately 45-degree right pivot
-                  handleDriveCommand(new Control(0.50f, -0.50f));
+                  handleDriveCommand(
+                      new Control(TIMED_TURN_SPEED, -TIMED_TURN_SPEED));
 
                 } else {
                   // Re-check sonar after each 45-degree turn.
@@ -669,7 +674,8 @@ public class ObjectNavFragment extends CameraFragment {
                 } else if (blueElapsed
                     < BLUE_STOP_MS + BLUE_REVERSE_MS + BLUE_TURN_MS) {
                   // BLUE: approximately 180-degree right pivot
-                  handleDriveCommand(new Control(0.50f, -0.50f));
+                  handleDriveCommand(
+                      new Control(TIMED_TURN_SPEED, -TIMED_TURN_SPEED));
 
                 } else {
                   // Blue action finished; resume patrol.
@@ -821,7 +827,7 @@ public class ObjectNavFragment extends CameraFragment {
           patrolState = (patrolState + 1) % 8;
           patrolStateStartMs = now;
         }
-        return new Control(0.50f, -0.50f);
+        return new Control(TIMED_TURN_SPEED, -TIMED_TURN_SPEED);
 
       case 2:
       case 6:

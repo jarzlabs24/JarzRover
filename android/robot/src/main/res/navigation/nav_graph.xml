@@ -40,6 +40,9 @@
         <action
             android:id="@+id/action_mainFragment_to_robotInfoFragment"
             app:destination="@id/robotInfoFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_creatureLabFragment"
+            app:destination="@id/creatureLabFragment" />
     </fragment>
     <fragment
         android:id="@+id/freeRoamFragment"
@@ -110,6 +113,12 @@
         android:name="org.openbot.objectNav.ObjectNavFragment"
         android:label="fragment_object_nav"
         tools:layout="@layout/fragment_object_nav" />
+
+    <fragment
+        android:id="@+id/creatureLabFragment"
+        android:name="org.openbot.creature.CreatureLabFragment"
+        android:label="@string/creature_lab"
+        tools:layout="@layout/fragment_creature_lab" />
 
     <fragment
         android:id="@+id/modelManagementFragment"

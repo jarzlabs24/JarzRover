@@ -9,12 +9,14 @@ Recorded on 2026-09-04 from the user's JarZLabs handoff. Original test dates, fi
 | Direct wiring without breadboard | Robot successfully operated | Exact as-built schematic not recorded |
 | Left motor test | Completed successfully | Speed, load, and procedure not recorded |
 | Right motor test | Completed successfully | Speed, load, and procedure not recorded |
-| HC-SR04 serial readings | Eventually worked | Fix, sketch, accuracy, and range not recorded; sonar currently disabled in checked-in DIY firmware |
+| HC-SR04 serial readings | Eventually worked | Fix, sketch, accuracy, and range were not recorded in the original handoff; later integrated readings were reported working |
 | Android USB OTG power to Nano | Nano powered from phone | Full robot still requires proper battery power |
 
 ## Documentation verification — 2026-09-04
 
 Inspected `firmware/openbot/openbot.ino` at commit `5d7e4ce`: `OPENBOT DIY`, `MCU NANO`, and all pin assignments in [HARDWARE.md](HARDWARE.md) match the source. Sonar, front speed sensors, indicators, voltage-divider sensing, and OLED are disabled in the DIY block. No firmware was changed and no physical robot tests were run for this setup.
+
+This paragraph is a historical snapshot of commit `5d7e4ce`. The current working source later enabled sonar and front speed sensors; see the Android motor-direction and handoff entries below.
 
 ## Current development status
 
@@ -141,3 +143,81 @@ Next checks should establish installed hardware and flashed firmware, then verif
 - Corrected `DetectorYoloV5` to load the tracked `networks/colored_balls.txt` asset rather than the ignored, local-only `networks/ball_labels.txt` copy. Both files contained the same blue/green/red labels on this Mac.
 - `./gradlew :robot:assembleDebug :robot:testDebugUnitTest`: pass (`BUILD SUCCESSFUL` in 22 seconds; 47 tasks, 10 executed and 37 up-to-date).
 - This verifies compilation, APK packaging, and unit tests using the tracked asset path. Physical ball detection, centering, approach, target-loss stopping, and rover motion were not run.
+
+## Android Creature Lab manual-flow checkpoint — 2026-09-12
+
+- Added a Creature Lab tile to the Android robot app without replacing or modifying the existing Object Tracking / colored-ball mode.
+- Added an in-app rear-camera capture flow that rotates and center-crops the camera frame to a 1024×1024 image, plus photo review, retake, local server address persistence, generation progress, and creature result/profile display.
+- The Android app sends the captured image only to the existing Mac-hosted `/api/generate` route. No OpenAI API key is stored in the APK or sent directly to OpenAI by the phone.
+- Creature Lab consumes no controller commands and issues no motor commands in this milestone; the rover remains stationary while using it.
+- Final `./gradlew :robot:assembleDebug :robot:testDebugUnitTest`: pass (`BUILD SUCCESSFUL` in 14 seconds; 47 tasks, 13 executed and 34 up-to-date).
+- APK inspection: pass. `robot-debug.apk` includes `colored_ball_yolov5.tflite`, `colored_balls.txt`, and the Creature Lab layout.
+- `git diff --check`: pass.
+- Android SDK `adb` was found at `/Users/aarav/Library/Android/sdk/platform-tools/adb`. The debug APK installed successfully on the connected Pixel 7 and `org.openbot/.main.MainActivity` launched and remained running in the foreground.
+- The Mac-hosted Creature Lab returned HTTP 200 at `http://localhost:3000`; the Mac Wi-Fi address was `192.168.251.244` at this checkpoint.
+- Physical Android camera capture, landscape orientation, same-network generation, Nano USB connection, colored-ball behavior, and rover motion: not run. The Pixel was showing its system shade during the automated UI-label check and requires user interaction for the feature tests.
+- First physical Android Creature Lab test: generation completed successfully, but the square result image was cropped by the full-screen `centerCrop` presentation. Changed the photo/result view to `fitCenter` on a white background so the complete square creature image is visible on portrait and landscape displays.
+- Cropping fix verification: full Android build and unit tests passed (`BUILD SUCCESSFUL` in 3 seconds), and the updated APK installed successfully and launched on the connected Pixel 7. Visual confirmation of a newly generated result remains a user-device check.
+- Second physical result-layout observation: `fitCenter` centered the full image, but the overlaid creature-description card still covered part of it. The image is now constrained to end above the description card; the server panel and Create button are hidden on the completed-result screen to provide additional image space.
+- Separated-layout verification: full Android build and unit tests passed (`BUILD SUCCESSFUL` in 9 seconds), and the updated APK installed successfully and launched on the Pixel 7. Physical visual confirmation remains pending.
+
+## Android stationary discovery checkpoint — 2026-09-12
+
+- Added a visible centered yellow discovery zone, **Learn empty area**, and **Watch for object** controls to Android Creature Lab.
+- Ported the tuned iPhone scene-change approach: a 20×15 color fingerprint, ten-frame empty-area baseline, small-object change threshold, and seven stable comparison frames before prompting.
+- Detection runs locally on sampled camera pixels. It does not upload watching frames, call the AI service, or send any motor commands.
+- Added an object-discovered confirmation dialog; a photo is captured only after the visitor taps **Take photo**.
+- Creature Lab now keeps the Android screen awake while its view is open, including calibration, watching, capture review, and generation.
+- Added unit coverage for baseline learning, stable-object recognition, and ignoring very small scene changes.
+- `./gradlew :robot:assembleDebug :robot:testDebugUnitTest`: pass (`BUILD SUCCESSFUL` in 16 seconds; 47 tasks, 14 executed and 33 up-to-date).
+- Updated APK installation and launch on the connected Pixel 7: pass. Physical calibration sensitivity, object prompt timing, false positives, and landscape layout remain to be tested.
+- Physical landscape observation: the yellow discovery zone appeared too high and pointed above the arena. Added an orientation-aware vertical bias that moves the guide lower in landscape while preserving its centered portrait position; rebuild and device retest follow.
+- Landscape-zone build verification: Android build and unit tests passed (`BUILD SUCCESSFUL` in 7 seconds), and the updated APK installed successfully and was delivered to the running OpenBot activity on the Pixel 7. Physical alignment with the arena remains pending.
+- Second physical landscape observation: the guide remained too high because its 48%-screen height left little room for vertical bias. In landscape, the guide is now 30% of screen height and bottom-aligned above the controls. The detector's sampled camera region was also moved from the centered 20–80% band to the lower 50–90% band so visual guidance and detection remain aligned.
+- Lower-region verification: Android build and unit tests passed (`BUILD SUCCESSFUL` in 6 seconds), and the updated APK installed successfully and was delivered to the running Pixel 7 activity. Physical arena alignment remains pending.
+- User supplied a landscape photo showing the server/status card covering roughly the upper third of the camera, discovery/action cards stacked across the arena, and the visual guide above the detector's effective lower region. Added a landscape-specific layout with a compact single-row status bar, controls in a right sidebar, and the guide directly bottom-anchored over the lower camera area. The landscape result view now reserves the right side for details instead of covering the creature image.
+- The landscape visual guide is 60% of screen width and covers the lower ~42% of the screen. The matching detector fingerprint samples the centered horizontal 20–80% and lower vertical 55–95% of the camera frame, reducing triggers from people moving above or beside the arena.
+- Simplified landscape build and unit tests passed (`BUILD SUCCESSFUL` in 8 seconds), and the APK installed successfully on the Pixel 7. Physical guide alignment and passerby rejection remain pending.
+
+## Android motor-direction correction — 2026-09-12
+
+- Physical Android/Nano test: all installed sensors reported correctly, but both forward and backward motion were reversed. The controller also pulsed while held; per user request, that separate behavior is not changed in this step.
+- Added a **Reverse motor direction** setting, enabled by default for the current JarzRover wiring. Logical drive commands remain unchanged, and both left/right values are inverted only at the final USB/BLE hardware-command boundary, so manual and AI modes share the correction.
+- Added unit coverage for reversed, unchanged, and stopped motor command values. Physical direction retest remains pending.
+- Android build and all unit tests passed (`BUILD SUCCESSFUL` in 11 seconds; 47 tasks, 13 executed and 34 up-to-date). The corrected APK installed successfully and was delivered to the running Pixel 7 activity.
+
+## Android higher-power timed turns — 2026-09-12
+
+- Physical colored-ball test passed, but the rover could buzz or stall when attempting a low-power pivot near a wall after changing to a 7.4 V LiPo battery.
+- Increased fixed-duration pivot commands from 50% to 75% for green-ball centering, blue-ball turning, wall avoidance, and the timed rectangle-patrol turn.
+- Shortened each affected duration to approximately two-thirds of its previous value to preserve the intended turn angle: green 250→170 ms, blue 2600→1730 ms, wall 650→430 ms, and patrol 1300→870 ms.
+- Left the red-ball turn at 50% because it is controlled by how long the red ball remains visible rather than by a fixed turn duration.
+- `./gradlew :robot:assembleDebug :robot:testDebugUnitTest`: pass (`BUILD SUCCESSFUL` in 7 seconds; 47 tasks, 9 executed and 38 up-to-date).
+- Updated APK installation on the connected Pixel 7: pass. Physical torque, turn-angle, and floor tests remain pending; motor response is nonlinear, so the shortened times may require small hardware-specific adjustments.
+- Physical retest: the stronger turns no longer stalled and red-ball behavior worked, but the 1730 ms blue-ball pivot produced approximately 270 degrees instead of 180 degrees. Reduced only the blue pivot to 1150 ms using the measured angle ratio.
+- Blue-turn calibration build and unit tests passed (`BUILD SUCCESSFUL` in 6 seconds; 47 tasks, 9 executed and 38 up-to-date), and the updated APK installed successfully on the connected Pixel 7. User physical retest: pass; the blue-ball action now turns approximately 180 degrees.
+
+## Creature Lab same-network gallery — 2026-09-12
+
+- Added a server-side session list that receives each successful AI-generated creature directly inside `/api/generate`; the phone does not need a second upload or a new setting.
+- Added `/api/creatures` and a full-screen `/gallery` display. The display checks for new results every two seconds, immediately selects the newest result, and rotates through up to 20 recent creatures every eight seconds.
+- Gallery history is currently held in server memory and resets when the Creature Lab server restarts. This was selected over filesystem storage because the current Vinext runtime returned HTTP 500 when an API route attempted local filesystem access.
+- Targeted formatter and linter checks for the new/changed Creature Lab files: pass. In-memory store smoke test: pass. `npm run build`: pass.
+- Running-server checks: `/gallery` returned HTTP 200, `/api/creatures` returned HTTP 200 with an empty initial list, and the gallery returned HTTP 200 through the Mac Wi-Fi address at `http://192.168.251.244:3000/gallery`.
+- Not run: a paid AI generation after adding the gallery, automatic appearance on a second physical computer, eight-second rotation with multiple real creatures, Wi-Fi isolation testing, or server-restart recovery.
+
+## Creature Lab named abilities — 2026-09-12
+
+- Changed the structured AI profile from one unconstrained ability string to separate `abilityName` and `abilityEffect` fields. The public API remains compatible by returning `ability` as `Ability Name: effect`.
+- Required an original one-to-four-word name plus a concise, concrete effect for battle, exploration, defense, movement, or another situation; existing franchise ability names are explicitly excluded.
+- Updated the computer demo abilities to include effects and updated the web capture and gallery pages to emphasize the named portion before the colon.
+- Targeted Creature Lab formatting and lint checks: pass. `npm run build`: pass. A paid generation was not run, so the new model output remains to be verified with the next real creature.
+
+## Android/Creature Lab GitHub handoff — 2026-09-12
+
+- Prepared the complete working-tree feature set for the private `jarz-development` branch: Android Creature Lab capture/generation and stationary discovery, colored-ball turn calibration, shared motor-direction correction, Creature Lab named abilities and same-network gallery, documentation, and current firmware feature flags.
+- Reconciled the hardware documentation with the current DIY firmware source: sonar and front speed sensors are enabled; indicators, voltage-divider sensing, and OLED remain disabled. The user reports the installed sensors work, but the exact flashed firmware revision was not independently read from the Nano.
+- Final `./gradlew :robot:assembleDebug :robot:testDebugUnitTest`: pass (`BUILD SUCCESSFUL` in 3 seconds; 47 tasks, 1 executed and 46 up-to-date).
+- Final targeted Creature Lab lint and `npm run build`: pass.
+- Commit-candidate filename and content review found no tracked/untracked API key or credential. Ignored `.env` files are intentionally excluded from Git.
+- Not run: iOS build, Arduino firmware compilation (Arduino CLI is not installed), signed Android release/AAB generation, Play App Signing setup, Play Console validation, or Google Play policy/store-listing checks. Those remain the next release-readiness task on the other Mac.

@@ -82,6 +82,14 @@
             app:title="@string/connectivity_mode"
             app:useSimpleSummaryProvider="true" />
 
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:icon="@drawable/ic_auto_sync"
+            app:key="reverse_motor_direction"
+            app:layout="@layout/preference_icon_end_last"
+            app:summary="@string/reverse_motor_direction_summary"
+            app:title="@string/reverse_motor_direction" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>

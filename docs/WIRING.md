@@ -16,8 +16,8 @@ This is a functional overview, not a complete terminal-by-terminal schematic. Th
 ## Preserve these connections
 
 - Left motor control: D5 and D6; right motor control: D9 and D10. Preserve the working pairing and direction established by the completed left/right tests.
-- HC-SR04: trigger D12, echo D11. Confirm sensor supply and ground connections on the physical assembly; integrated sonar is currently disabled in source.
-- Optional speed sensors: D2 and D3; indicators: D4 and D7. Keep feature flags consistent with installed components.
+- HC-SR04: trigger D12, echo D11. Integrated sonar is enabled in the current DIY source and reported working on the rover.
+- Front speed sensors: D2 and D3. They are enabled in the current DIY source and reported working; indicators remain disabled. Keep feature flags consistent with installed components.
 - A7 is the voltage-sense input, not a battery power connection. Divider sensing is currently disabled.
 
 See [HARDWARE.md](HARDWARE.md) for the complete firmware mapping.

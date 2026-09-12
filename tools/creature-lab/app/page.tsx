@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Camera, RotateCcw, ScanLine, Sparkles } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import { CreatureAbility } from '@/components/creature-ability';
 import {
   Card,
   CardContent,
@@ -58,7 +59,8 @@ function createCreatureDetails(red: number, green: number, blue: number) {
   const strongest = Math.max(red, green, blue);
   const colorFamily =
     strongest === red ? 'Ember' : strongest === green ? 'Moss' : 'Tide';
-  const temperament = brightness > 175 ? 'Glow' : brightness < 85 ? 'Shadow' : 'Spark';
+  const temperament =
+    brightness > 175 ? 'Glow' : brightness < 85 ? 'Shadow' : 'Spark';
   const seed = (red * 3 + green * 5 + blue * 7) % 4;
   const endings = ['ling', 'aroo', 'bit', 'horn'];
   const types = {
@@ -67,9 +69,10 @@ function createCreatureDetails(red: number, green: number, blue: number) {
     Tide: 'Water',
   } as const;
   const abilities = {
-    Ember: 'Confetti Comet',
-    Moss: 'Giggle Garden',
-    Tide: 'Bubble Bounce',
+    Ember:
+      'Confetti Comet: Launches a sparkling burst that briefly distracts nearby rivals.',
+    Moss: 'Giggle Garden: Sprouts a playful patch of vines that slows anything crossing it.',
+    Tide: 'Bubble Bounce: Forms a springy water bubble that cushions falls and rebounds attacks.',
   } as const;
 
   return {
@@ -94,7 +97,10 @@ async function createDemoCreature(photo: string) {
 
   const background = context.createRadialGradient(512, 420, 80, 512, 512, 700);
   background.addColorStop(0, 'rgb(255 255 255)');
-  background.addColorStop(1, `rgb(${Math.min(255, red + 110)} ${Math.min(255, green + 110)} ${Math.min(255, blue + 110)})`);
+  background.addColorStop(
+    1,
+    `rgb(${Math.min(255, red + 110)} ${Math.min(255, green + 110)} ${Math.min(255, blue + 110)})`,
+  );
   context.fillStyle = background;
   context.fillRect(0, 0, 1024, 1024);
 
@@ -122,7 +128,10 @@ async function createDemoCreature(photo: string) {
   context.fillStyle = color;
   context.strokeStyle = darkColor;
   context.lineWidth = 18;
-  for (const [x, rotation] of [[330, -0.45], [694, 0.45]] as const) {
+  for (const [x, rotation] of [
+    [330, -0.45],
+    [694, 0.45],
+  ] as const) {
     context.save();
     context.translate(x, 280);
     context.rotate(rotation);
@@ -171,7 +180,12 @@ async function createDemoCreature(photo: string) {
   }
 
   context.fillStyle = 'rgb(255 255 255 / 90%)';
-  for (const [x, y, size] of [[170, 300, 18], [840, 390, 25], [830, 720, 15], [190, 680, 22]] as const) {
+  for (const [x, y, size] of [
+    [170, 300, 18],
+    [840, 390, 25],
+    [830, 720, 15],
+    [190, 680, 22],
+  ] as const) {
     context.save();
     context.translate(x, y);
     context.rotate(Math.PI / 4);
@@ -194,7 +208,9 @@ export default function Home() {
   const [photo, setPhoto] = useState<string | null>(null);
   const [accepted, setAccepted] = useState(false);
   const [creature, setCreature] = useState<Creature | null>(null);
-  const [generationMode, setGenerationMode] = useState<GenerationMode | null>(null);
+  const [generationMode, setGenerationMode] = useState<GenerationMode | null>(
+    null,
+  );
   const [generating, setGenerating] = useState(false);
   const [generationError, setGenerationError] = useState<string | null>(null);
 
@@ -297,7 +313,9 @@ export default function Home() {
       }
     } catch (error) {
       setAccepted(false);
-      setGenerationError(error instanceof Error ? error.message : 'Creature generation failed.');
+      setGenerationError(
+        error instanceof Error ? error.message : 'Creature generation failed.',
+      );
     } finally {
       setGenerating(false);
     }
@@ -311,8 +329,12 @@ export default function Home() {
             <ScanLine className="size-6" aria-hidden="true" />
           </div>
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Jarz Rover</p>
-            <h1 className="text-2xl font-black tracking-tight sm:text-3xl">Creature Lab</h1>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
+              Jarz Rover
+            </p>
+            <h1 className="text-2xl font-black tracking-tight sm:text-3xl">
+              Creature Lab
+            </h1>
           </div>
         </header>
 
@@ -329,7 +351,11 @@ export default function Home() {
 
               {photo && (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={photo} alt="Captured object" className="absolute inset-0 h-full w-full object-cover" />
+                <img
+                  src={photo}
+                  alt="Captured object"
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
               )}
 
               {!photo && cameraState === 'starting' && (
@@ -345,9 +371,15 @@ export default function Home() {
                 <div className="absolute inset-0 grid place-items-center p-6 text-center text-white">
                   <div>
                     <Camera className="mx-auto mb-3 size-9" />
-                    <p className="text-lg font-bold">Camera access is blocked</p>
-                    <p className="mt-1 max-w-sm text-sm text-slate-300">Allow camera access in your browser, then try again.</p>
-                    <Button className="mt-5" onClick={() => void startCamera()}>Try again</Button>
+                    <p className="text-lg font-bold">
+                      Camera access is blocked
+                    </p>
+                    <p className="mt-1 max-w-sm text-sm text-slate-300">
+                      Allow camera access in your browser, then try again.
+                    </p>
+                    <Button className="mt-5" onClick={() => void startCamera()}>
+                      Try again
+                    </Button>
                   </div>
                 </div>
               )}
@@ -366,8 +398,12 @@ export default function Home() {
                     <div className="mx-auto mb-4 grid size-16 place-items-center rounded-full bg-violet-300 text-violet-950">
                       <Sparkles className="size-9 animate-pulse" />
                     </div>
-                    <p className="text-2xl font-black">Creating your creature…</p>
-                    <p className="mt-2 text-violet-100">This usually takes 20–40 seconds.</p>
+                    <p className="text-2xl font-black">
+                      Creating your creature…
+                    </p>
+                    <p className="mt-2 text-violet-100">
+                      This usually takes 20–40 seconds.
+                    </p>
                   </div>
                 </div>
               )}
@@ -375,27 +411,47 @@ export default function Home() {
 
             <div className="flex flex-col gap-3 border-t bg-white/75 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
               <p className="text-sm font-medium text-muted-foreground">
-                {photo ? 'Is the object clear with no people visible?' : 'Only the boxed area will be used.'}
+                {photo
+                  ? 'Is the object clear with no people visible?'
+                  : 'Only the boxed area will be used.'}
               </p>
 
               <div className="flex gap-2">
                 {photo ? (
                   <>
-                    <Button variant="outline" size="lg" className="h-11 flex-1 px-4 sm:flex-none" onClick={retakePhoto}>
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      className="h-11 flex-1 px-4 sm:flex-none"
+                      onClick={retakePhoto}
+                    >
                       <RotateCcw data-icon="inline-start" /> Retake
                     </Button>
-                    <Button size="lg" className="h-11 flex-1 px-5 sm:flex-none" onClick={() => void createCreature()} disabled={accepted || generating}>
+                    <Button
+                      size="lg"
+                      className="h-11 flex-1 px-5 sm:flex-none"
+                      onClick={() => void createCreature()}
+                      disabled={accepted || generating}
+                    >
                       <Sparkles data-icon="inline-start" /> Create creature
                     </Button>
                   </>
                 ) : (
-                  <Button size="lg" className="h-12 w-full px-7 text-base sm:w-auto" onClick={takePhoto} disabled={cameraState !== 'ready'}>
+                  <Button
+                    size="lg"
+                    className="h-12 w-full px-7 text-base sm:w-auto"
+                    onClick={takePhoto}
+                    disabled={cameraState !== 'ready'}
+                  >
                     <Camera data-icon="inline-start" /> Take photo
                   </Button>
                 )}
               </div>
               {generationError && (
-                <p className="w-full text-sm font-semibold text-destructive sm:text-right" role="alert">
+                <p
+                  className="w-full text-sm font-semibold text-destructive sm:text-right"
+                  role="alert"
+                >
                   {generationError}
                 </p>
               )}
@@ -404,19 +460,38 @@ export default function Home() {
 
           <Card className="border-white/70 bg-card/75 shadow-xl shadow-slate-950/5">
             <CardHeader>
-              <CardTitle className="text-lg font-black">{creature ? 'Creature discovered!' : 'Step 2 of 3'}</CardTitle>
-              <CardDescription>{creature ? 'Your first AI transformation worked.' : 'Capture and transform one object.'}</CardDescription>
+              <CardTitle className="text-lg font-black">
+                {creature ? 'Creature discovered!' : 'Step 2 of 3'}
+              </CardTitle>
+              <CardDescription>
+                {creature
+                  ? 'Your first AI transformation worked.'
+                  : 'Capture and transform one object.'}
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <ol className="space-y-4 text-sm">
-                <li className="flex gap-3"><span className="step-number">1</span><span>Hold an object in front of the camera.</span></li>
-                <li className="flex gap-3"><span className="step-number">2</span><span>Keep your hands and face outside the frame.</span></li>
-                <li className="flex gap-3"><span className="step-number">3</span><span>Take the picture and check that it is clear.</span></li>
+                <li className="flex gap-3">
+                  <span className="step-number">1</span>
+                  <span>Hold an object in front of the camera.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="step-number">2</span>
+                  <span>Keep your hands and face outside the frame.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="step-number">3</span>
+                  <span>Take the picture and check that it is clear.</span>
+                </li>
               </ol>
               {creature ? (
                 <div className="mt-6 overflow-hidden rounded-2xl border-2 border-violet-200 bg-white p-2">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={creature.image} alt={`${creature.name}, a discovered Jarz creature`} className="aspect-square w-full rounded-xl object-cover" />
+                  <img
+                    src={creature.image}
+                    alt={`${creature.name}, a discovered Jarz creature`}
+                    className="aspect-square w-full rounded-xl object-cover"
+                  />
                   {generationMode === 'demo' && (
                     <p className="px-2 pb-1 pt-3 text-center text-xs font-bold uppercase tracking-wider text-violet-700">
                       Local demo creature
@@ -425,24 +500,38 @@ export default function Home() {
                   <div className="px-2 pb-2 pt-3">
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                        <h2 className="text-xl font-black tracking-tight">{creature.name}</h2>
-                        <p className="text-sm font-bold text-violet-700">{creature.type}</p>
+                        <h2 className="text-xl font-black tracking-tight">
+                          {creature.name}
+                        </h2>
+                        <p className="text-sm font-bold text-violet-700">
+                          {creature.type}
+                        </p>
                       </div>
-                      <Sparkles className="mt-1 size-5 shrink-0 text-violet-600" aria-hidden="true" />
+                      <Sparkles
+                        className="mt-1 size-5 shrink-0 text-violet-600"
+                        aria-hidden="true"
+                      />
                     </div>
-                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{creature.description}</p>
+                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                      {creature.description}
+                    </p>
                     <div className="mt-3 rounded-xl bg-violet-100 px-3 py-2 text-sm text-violet-950">
-                      <span className="font-black">Special ability:</span> {creature.ability}
+                      <CreatureAbility ability={creature.ability} />
                     </div>
                   </div>
-                  <Button className="mt-2 h-11 w-full" onClick={() => void startCamera()}>
+                  <Button
+                    className="mt-2 h-11 w-full"
+                    onClick={() => void startCamera()}
+                  >
                     <RotateCcw data-icon="inline-start" /> New discovery
                   </Button>
                 </div>
               ) : (
                 <div className="mt-6 rounded-2xl bg-secondary p-4 text-sm text-secondary-foreground">
                   <p className="font-bold">Today’s goal</p>
-                  <p className="mt-1 opacity-75">Create our first real AI creature from a camera photo.</p>
+                  <p className="mt-1 opacity-75">
+                    Create our first real AI creature from a camera photo.
+                  </p>
                 </div>
               )}
             </CardContent>

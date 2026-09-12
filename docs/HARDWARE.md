@@ -7,10 +7,11 @@
 | Arduino Nano, Lafvin / ATmega328p | Low-level motor and sensor control; firmware selects NANO |
 | L298N motor driver | Drives left and right motor groups |
 | Four TT motors | Robot drive motors |
-| HC-SR04 front ultrasonic sensor | Serial readings historically worked; integrated sonar currently disabled in source |
+| HC-SR04 front ultrasonic sensor | Integrated readings reported working; enabled in the current DIY source |
 | Android phone over USB OTG | Higher-level OpenBot behavior and Nano USB connection; can power Nano |
 | Battery power | Required for full robot operation; pack specifications and power routing not recorded |
-| Optional speed sensors, indicator LEDs, bumper | Removed or disabled as appropriate; inspect robot before assuming presence |
+| Front speed sensors | Integrated readings reported working; enabled in the current DIY source |
+| Optional indicator LEDs and bumper | Disabled or not established; inspect robot before assuming presence |
 
 ## Verified firmware pin definitions
 
@@ -38,11 +39,11 @@ User-supplied mappings match the DIY block in [openbot.ino](../firmware/openbot/
 
 | Feature flag | Value |
 | --- | --- |
-| HAS_SONAR | 0 |
+| HAS_SONAR | 1 |
 | SONAR_MEDIAN | 0 |
-| HAS_SPEED_SENSORS_FRONT | 0 |
+| HAS_SPEED_SENSORS_FRONT | 1 |
 | HAS_INDICATORS | 0 |
 | HAS_VOLTAGE_DIVIDER | 0 |
 | HAS_OLED | 0 |
 
-The DIY block does not define a bumper pin or enable a bumper. Do not copy mappings from other OpenBot variants. Preserve these pin assignments and document any intentional configuration change together with its hardware implications and test results.
+The DIY block does not define a bumper pin or enable a bumper. Sonar uses D12/D11, and the enabled front speed sensors use D2/D3. Do not copy mappings from other OpenBot variants. Preserve these pin assignments and document any intentional configuration change together with its hardware implications and test results. The checked-in flags establish source configuration; confirm the flashed sketch when diagnosing differences on the physical rover.

@@ -37,6 +37,7 @@ public class FeatureList {
   public static final String PERSON_FOLLOWING = "Person Following";
   public static final String OBJECT_NAV = "Object Tracking";
   public static final String MODEL_MANAGEMENT = "Model Management";
+  public static final String CREATURE_LAB = "Creature Lab";
   public static final String POINT_GOAL_NAVIGATION = "Point Goal Navigation";
   public static final String AUTONOMOUS_DRIVING = "Autonomous Driving";
   public static final String VISUAL_GOALS = "Visual Goals";
@@ -95,6 +96,9 @@ public class FeatureList {
     subCategories.add(
         new SubCategory(
             OBJECT_NAV, R.string.tile_object_nav, R.drawable.ic_person_search, "#E7CE88"));
+    subCategories.add(
+        new SubCategory(
+            CREATURE_LAB, R.string.tile_creature_lab, R.drawable.ic_openbot_space, "#7C4DFF"));
     subCategories.add(
         new SubCategory(
             POINT_GOAL_NAVIGATION,
