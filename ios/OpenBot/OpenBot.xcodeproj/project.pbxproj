@@ -62,6 +62,7 @@
 		66AC720629B885410022108A /* PointGoalFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AC71E829B885410022108A /* PointGoalFragment.swift */; };
 		66AC720729B885410022108A /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AC71E929B885410022108A /* CameraController.swift */; };
 		66AC720829B885410022108A /* HomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AC71EB29B885410022108A /* HomePageViewController.swift */; };
+		9A4A00012E00000100C0FFEE /* CreatureLabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4A00022E00000100C0FFEE /* CreatureLabViewController.swift */; };
 		66AC720929B885410022108A /* ModesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AC71EC29B885410022108A /* ModesCollectionViewCell.swift */; };
 		66AC720A29B885410022108A /* VehicleControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AC71EE29B885410022108A /* VehicleControl.swift */; };
 		66AC720B29B885410022108A /* RobotInfoFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AC71F029B885410022108A /* RobotInfoFrame.swift */; };
@@ -225,6 +226,7 @@
 		66AC71F729B885410022108A /* BluetoothTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothTable.swift; sourceTree = "<group>"; };
 		66AC71F929B885410022108A /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		66AC71FB29B885410022108A /* AutopilotFragment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutopilotFragment.swift; sourceTree = "<group>"; };
+		9A4A00022E00000100C0FFEE /* CreatureLabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CreatureLabViewController.swift; path = CreatureLab/CreatureLabViewController.swift; sourceTree = "<group>"; };
 		66AC71FC29B885410022108A /* ExpandedAutoPilot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandedAutoPilot.swift; sourceTree = "<group>"; };
 		66AC71FE29B885410022108A /* ObjectTrackingFragment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectTrackingFragment.swift; sourceTree = "<group>"; };
 		66AC71FF29B885410022108A /* ObjectTrackingSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectTrackingSettings.swift; sourceTree = "<group>"; };
@@ -554,6 +556,7 @@
 				727D3AD9225580EC94775651 /* WebView */,
 				727D3DEDE1506A0363E8D959 /* Alert */,
 				727D395E131B59268FC75AF3 /* WebServer */,
+				9A4A00022E00000100C0FFEE /* CreatureLabViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1287,6 +1290,7 @@
 				727D3D8A8059D87F84174B97 /* AdaptiveLayoutHelper.swift in Sources */,
 				727D3B9525E721AC05B0AD3B /* AdaptedConstraint.swift in Sources */,
 				66AC720829B885410022108A /* HomePageViewController.swift in Sources */,
+				9A4A00012E00000100C0FFEE /* CreatureLabViewController.swift in Sources */,
 				727D3D2A7DD7B128C9CC969A /* Font.swift in Sources */,
 				727D37CDD881685D4EF6BFF5 /* timestamp.swift in Sources */,
 				66AC720529B885410022108A /* ExpandSetting.swift in Sources */,
@@ -1446,7 +1450,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.7.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jarzlabs.openbot;
+				PRODUCT_BUNDLE_IDENTIFIER = org.jarzlabs.openbot;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1490,7 +1494,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.7.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jarzlabs.openbot;
+				PRODUCT_BUNDLE_IDENTIFIER = org.jarzlabs.openbot;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;

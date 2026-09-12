@@ -13,6 +13,7 @@ struct Strings {
     static let modelManagement: String = "Model Management"
     static let robotInfo: String = "Robot Info"
     static let navigation: String = "Point Goal Navigation"
+    static let creatureLab: String = "Creature Lab"
 
     // Misc
     static let controller: String = "Controller"
@@ -97,6 +98,7 @@ struct Strings {
     static let ScreenBottomSheet: String = "ScreenBottomSheet"
     static let ScreenRobotInfo: String = "ScreenRobotInfo"
     static let ScreenNavigation: String = "ScreenNavigation"
+    static let ScreenCreatureLab: String = "ScreenCreatureLab"
 
     // UIVIew Identifiers
     static let secondView: String = "secondView"

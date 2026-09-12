@@ -43,6 +43,7 @@ struct Images {
     static let openBotLogo = UIImage(named: "openBotLogo")
     static let gmapMarker = UIImage(named: "gmap_marker")
     static let pointGoalIcon = UIImage(named: "pointGoal")
+    static let creatureLabIcon = UIImage(systemName: "sparkles")
 }
 
 /// Colors of the user inerface
@@ -92,7 +93,8 @@ struct Constants {
             ModeItem(label: Strings.Autopilot, icon: Images.autopilotIcon!, identifier: Strings.AutopilotFragment, color: Colors.autopilotColor),
             ModeItem(label: Strings.ObjectTracking, icon: Images.objectTrackingIcon!, identifier: Strings.ObjectTrackingFragment, color: Colors.objectTrackingColor),
             ModeItem(label: Strings.navigation, icon: Images.pointGoalIcon!, identifier: Strings.ScreenNavigation, color: Colors.pointGoalColor),
-            ModeItem(label: Strings.modelManagement, icon: Images.modelManagementIcon!, identifier: Strings.ScreenModelManagement, color: Colors.modelColor)
+            ModeItem(label: Strings.modelManagement, icon: Images.modelManagementIcon!, identifier: Strings.ScreenModelManagement, color: Colors.modelColor),
+            ModeItem(label: Strings.creatureLab, icon: Images.creatureLabIcon!, identifier: Strings.ScreenCreatureLab, color: UIColor.systemIndigo)
         ],
         // Legacy
         []

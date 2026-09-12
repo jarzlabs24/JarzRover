@@ -88,3 +88,30 @@ Next checks should establish installed hardware and flashed firmware, then verif
 - Actual result / measurements:
 - Outcome: pass, fail, partial, or not run:
 - Hardware-impacting changes and follow-up:
+
+## Merge-readiness verification — 2026-09-07
+
+- Reviewed jarz-development 52b43ee against local master 87a9d17 and fetched origin/master b5e555a. Origin development was already current. Original firmware and native iOS bundle-ID edits were stashed, restored, and verified unchanged; backup stash retained.
+- Android robot debug build and all nine unit tests passed using local cached dependencies. APK contains ignored local networks/ball_labels.txt; that file is not committed or downloaded, so this does not establish fresh-checkout detector readiness.
+- Flutter analysis: 64 informational findings, no warnings/errors. Flutter tests unavailable (no test directory). Unsigned Flutter iOS release build passed. nsd_ios produced a Swift Package Manager support warning.
+- No physical robot tests, device pairing, app signing, store submission, or merge performed. Ball safety/target-loss behavior remains unverified and has code-level blockers.
+- Read-only merge preview found an iOS Podfile deployment-target conflict with origin/master (15.0 versus 14.0).
+- Detailed review: /Users/aarav/.codex/.chatgpt-projects/g-p-69eeb1ada73c81918e529342f131fd89/MERGE_READINESS_2026-09-07.md. Temporary build logs are /tmp/jarz-*-review.log and /tmp/jarz-*-ios.log, plus /tmp/jarz-flutter-analyze.log and /tmp/jarz-flutter-test.log.
+
+- Native OpenBot unsigned iOS Debug device build: PASS with Xcode 26.3, using a fresh /tmp/jarz-native-ios-review derived-data directory and existing Pods. No simulator tests or signed device install performed.
+
+## Native iOS Creature Lab build checkpoint — 2026-09-12
+
+- Added the native Creature Lab camera, photo review, server request, and generated-creature result flow to the OpenBot iOS app.
+- `plutil -lint ios/OpenBot/OpenBot.xcodeproj/project.pbxproj`: pass.
+- `git diff --check`: pass.
+- Direct Swift type-check of `CreatureLabViewController.swift` against the installed iOS Simulator SDK: pass.
+- Xcode Debug build using the OpenBot workspace, OpenBot scheme, and `Any iOS Device (arm64)`: pass (`Build Succeeded` at 10:41 AM).
+- Simulator link: fail because the existing GoogleWebRTC 1.1.32000 framework is built for the iOS device platform rather than the iOS Simulator platform. This is a pre-existing dependency limitation, not a Creature Lab Swift compile failure.
+- Not run: installation on a physical iPhone, camera capture, local-network connection, API generation, or rover hardware behavior.
+- Hardware impact: none in this change; motor, Bluetooth, wiring, and firmware behavior were not modified.
+- After the first physical-device installation, opening Creature Lab terminated the app. Inspection found `AVCaptureSession.startRunning()` was called before `commitConfiguration()`, an invalid AVFoundation camera-session sequence.
+- Corrected the sequence to commit the camera configuration before starting the session. Swift type-check, project plist validation, and `git diff --check` pass after the correction.
+- The corrected build was installed and launched on Aarav's iPhone through Xcode. Reopening Creature Lab and testing capture/generation remain user-device checks.
+- Physical iPhone verification: pass. Creature Lab opened without crashing, captured a photo, reached the Mac-hosted server at `http://192.168.251.244:3000`, and returned an AI-generated creature result.
+- This verification used the iPhone and Mac on the same local network with the development server running; rover mounting, motor behavior, autonomous detection, and Maker Faire network reliability remain untested.
