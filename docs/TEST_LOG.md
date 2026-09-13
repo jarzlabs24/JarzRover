@@ -221,7 +221,6 @@ Next checks should establish installed hardware and flashed firmware, then verif
 - Final targeted Creature Lab lint and `npm run build`: pass.
 - Commit-candidate filename and content review found no tracked/untracked API key or credential. Ignored `.env` files are intentionally excluded from Git.
 - Not run: iOS build, Arduino firmware compilation (Arduino CLI is not installed), signed Android release/AAB generation, Play App Signing setup, Play Console validation, or Google Play policy/store-listing checks. Those remain the next release-readiness task on the other Mac.
-
 ## Android Free Roam controller stabilization — 2026-09-13
 
 - User reported that Free Roam motion jerked and would not hold a steady speed, matching the previously deferred observation that forward controller input repeatedly stopped and restarted while held.
@@ -250,3 +249,20 @@ Next checks should establish installed hardware and flashed firmware, then verif
 - Flutter release build, signing, and installation on Aarav's iPhone: pass. User confirmed the iPhone connected and displayed all Creature Lab controls.
 - `./gradlew :robot:assembleDebug :robot:testDebugUnitTest`: pass (`BUILD SUCCESSFUL` in 8 seconds; 47 tasks, 5 executed and 42 up-to-date).
 - Updated APK installation on the connected Pixel 7: pass. Final physical confirmation of the Android preview after the camera-release fix remains pending.
+
+## iOS Mac build baseline — 2026-09-11
+
+- Source: `f7f2b10`, branch `jarz-development`; Xcode 26.6, Flutter 3.47.0, CocoaPods 1.17.0.
+- Native OpenBot: initial failure from CocoaPods manifest/lock mismatch; `pod install --deployment` repaired local dependencies; generic iOS Debug build with signing disabled passed.
+- Flutter controller: `flutter build ios --debug --no-codesign` passed.
+- Flutter analysis: 64 informational lint/deprecation findings, nonzero exit. Tests: not run successfully; no `test` directory exists.
+- No app source or tracked dependency changes needed. No device installation, runtime, simulator or physical rover tests performed.
+- Reproduction and signing limitations: [BUILD_IOS.md](BUILD_IOS.md).
+
+## Flutter controller device installation — 2026-09-12
+
+- Target: Hiren's iPhone Pro Max, iOS 26.6.1; bundle ID `com.jarzlabs.openbotController`; Apple development team `94P2PNXKQ2`.
+- A signed Debug build installed but exited with signal 11 when launched from the Home Screen. Captured device output identified the expected cause: Flutter debug mode on iOS 14+ requires Flutter tooling or Xcode to be attached.
+- Rebuilt in Release configuration, installed successfully, and launched successfully. The `Runner` process remained present after launch.
+- Corrected the Runner target's Debug, Profile, and Release signing team and bundle ID. This avoided a failed broad build-setting override that had assigned the app bundle ID to the embedded `nsd_ios` framework.
+- Runtime controller discovery, video/control connection to the OpenBot phone, and physical rover behavior have not yet been tested.
