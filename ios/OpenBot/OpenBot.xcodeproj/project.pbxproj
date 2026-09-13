@@ -106,7 +106,6 @@
 		727D37C2806C8F8AC502DDBE /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 727D3278D9F8247EB0FF1B73 /* README.md */; };
 		727D37CDD881685D4EF6BFF5 /* timestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727D3F5FE3F054BE4FA52191 /* timestamp.swift */; };
 		727D37F0A374924D485368CD /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727D38DAC31CD27C5DE891F4 /* Reachability.swift */; };
-		727D3825145AF7703ACAD6A2 /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727D3E5643531AC215E4101B /* UIButton.swift */; };
 		727D3928D96E5AD69D24DA6D /* ServerListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727D3937D1457F50C712CDD9 /* ServerListener.swift */; };
 		727D397E28A6A94840B702D4 /* AlertFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727D30892A4485EAE638E24F /* AlertFragment.swift */; };
 		727D39E11C9EAFDC77200946 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727D3CF1C0FE6DE0D04C762A /* UIImageView.swift */; };
@@ -882,7 +881,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 2660;
 				TargetAttributes = {
 					4FEF4A2489AA3ABCE29B9356 = {
 						ProvisioningStyle = Automatic;
@@ -1352,7 +1351,6 @@
 				727D3D5ABACE7CF224FA3349 /* EditProfileFragment.swift in Sources */,
 				727D39E11C9EAFDC77200946 /* UIImageView.swift in Sources */,
 				727D3AC020F4956E20B53A9A /* UITextField.swift in Sources */,
-				727D3825145AF7703ACAD6A2 /* UIButton.swift in Sources */,
 				727D3A13757F3F2493E61977 /* ProjectCollectionViewCell.swift in Sources */,
 				727D303C061B9CA823E99905 /* Projects.swift in Sources */,
 				727D37C2806C8F8AC502DDBE /* README.md in Sources */,
@@ -1559,6 +1557,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -1632,6 +1631,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
