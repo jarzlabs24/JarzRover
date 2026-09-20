@@ -33,7 +33,8 @@ public class Enums {
     AUTOPILOT("Autopilot"),
     OBJECTDETECTION("ObjectDetection"),
     DATACOLLECTION("DataCollection"),
-    FREEROAM("FreeRoam");
+    FREEROAM("FreeRoam"),
+    CREATURELAB("CreatureLab");
     private final String fragmentType;
 
     FragmentType(String fragmentType) {

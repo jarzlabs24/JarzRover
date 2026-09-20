@@ -23,7 +23,11 @@ Source context: user-provided handoff from [Make Project Available](chatgpt-conv
 
 Work is focused on OpenBot object navigation and green-ball behavior: detection, centering, approach, and stopping. This describes the development goal; the supplied history does not establish an end-to-end pass or a verified stopping distance.
 
+Object Tracking now has two colored-ball operating modes. With Auto on, the rover controls patrol, wall avoidance, and all ball actions. With Auto off, camera detection remains active as a manual-assist layer: the visitor drives with the selected controller, a red/green/blue behavior temporarily takes motor control when triggered, and the latest controller command resumes when that behavior finishes or the ball disappears. Wall avoidance and autonomous patrol remain Auto-only.
+
 Creature Lab is being developed in `tools/creature-lab` as a separate, computer-first Maker Faire experience. Its initial flow uses the computer camera to capture one object, creates a local demo creature when paid AI generation is unavailable, and displays a creature image with a generated name, type, description, and special ability. Keep this experience stationary while it is being built and tested; rover roaming is out of scope for this phase.
+
+The Flutter iPhone controller now provides a dedicated Creature Lab remote when the Android app opens that feature. It mirrors status and generation progress and can learn the empty area, start or stop watching, respond to the object-found prompt, take or retake a photo, and start creature generation. Creature Lab uses a control-only phone connection so Android CameraX retains exclusive ownership of the rover camera.
 
 The selected Creature Lab visual direction is original, clean late-1990s/early-2000s Japanese game-guide creature art: smooth medium-thin outlines, simple friendly silhouettes, expressive geometric eyes, mostly flat moderately saturated colors, one restrained cel-shadow layer, small highlights, and a plain white background. Avoid watercolor, paper grain, sketch texture, painterly rendering, photorealism, and 3D rendering. Prompts must describe these general visual properties while continuing to prohibit imitation of Pokemon, existing characters, or a named artist.
 
@@ -52,10 +56,18 @@ The checked-in firmware selects `OPENBOT DIY` and `MCU NANO`. Sonar and front sp
 
 Battery specifications, driver jumper positions, exact terminal assignments, and original test dates remain unrecorded. Do not fill these gaps with assumptions.
 
-## App-store planning handoff — 2026-09-06
+## Open-source product handoff — 2026-09-19
 
-The user now has two work tracks: Dad prepares Google Play and Apple App Store readiness; Aarav develops ball detection and object-to-creature experiences. Green-ball behavior remains a feature goal with the evidence limits above.
+The current goal is to prepare JarzRover as a useful open-source JARzLabs project derived from OpenBot, rather than submit Android or iOS binaries to an app store now. Preserve the store research and decisions in the deferred readiness documents so that work can resume later; do not treat store requirements as current release gates.
 
-[Execution workflow](CODEX_WORKFLOW.md), [readiness plan](plans/app-store-readiness/PLAN.md), [issue-ready backlog](plans/app-store-readiness/BACKLOG.md), and [repository inspection](plans/app-store-readiness/REPOSITORY_AUDIT.md) extend this context without replacing hardware history. The repository contains native Android robot/controller, native iOS robot, Flutter controller, and a Creature Lab demo. Shipping apps, identifiers and iOS transport remain decisions; com.jarzlabs.jarzrover was an example, not an adopted ID.
+The repository contains the native Android robot/controller, native iOS robot, Flutter controller, firmware, and Creature Lab. The Android/Nano/USB path is the known working rover baseline and must remain intact. The planned iOS robot path is separate: an iPhone will use BLE to an ESP32, with its own firmware and verified wiring. The exact ESP32 board and electrical interface must be identified before pin or power decisions are made.
 
-Next: Dad starts JR-001 (scope) and JR-002 (baseline). Aarav prepares JR-014/015 after baseline, with release inclusion decided through JR-016. No app code, branch/default settings, signing or store records were changed by this documentation setup.
+The product is **JarzRover** from **JARzLabs**, retains application ID `com.jarzlabs.jarzrover`, and provides OpenBot attribution in About and required license notices. Creature Lab is part of the open-source product and is enabled in both the normal and Maker Faire Android configurations. The Maker Faire configuration remains available for event-specific behavior without becoming the only usable build.
+
+Active milestones and acceptance criteria are in [OPEN_SOURCE_READINESS](OPEN_SOURCE_READINESS.md). [APP_STORE_READINESS](APP_STORE_READINESS.md), [RELEASE_BACKLOG](RELEASE_BACKLOG.md), and the older [app-store plan](plans/app-store-readiness/PLAN.md) are retained as deferred inputs. No signing material, API key, private service credential, or developer-account secret belongs in this repository.
+
+The initial public-source audit is documented in [THIRD_PARTY_LICENSES](THIRD_PARTY_LICENSES.md) and [SECURITY](SECURITY.md). Publication remains gated on colored-ball model provenance, an explicit brand-asset ownership/use policy, removal or optional configuration of the upstream OpenBot Firebase project, verification of downloaded binary/model provenance, and exact dependency acknowledgements. These findings do not change the Android/Nano hardware baseline.
+
+On 2026-09-20, the project owner confirmed that Aarambh LLC operates under the registered Alameda County fictitious business name JARZLABS and owns the original JARzLabs/JarzRover brand assets. The public styling remains JARzLabs; the legal DBA spelling is JARZLABS. `BRAND_POLICY.md` reserves the marks separately from the MIT-licensed software.
+
+The project owner also confirmed that the JARzLabs team created the colored-ball model by taking its own photographs of different colored balls, uploading those images to Roboflow, training there, and exporting the tracked TFLite file. Review of the other-Mac shared session established a public Roboflow project named **OpenBot Colored Ball Detector**, creation under default CC BY 4.0, 89 annotated images, and red-ball/green-ball/blue-ball classes. The exact dataset-version URL, final split and preprocessing/augmentation, architecture/version, export settings, metrics, weight-license record, and attribution still need to be recovered. Maintain these details in [the colored-ball model card](models/COLORED_BALL_MODEL.md).

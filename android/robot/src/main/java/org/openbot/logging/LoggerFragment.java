@@ -27,8 +27,6 @@ import androidx.annotation.Nullable;
 import androidx.camera.core.ImageProxy;
 import androidx.navigation.Navigation;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.firebase.auth.FirebaseUser;
-
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -42,8 +40,6 @@ import org.openbot.common.CameraFragment;
 import org.openbot.databinding.FragmentLoggerBinding;
 import org.openbot.env.BotToControllerEventBus;
 import org.openbot.env.ImageUtils;
-import org.openbot.googleServices.GoogleServices;
-import org.openbot.projects.GoogleSignInCallback;
 import org.openbot.tflite.Model;
 import org.openbot.utils.ConnectionUtils;
 import org.openbot.utils.Constants;
@@ -71,7 +67,6 @@ public class LoggerFragment extends CameraFragment {
   private RectF cropRect;
   private boolean maintainAspectRatio;
   private String saveAs;
-  private GoogleServices googleServices;
 
   @Override
   public View onCreateView(
@@ -94,28 +89,6 @@ public class LoggerFragment extends CameraFragment {
     setSpeedMode(Enums.SpeedMode.getByID(preferencesManager.getSpeedMode()));
     setControlMode(Enums.ControlMode.getByID(preferencesManager.getControlMode()));
     setDriveMode(Enums.DriveMode.getByID(preferencesManager.getDriveMode()));
-    googleServices = new GoogleServices(requireActivity(), requireContext(), new GoogleSignInCallback() {
-      @Override
-      public void onSignInSuccess(FirebaseUser account) {
-
-      }
-
-      @Override
-      public void onSignInFailed(Exception exception) {
-
-      }
-
-      @Override
-      public void onSignOutSuccess() {
-
-      }
-
-      @Override
-      public void onSignOutFailed(Exception exception) {
-
-      }
-    });
-
     if (vehicle.getConnectionType().equals("USB")) {
       binding.usbToggle.setVisibility(View.VISIBLE);
       binding.bleToggle.setVisibility(View.GONE);
@@ -165,9 +138,6 @@ public class LoggerFragment extends CameraFragment {
             saveAs = "Local";
             break;
           case 1:
-            saveAs = "GoogleDrive";
-            break;
-          case 2:
             saveAs = "Server";
             break;
         }
@@ -380,8 +350,6 @@ public class LoggerFragment extends CameraFragment {
               case "Local" :
               case "Server" :
                 if (!isCancel) serverCommunication.upload(zip(folder));
-                break;
-              case "GoogleDrive" : googleServices.uploadLogData(zip(folder));
                 break;
             }
             TimeUnit.MILLISECONDS.sleep(500);

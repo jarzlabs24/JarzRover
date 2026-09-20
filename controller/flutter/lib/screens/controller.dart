@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nsd/nsd.dart';
 import 'package:openbot_controller/globals.dart';
 import 'package:openbot_controller/screens/controlSelector.dart';
+import 'package:openbot_controller/screens/creature_lab_controls.dart';
 import 'package:openbot_controller/screens/settingsDrawer.dart';
 import '../utils/constants.dart';
 import 'discoveringDevices.dart';
@@ -35,6 +36,7 @@ class ControllerState extends State<Controller> {
   bool isTiltingPhoneMode = false;
   bool isScreenMode = false;
   String fragmentType = "";
+  Map<String, dynamic> creatureLabState = const {};
   var _nextPort = 56360;
 
   int get nextPort => _nextPort++;
@@ -49,10 +51,8 @@ class ControllerState extends State<Controller> {
   RTCPeerConnection? _peerConnection;
 
   Future<void> videoConnection() async {
-    initRenderers();
-    _createPeerConnection().then((pc) {
-      _peerConnection = pc;
-    });
+    await initRenderers();
+    _peerConnection = await _createPeerConnection();
   }
 
   initRenderers() async {
@@ -107,8 +107,7 @@ class ControllerState extends State<Controller> {
           'sdpMid': e.sdpMid.toString(),
           'sdpMLineIndex': e.sdpMLineIndex,
         };
-        final message = jsonEncode(output);
-        sendMessage(message);
+        sendMessage(output);
       }
     };
 
@@ -116,11 +115,16 @@ class ControllerState extends State<Controller> {
       log("onIceConnectionState = $e");
     };
 
-    pc.onAddStream = (MediaStream stream) {
+    void showRemoteStream(MediaStream stream) {
       _remoteVideoRenderer.srcObject = stream;
-      setState(() {
-        _remoteVideoRenderer;
-      });
+      if (mounted) setState(() {});
+    }
+
+    // Keep the legacy callback for the Android sender, and also support the
+    // Unified Plan callback used by current WebRTC versions.
+    pc.onAddStream = showRemoteStream;
+    pc.onTrack = (event) {
+      if (event.streams.isNotEmpty) showRemoteStream(event.streams.first);
     };
 
     return pc;
@@ -139,9 +143,12 @@ class ControllerState extends State<Controller> {
     sendMessage(data);
   }
 
-  void sendMessage(message) async {
-    var newMessage = jsonEncode(message);
-    clientSocket?.writeln({"webrtc_event": newMessage});
+  void sendMessage(Map<String, dynamic> message) {
+    clientSocket?.writeln(jsonEncode({"webrtc_event": message}));
+  }
+
+  void sendControllerCommand(String command) {
+    clientSocket?.writeln(jsonEncode({"command": command}));
   }
 
   ControllerState() {
@@ -151,9 +158,15 @@ class ControllerState extends State<Controller> {
   @override
   void initState() {
     super.initState();
-    registerNewService();
-    videoConnection();
-    getNewDiscoverServices();
+    initializeController();
+  }
+
+  Future<void> initializeController() async {
+    // The Android driver can send its offer immediately after discovering
+    // this service, so create the peer connection before advertising it.
+    await videoConnection();
+    await registerNewService();
+    await getNewDiscoverServices();
   }
 
   Future<void> getNewDiscoverServices() async {
@@ -256,27 +269,41 @@ class ControllerState extends State<Controller> {
               objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
               mirror: mirroredVideo,
             ),
-            ControlSelector(setMirrorVideo, indicatorLeft, indicatorRight,
-                services, _peerConnection, isTiltingPhoneMode, isScreenMode,fragmentType),
-            Positioned(
-              left: isTiltingPhoneMode ? 45 : 110,
-              top: 16.0, // Adjust the top margin as needed
-              child: Container(
-                // padding: EdgeInsets.only(left: ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(45),
-                  color: Colors.transparent,
+            if (fragmentType == "CreatureLab")
+              CreatureLabControls(
+                state: creatureLabState,
+                sendCommand: sendControllerCommand,
+              )
+            else
+              ControlSelector(
+                  setMirrorVideo,
+                  indicatorLeft,
+                  indicatorRight,
+                  services,
+                  _peerConnection,
+                  isTiltingPhoneMode,
+                  isScreenMode,
+                  fragmentType),
+            if (fragmentType != "CreatureLab")
+              Positioned(
+                left: isTiltingPhoneMode ? 45 : 110,
+                top: 16.0, // Adjust the top margin as needed
+                child: Container(
+                  // padding: EdgeInsets.only(left: ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(45),
+                    color: Colors.transparent,
+                  ),
+                  child: FloatingActionButton(
+                      backgroundColor: Colors.white.withOpacity(0.5),
+                      onPressed: () {
+                        setState(() {
+                          isSettings = true;
+                        });
+                      },
+                      child: const Icon(Icons.menu, color: Color(0xFF0071C5))),
                 ),
-                child: FloatingActionButton(
-                    backgroundColor: Colors.white.withOpacity(0.5),
-                    onPressed: () {
-                      setState(() {
-                        isSettings = true;
-                      });
-                    },
-                    child: const Icon(Icons.menu, color: Color(0xFF0071C5))),
               ),
-            ),
             if (isSettings)
               Stack(
                 children: [
@@ -326,6 +353,15 @@ class ControllerState extends State<Controller> {
     if (items["FRAGMENT_TYPE"] != null) {
       setState(() {
         fragmentType = items["FRAGMENT_TYPE"];
+      });
+    }
+
+    if (items["CREATURE_LAB_STATE"] != null) {
+      final dynamic value = items["CREATURE_LAB_STATE"];
+      setState(() {
+        creatureLabState = value is String
+            ? Map<String, dynamic>.from(json.decode(value))
+            : Map<String, dynamic>.from(value as Map);
       });
     }
 

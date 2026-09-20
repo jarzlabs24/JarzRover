@@ -230,9 +230,25 @@ public class WebRtcServer implements IVideoServer {
   }
 
   private void stopServer() {
-    mediaStream.removeTrack(videoTrackFromCamera);
-    mediaStream.removeTrack(localAudioTrack);
-    view.release();
+    if (videoCapturer != null) {
+      try {
+        videoCapturer.stopCapture();
+      } catch (InterruptedException interrupted) {
+        Thread.currentThread().interrupt();
+      }
+      videoCapturer.dispose();
+      videoCapturer = null;
+    }
+    if (mediaStream != null) {
+      if (videoTrackFromCamera != null) mediaStream.removeTrack(videoTrackFromCamera);
+      if (localAudioTrack != null) mediaStream.removeTrack(localAudioTrack);
+    }
+    if (peerConnection != null) {
+      peerConnection.close();
+      peerConnection.dispose();
+      peerConnection = null;
+    }
+    if (view != null) view.release();
     stopClient();
   }
 

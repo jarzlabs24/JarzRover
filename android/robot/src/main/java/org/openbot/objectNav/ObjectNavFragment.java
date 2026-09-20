@@ -138,6 +138,10 @@ public class ObjectNavFragment extends CameraFragment {
   private boolean wallLatched = false;
   private long wallActionStartMs = 0;
 
+  // When Auto is off, colored-ball actions temporarily take control and then
+  // return to the most recent controller command.
+  private volatile boolean manualBallControlActive = false;
+
   private final boolean isBenchmarkMode = false;
   private long processedFrames = 0;
   private final int movingAvgSize = 100;
@@ -496,7 +500,29 @@ public class ObjectNavFragment extends CameraFragment {
     binding.controllerContainer.speedMode.setAlpha(b ? 0.5f : 1f);
 
     resetFpsUi();
-    if (!b) handler.postDelayed(() -> vehicle.setControl(0, 0), Math.max(lastProcessingTimeMs, 50));
+    if (!b) {
+      handler.postDelayed(
+          () -> {
+            vehicle.setControl(0, 0);
+            resumeLatestControllerControl();
+          },
+          Math.max(lastProcessingTimeMs, 50));
+    }
+  }
+
+  @Override
+  protected boolean allowsControllerDriveCommand() {
+    return binding != null
+        && !binding.autoSwitch.isChecked()
+        && !manualBallControlActive;
+  }
+
+  private void setManualBallControlActive(boolean active) {
+    boolean shouldResumeController = manualBallControlActive && !active;
+    manualBallControlActive = active;
+    if (shouldResumeController && binding != null) {
+      binding.getRoot().post(this::resumeLatestControllerControl);
+    }
   }
 
   @Override
@@ -504,7 +530,7 @@ public class ObjectNavFragment extends CameraFragment {
     if (tracker == null) updateCropImageInfo();
 
     ++frameNum;
-    if (binding != null && binding.autoSwitch.isChecked()) {
+    if (binding != null) {
       // If network is busy, return.
       if (computingNetwork) {
         return;
@@ -589,14 +615,22 @@ public class ObjectNavFragment extends CameraFragment {
               }
 
               long behaviorNow = SystemClock.elapsedRealtime();
+              boolean autoMode = binding.autoSwitch.isChecked();
 
               float sonarDistance = vehicle.getSonarReading();
               boolean wallDetected =
                   sonarDistance > 0
                       && sonarDistance < WALL_DISTANCE_CM;
 
+              // Wall avoidance and patrol remain Auto-only. Manual mode keeps
+              // detecting balls without taking wall-navigation control.
+              if (!autoMode) {
+                wallActionActive = false;
+                wallLatched = false;
+              }
+
               // Start wall avoidance once when a wall first appears.
-              if (wallDetected && !greenDetected
+              if (autoMode && wallDetected && !greenDetected
                   && !wallLatched && !wallActionActive) {
                 wallLatched = true;
                 wallActionActive = true;
@@ -620,12 +654,25 @@ public class ObjectNavFragment extends CameraFragment {
                 blueLatched = false;
               }
 
+              // A new green encounter starts with fresh centering state.
+              if (!greenDetected) {
+                greenLocked = false;
+                greenCenterPulseActive = false;
+                greenCenterAttempts = 0;
+              }
+
               // A nearby green ball takes priority over wall avoidance.
               // Cancel any wall turn so the robot can center on the ball.
               if (greenDetected && greenBallLocation != null) {
                 wallActionActive = false;
                 wallLatched = false;
               }
+
+              setManualBallControlActive(
+                  !autoMode
+                      && (blueActionActive
+                          || (greenDetected && greenBallLocation != null)
+                          || redDetected));
 
               if (wallActionActive) {
                 long wallElapsed = behaviorNow - wallActionStartMs;
@@ -678,10 +725,15 @@ public class ObjectNavFragment extends CameraFragment {
                       new Control(TIMED_TURN_SPEED, -TIMED_TURN_SPEED));
 
                 } else {
-                  // Blue action finished; resume patrol.
+                  // Blue action finished; resume Auto patrol or return the
+                  // rover to the visitor's latest controller command.
                   blueActionActive = false;
                   patrolStateStartMs = behaviorNow;
-                  handleDriveCommand(new Control(PATROL_SPEED, PATROL_SPEED));
+                  if (autoMode) {
+                    handleDriveCommand(new Control(PATROL_SPEED, PATROL_SPEED));
+                  } else {
+                    setManualBallControlActive(false);
+                  }
                 }
 
               } else if (greenDetected && greenBallLocation != null) {
@@ -767,8 +819,14 @@ public class ObjectNavFragment extends CameraFragment {
                 handleDriveCommand(new Control(0.50f, -0.50f));
 
               } else {
-                // No ball behavior active: continue rectangle patrol
-                handleDriveCommand(new Control(PATROL_SPEED, PATROL_SPEED));
+                if (autoMode) {
+                  // No ball behavior active: continue rectangle patrol.
+                  handleDriveCommand(new Control(PATROL_SPEED, PATROL_SPEED));
+                } else {
+                  // Detection stays active, but normal driving belongs to the
+                  // visitor while Auto is off.
+                  setManualBallControlActive(false);
+                }
               }
               binding.trackingOverlay.postInvalidate();
             }

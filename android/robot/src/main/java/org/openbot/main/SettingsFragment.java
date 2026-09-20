@@ -240,6 +240,19 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             return true;
           });
     }
+
+    Preference about = findPreference("about_jarzrover");
+    if (about != null) {
+      about.setOnPreferenceClickListener(
+          preference -> {
+            new AlertDialog.Builder(requireActivity())
+                .setTitle(R.string.about_jarzrover)
+                .setMessage(R.string.about_jarzrover_message)
+                .setPositiveButton(android.R.string.ok, null)
+                .show();
+            return true;
+          });
+    }
   }
 
   private void updateLanguageIcon() {

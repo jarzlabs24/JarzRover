@@ -12,6 +12,13 @@
             app:title="@string/language"
             app:summary="@string/language_summary" />
 
+        <Preference
+            app:iconSpaceReserved="false"
+            app:key="about_jarzrover"
+            app:layout="@layout/preference_icon_end_last"
+            app:summary="@string/about_jarzrover_summary"
+            app:title="@string/about_jarzrover" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -56,7 +63,7 @@
         app:title="@string/video_streaming">
 
         <ListPreference
-            app:defaultValue="RTSP"
+            app:defaultValue="WebRTC"
             app:entries="@array/stream_server"
             app:entryValues="@array/stream_server"
             app:icon="@drawable/ic_videocam"

@@ -10,6 +10,7 @@ import org.openbot.utils.Enums.DriveMode;
 import org.openbot.vehicle.Control;
 
 public class GameController {
+  private static final float STOP_EPSILON = 0.01f;
   private DriveMode driveMode;
 
   public GameController(DriveMode driveMode) {
@@ -22,6 +23,23 @@ public class GameController {
 
   public DriveMode getDriveMode() {
     return driveMode;
+  }
+
+  public static boolean isDriveButton(int keyCode) {
+    return keyCode == KeyEvent.KEYCODE_DPAD_UP
+        || keyCode == KeyEvent.KEYCODE_DPAD_RIGHT
+        || keyCode == KeyEvent.KEYCODE_DPAD_DOWN
+        || keyCode == KeyEvent.KEYCODE_DPAD_LEFT;
+  }
+
+  public static boolean isStopped(Control control) {
+    return Math.abs(control.getLeft()) < STOP_EPSILON
+        && Math.abs(control.getRight()) < STOP_EPSILON;
+  }
+
+  public static boolean materiallyDifferent(Control first, Control second, float epsilon) {
+    return Math.abs(first.getLeft() - second.getLeft()) >= epsilon
+        || Math.abs(first.getRight() - second.getRight()) >= epsilon;
   }
 
   private static float getCenteredAxis(MotionEvent event, int axis, int historyPos) {

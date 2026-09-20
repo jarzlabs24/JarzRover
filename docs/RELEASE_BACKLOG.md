@@ -1,5 +1,7 @@
 # Release execution backlog
 
+> **Status: deferred on 2026-09-19.** The store-submission backlog below is retained so it can be resumed later; it is not the active execution queue. Current work follows [OPEN_SOURCE_READINESS](OPEN_SOURCE_READINESS.md).
+
 Snapshot: 2026-09-07. [GitHub issues](https://github.com/jarzlabs24/JarzRover-Private/issues) are authoritative for live status. Read [readiness plan](APP_STORE_READINESS.md) and [Codex handoff](CODEX_HANDOFF.md). All items below start **Open / planned**, not completed implementation.
 
 The 20 agreed IDs are preserved. REL-006/007/008, AND-006, PLAY-003 and IOS-004 make the original roadmap's context, privacy, CI, failure recovery and final store submissions explicit. There were no existing issues or milestones to duplicate. Existing code, hardware context and issue templates were inspected first.
@@ -50,12 +52,12 @@ Criteria below mirror the initial issues. Update the issue and this snapshot whe
 ### REL-001 — Define JarzRover 1.0 feature scope
 
 - [ ] Dad and Aarav record approved included/deferred features and measurable release thresholds
-- [ ] Decide app identity, robot versus controller distribution, package/bundle IDs, minimum OS versions, support contacts, audience and account needs
-- [ ] Explicitly decide sonar and Blockly scope against installed hardware and tests; creature generation stays post-1.0
+- [x] Decide Android app identity, robot distribution, package ID, temporary support contact, audience and account needs
+- [ ] Decide minimum Android version and explicit sonar/Blockly release scope against installed hardware and tests; Creature Lab is in 1.0 but stays disabled in Play until its service/privacy gate passes
 
 ### PLAY-001 — Set up Google Play Console
 
-- [ ] Choose accurate account type and complete applicable identity/organization verification
+- [x] Choose organization account type and legal/representative identity; complete D-U-N-S and applicable identity/organization verification
 - [ ] Create app record matching agreed package identity and configure access/tester roles
 - [ ] Record account-specific current testing/production eligibility requirements and secure account recovery ownership
 

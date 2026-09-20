@@ -221,6 +221,35 @@ Next checks should establish installed hardware and flashed firmware, then verif
 - Final targeted Creature Lab lint and `npm run build`: pass.
 - Commit-candidate filename and content review found no tracked/untracked API key or credential. Ignored `.env` files are intentionally excluded from Git.
 - Not run: iOS build, Arduino firmware compilation (Arduino CLI is not installed), signed Android release/AAB generation, Play App Signing setup, Play Console validation, or Google Play policy/store-listing checks. Those remain the next release-readiness task on the other Mac.
+## Android Free Roam controller stabilization — 2026-09-13
+
+- User reported that Free Roam motion jerked and would not hold a steady speed, matching the previously deferred observation that forward controller input repeatedly stopped and restarted while held.
+- Added a 120 ms confirmation before accepting a zero reading from the analog controller so a single transient zero sample does not stop the motors. A real released control still stops after the short confirmation delay.
+- Added a 3% material-change threshold so small analog-stick noise does not continually change motor speed.
+- Restricted button-derived drive commands to D-pad keys so unrelated gamepad button events cannot replace the active drive command with zero. Corrected the left/right comparison so a change to either motor is accepted.
+- Added unit coverage for drive-button identification, stopped-control identification, jitter rejection, and real control changes.
+- `./gradlew :robot:assembleDebug :robot:testDebugUnitTest`: pass (`BUILD SUCCESSFUL` in 18 seconds; 47 tasks, 11 executed and 36 up-to-date).
+- Updated APK installation on the connected Pixel 7: pass. Physical held-forward stability, release-stop timing, steering, and D-pad behavior remain pending.
+
+## Android manual-assist colored-ball detection — 2026-09-13
+
+- Changed Object Tracking so camera inference and colored-ball recognition continue while Auto is off.
+- Auto on remains fully autonomous: patrol, sonar wall avoidance, and colored-ball actions control the rover. Auto off remains visitor-driven except while a detected red, green, or blue behavior is active; wall avoidance and patrol do not run in this mode.
+- Controller commands received during a ball action are retained but prevented from fighting the AI motor command. When the action finishes or the ball disappears, the latest controller command is restored.
+- Reset green centering/approach state when the green ball disappears so a later encounter starts fresh.
+- `./gradlew :robot:assembleDebug :robot:testDebugUnitTest`: pass (`BUILD SUCCESSFUL` in 19 seconds; 47 tasks, 10 executed and 37 up-to-date).
+- Updated APK installation on the connected Pixel 7: pass. Physical manual driving, each color takeover, controller restoration, and Auto-mode regression remain pending.
+
+## Creature Lab iPhone remote — 2026-09-19
+
+- Added a dedicated Creature Lab control screen to the Flutter iPhone controller with live Android status, Learn Empty Area, Watch/Stop, Take Picture, Not Yet, Create Creature, and Retake controls.
+- Added Android-to-controller Creature Lab state updates and controller-to-Android commands. The remote connection uses control-only mode so it does not intentionally start a competing WebRTC camera stream.
+- Fixed controller startup and WebRTC signaling on iOS, added Bonjour/local-network declarations, and made WebRTC the Android default streaming mode.
+- Fixed WebRTC shutdown so it stops and disposes its video capturer before CameraX opens Creature Lab. This addressed logs showing WebRTC still capturing at 30 FPS after its renderer had been released.
+- Flutter release build, signing, and installation on Aarav's iPhone: pass. User confirmed the iPhone connected and displayed all Creature Lab controls.
+- `./gradlew :robot:assembleDebug :robot:testDebugUnitTest`: pass (`BUILD SUCCESSFUL` in 8 seconds; 47 tasks, 5 executed and 42 up-to-date).
+- Updated APK installation on the connected Pixel 7: pass. Final physical confirmation of the Android preview after the camera-release fix remains pending.
+
 ## iOS Mac build baseline — 2026-09-11
 
 - Source: `f7f2b10`, branch `jarz-development`; Xcode 26.6, Flutter 3.47.0, CocoaPods 1.17.0.
@@ -237,3 +266,56 @@ Next checks should establish installed hardware and flashed firmware, then verif
 - Rebuilt in Release configuration, installed successfully, and launched successfully. The `Runner` process remained present after launch.
 - Corrected the Runner target's Debug, Profile, and Release signing team and bundle ID. This avoided a failed broad build-setting override that had assigned the app bundle ID to the embedded `nsd_ios` framework.
 - Runtime controller discovery, video/control connection to the OpenBot phone, and physical rover behavior have not yet been tested.
+
+## Android JarzRover branding variants — 2026-09-14
+
+- Installed Homebrew OpenJDK 17 and Google's Android command-line tools on this Mac. Accepted the Android SDK license with explicit user authorization, then installed platform tools, Android 33, and build tools 33.0.1 under `/opt/homebrew/share/android-commandlinetools`.
+- Added separate `makerFaire` and `play` distributions. Generated BuildConfig inspection confirms `CREATURE_LAB_ENABLED=true` for Maker Faire and `false` for Play.
+- `./gradlew :robot:assembleMakerFaireDebug :robot:assemblePlayDebug :robot:testMakerFaireDebugUnitTest :robot:testPlayDebugUnitTest`: pass (`BUILD SUCCESSFUL` in 1 minute 36 seconds; 86 tasks executed).
+- Both APK manifests report application ID `com.jarzlabs.jarzrover`, version code `800`, and version name `v0.8.0`.
+- Both variants ran 14 unit tests across six test suites with zero failures and zero errors.
+- Build warnings remain for the command-line-tool/AGP SDK XML version mismatch, deprecated RenderScript use, and native libraries that could not be symbol-stripped. These are not build failures but must be revisited during the API 36/toolchain migration and release packaging checks.
+- Not run: installation or UI smoke test on an emulator/device, signed release/AAB build, release lint, API 36 build, physical USB/robot behavior, or visual confirmation of the candidate launcher icon and removed account surfaces.
+
+## Android open-source distributions — 2026-09-19
+
+- Replaced the store-specific `play` distribution with a normal open-source `standard` distribution and retained `makerFaire` for event-specific behavior.
+- Generated BuildConfig inspection confirms Creature Lab is enabled in both distributions. `MAKER_FAIRE_MODE=false` for `standard` and `true` for `makerFaire`.
+- `./gradlew :robot:assembleStandardDebug :robot:assembleMakerFaireDebug :robot:testStandardDebugUnitTest :robot:testMakerFaireDebugUnitTest`: pass (`BUILD SUCCESSFUL` in 18 seconds; 86 tasks, 56 executed and 30 up-to-date).
+- Each distribution ran 16 unit tests across six suites with zero failures and zero errors. Both 44 MB debug APKs were produced under their respective `android/robot/build/outputs/apk` directories.
+- Existing warnings remain for the command-line-tool/AGP SDK XML version mismatch, deprecated RenderScript use, and native libraries that could not be symbol-stripped.
+- Not run: emulator/device installation, UI or launcher-icon inspection, physical Android/Nano rover behavior, iOS/ESP32 work, release build, release lint, or signed artifact generation. This software build does not establish physical rover compatibility.
+
+## JarzRover app-icon exports — 2026-09-19
+
+- Promoted the user-approved white-background printer/rover sketch with straight tires and no wheel-hub circles to `branding/source/jarzrover-app-icon-master.png`. Its SHA-256 matches the retained approved review image.
+- Added a macOS `sips` exporter and generated Android robot launcher icons at 48, 72, 96, 144, and 192 pixels plus every filename referenced by the native iOS robot AppIcon catalog. Sample and 1024-pixel iOS files report no alpha channel.
+- Updated the Android robot manifest to use density-specific `@mipmap/ic_launcher` and `@mipmap/ic_launcher_round` resources. The Flutter companion controller icon was intentionally not changed.
+- Android `./gradlew :robot:assembleStandardDebug :robot:assembleMakerFaireDebug :robot:testStandardDebugUnitTest :robot:testMakerFaireDebugUnitTest`: pass (`BUILD SUCCESSFUL` in 7 seconds; 86 tasks, 33 executed and 53 up-to-date). Both 44 MB debug APKs were produced.
+- Native iOS robot unsigned generic-device Debug build: pass with `xcodebuild` and `CODE_SIGNING_ALLOWED=NO`; output `/private/tmp/jarzrover-ios-branding-build/Build/Products/Debug-iphoneos/OpenBot.app`. The AppIcon catalog compiled successfully.
+- Existing iOS warnings remain for unassigned/duplicate non-app-icon assets, legacy icon slots, storyboards, Markdown resources, dependency scripts, and a missing inferred SocketIO-to-Starscream dependency. No app-icon error was reported.
+- Visual inspection of the 192-pixel Android export retained the face and rover silhouette. Not run: Android or iOS installation, actual home-screen rendering under platform masks, signed iOS build, Flutter controller build, simulator test, or physical rover behavior.
+
+## Open-source license, provenance, and secret audit — 2026-09-19
+
+- Confirmed that the root MIT license retains the OpenBot/Intel ISL notice and documented the upstream relationship and release-notice boundaries in `docs/THIRD_PARTY_LICENSES.md`.
+- Inventoried app/tool manifests, bundled TFLite assets, model download URLs, three downloaded Android AARs, and the native iOS nightly/branch dependencies. No dependency or model license was inferred merely from a successful build.
+- Recorded SHA-256 hashes for bundled model/label files during review. The JarzRover colored-ball model was introduced by commit `27aa942`, but its training dataset, export version, author declaration, and redistribution license are not recorded; public release remains blocked on provenance or removal.
+- Inspected tracked filenames, current tracked text, and Git history for high-confidence private-key headers and common OpenAI, GitHub, AWS, and Google service-account patterns. No matching high-confidence secret file was found. Values were not printed or recorded.
+- Found four tracked Android/iOS client configurations bound to the upstream OpenBot Firebase project. Firebase client identifiers are not treated as server secrets, but the upstream backend binding must be removed or made optional before publication.
+- Confirmed that local `open-code/.env` is ignored and that the tracked Creature Lab `.env.example` is a placeholder template. The local `.env` contents were not inspected.
+- Limitation: Gitleaks, TruffleHog, and detect-secrets were not installed, so the targeted regex review is not a complete entropy/provider scan. Backend rules, service access, binary-embedded values, app builds, device behavior, and physical rover behavior were not tested in this documentation-only audit.
+
+## Open-source ownership and model-provenance decisions — 2026-09-20
+
+- User confirmed Aarambh LLC as owner of the original JARzLabs/JarzRover brand assets, operating under the registered Alameda County fictitious business name JARZLABS. Added `BRAND_POLICY.md` to reserve the names/artwork separately from MIT-licensed software and updated the branding inventory.
+- User confirmed that the JARzLabs team created the colored-ball training images by photographing different colored balls, uploaded them to Roboflow, trained the model there, and exported the tracked TFLite model.
+- Model provenance is partially resolved. The exact Roboflow workspace/project, dataset version and split, image/annotation ownership record, model family/version, export format/settings, training date, and applicable export terms have not yet been recovered.
+- Documentation-only update: no app build, model inference, device test, network access, or physical rover test was run.
+
+### Shared-session provenance follow-up
+
+- Reviewed the user-provided shared ChatGPT session from the other Mac. It records creation of the public Roboflow project **OpenBot Colored Ball Detector** under default CC BY 4.0, 89 annotated images, and the classes `red-ball`, `green-ball`, and `blue-ball`.
+- The session records recommended 80/10/10 splitting, non-stretch 512×512 preprocessing, and color-preserving augmentation guidance, but does not prove those settings were applied to the exported artifact. It also does not establish the exact dataset-version URL, training architecture/version, final metrics, export/quantization settings, or exact weights-license record.
+- `file` identified the tracked artifact only as generic data. A string inspection found TensorFlow Lite conversion metadata but no embedded author, Roboflow identifier, model version, or license. Added `docs/models/COLORED_BALL_MODEL.md` to separate verified facts from remaining unknowns.
+- No model execution, inference comparison, network service access, app build, device test, or physical rover test was performed.
