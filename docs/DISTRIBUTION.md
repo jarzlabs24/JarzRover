@@ -23,6 +23,13 @@ Before publishing an APK:
 5. Record the SHA-256 checksum and package/version information.
 6. Publish installation, update, rollback, permissions, uninstall, and troubleshooting instructions.
 
+Create the key through **Android Studio → Build → Generate Signed Bundle/APK →
+Create new**, or with Java `keytool`. Copy `android/keystore.properties.example`
+to the ignored `android/keystore.properties` and supply the real keystore path,
+alias, and passwords. When that file is present, the Robot and native Controller
+release builds use the same signing identity. Back up the `.jks` file and its
+passwords in two secure locations; do not email or commit them.
+
 Users installing from a website must allow **Install unknown apps** for the browser or file manager they use. They should disable that permission again afterward if they do not need it. Android developer/package verification requirements still apply to software distributed outside Google Play.
 
 ## iOS Flutter controller

@@ -6,6 +6,13 @@ plugins {
     id 'io.github.reactivecircus.app-versioning' version "1.1.2"
 }
 
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('keystore.properties')
+def releaseSigningConfigured = keystorePropertiesFile.exists()
+if (releaseSigningConfigured) {
+    keystorePropertiesFile.withInputStream { keystoreProperties.load(it) }
+}
+
 appVersioning {
     /**
      * Git root directory used for fetching git tags.
@@ -37,11 +44,25 @@ android {
         viewBinding true
     }
 
+    signingConfigs {
+        if (releaseSigningConfigured) {
+            release {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile rootProject.file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             debuggable false
+            if (releaseSigningConfigured) {
+                signingConfig signingConfigs.release
+            }
         }
     }
 
