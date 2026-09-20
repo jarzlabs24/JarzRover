@@ -20,18 +20,6 @@
 	<dict/>
 	<key>CFBundleIcons~ipad</key>
 	<dict/>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.googleusercontent.apps.955078484078-4m63lascf45ranfmedahhcgo10ainnfa</string>
-			</array>
-		</dict>
-		<dict/>
-	</array>
 	<key>GCSupportedGameControllers</key>
 	<array>
 		<dict>

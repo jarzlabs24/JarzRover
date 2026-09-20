@@ -20,16 +20,16 @@ Limitations:
 - The review cannot prove that a low-entropy password, unknown provider token, or secret embedded in a binary is absent.
 - Access controls and Firebase Security Rules were not tested.
 
-## Findings requiring resolution
+## Firebase configuration resolution
 
-Four tracked mobile client configurations point to the upstream OpenBot Firebase project:
+The initial audit found four tracked mobile client configurations pointing to the upstream OpenBot Firebase project:
 
 - `android/controller/google-services.json`
 - `android/robot/google-services.json`
 - `android/robot/src/main/assets/google-services.json`
 - `ios/OpenBot/OpenBot/GoogleService-Info.plist`
 
-Firebase documents that its normal mobile API keys are public by design, but these files also bind the apps to a backend JARzRover does not own. Before public release, remove the upstream binding from default builds. Cloud/account features should be disabled by default or configured through documented, ignored local files and project-owned example templates. Confirm builds and non-cloud rover behavior after the change.
+Those files have now been removed. Default Android and iOS builds omit the Firebase configuration and skip explicit Firebase initialization, and Android local model updates no longer instantiate the cloud service. Authorized devices can opt in to the JARzLabs-owned Firebase project with ignored local files by following [FIREBASE_SETUP](FIREBASE_SETUP.md). The inherited account/Drive UI remains hidden and transitional. Enabling it still requires a backend-rules review and a test using an authorized device; no such backend or device test is implied by source-build validation.
 
 `open-code/.env` exists locally and is ignored. It was not inspected for this report and must remain untracked. `tools/creature-lab/.env.example` is tracked as a placeholder template; keep real Creature Lab credentials in an ignored `.env` file.
 
@@ -37,10 +37,9 @@ Firebase documents that its normal mobile API keys are public by design, but the
 
 Before changing repository visibility:
 
-1. Remove or optionalize the upstream Firebase configuration and verify all supported builds.
-2. Run a maintained secret scanner across the full Git history and review results without publishing values.
-3. Enable GitHub secret scanning/push protection if available for the public repository.
-4. Verify that release archives contain no local `.env`, signing, provisioning, visitor-image, or debug data.
-5. Document a private vulnerability-reporting route and response owner.
+1. Run a maintained secret scanner across the full Git history and review results without publishing values.
+2. Enable GitHub secret scanning/push protection if available for the public repository.
+3. Verify that release archives contain no local Firebase config, `.env`, signing, provisioning, visitor-image, or debug data.
+4. Document a private vulnerability-reporting route and response owner.
 
 This gate is independent of app-store submission and applies to a public source repository.

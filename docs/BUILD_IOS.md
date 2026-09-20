@@ -24,7 +24,7 @@ The initial build failed because Pods/Manifest.lock was out of sync with Podfile
 
 Output: `/private/tmp/jarzrover-ios-build/Build/Products/Debug-iphoneos/OpenBot.app`.
 
-For Xcode use `ios/OpenBot/OpenBot.xcworkspace`, not the project alone. The existing app ID is `com.jarzlabs.openbot`; its app target already contains a development team. Verify that team is yours before signed deployment. Test targets have different legacy team settings.
+For Xcode use `ios/OpenBot/OpenBot.xcworkspace`, not the project alone. The existing app ID is `org.jarzlabs.openbot`; its app target already contains a development team. Verify that team is yours before signed deployment. Test targets have different legacy team settings.
 
 CocoaPods reports conflicting simulator architecture exclusions among GoogleWebRTC/TensorFlowLite targets and dependency deprecations. This run validates physical-device compilation only, not simulator compatibility.
 

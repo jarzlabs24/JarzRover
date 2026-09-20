@@ -255,6 +255,9 @@ public class BarCodeScannerFragment extends CameraFragment {
   private String getCurrentKeyFromJson() {
     String jsonData = readJsonFile();
     String currentKey = "";
+    if (jsonData == null || jsonData.isEmpty()) {
+      return currentKey;
+    }
     try {
       // Parse the JSON data
       JSONObject jsonObject = new JSONObject(jsonData);
@@ -289,6 +292,10 @@ public class BarCodeScannerFragment extends CameraFragment {
    */
   private void readFileFromDrive(String fileId) throws IOException {
     String APIkey = getCurrentKeyFromJson();
+    if (APIkey.isEmpty()) {
+      handleBottomSheet(false);
+      return;
+    }
     URL fileUrl =
             new URL("https://www.googleapis.com/drive/v3/files/"+fileId+"?alt=media&key="+APIkey);
     new ReadFileTask(

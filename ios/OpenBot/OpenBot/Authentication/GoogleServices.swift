@@ -61,7 +61,6 @@ class GoogleServices {
             let userId = user?.userID ?? ""
             print("Google User ID: \(userId)")
             let userIdToken = user?.accessToken
-            print("Google ID Token: \(userIdToken?.tokenString)")
             self.userToken = userIdToken?.tokenString ?? ""
             let userFirstName = user?.profile?.givenName ?? ""
             print("Google User First Name: \(userFirstName)")
