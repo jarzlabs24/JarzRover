@@ -76,11 +76,12 @@ The initial license, provenance, and secret review is recorded in [THIRD_PARTY_L
 OSS-003 remains open. The first public release is blocked until the project resolves:
 
 - the remaining exact Roboflow dataset-version/export record, validation evidence, and CC BY 4.0 attribution for `colored_ball_yolov5.tflite`, as detailed in its [model card](models/COLORED_BALL_MODEL.md), or removal of that binary;
-- default builds' four tracked configurations for the upstream OpenBot Firebase project;
 - source, license, and immutable hashes for downloaded AARs and OpenBot-hosted model files; and
 - transitive acknowledgements plus mutable/nightly dependency review for each shipped app or service.
 
 These are publication gates, not reasons to alter the known-working Nano wiring or rover behavior. Resolve them in small changes with builds/tests after configuration changes.
+
+The upstream Firebase binding has been removed from the default source configuration. Firebase is now optional: public builds start without it, while authorized JARzLabs development devices can opt in with ignored local configuration as documented in [FIREBASE_SETUP](FIREBASE_SETUP.md). Build verification for that change is recorded in [TEST_LOG](TEST_LOG.md); backend Security Rules and an enabled-cloud-device test remain separate operational checks.
 
 Brand ownership is resolved: Aarambh LLC, doing business under the registered Alameda County fictitious business name JARZLABS, owns the original JARzLabs/JarzRover brand assets. [`BRAND_POLICY.md`](../BRAND_POLICY.md) keeps covered software under MIT while reserving the names and artwork and allowing limited truthful/official-release uses.
 

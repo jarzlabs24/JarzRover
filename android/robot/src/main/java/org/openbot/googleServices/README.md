@@ -1,5 +1,7 @@
 ## Google Firebase
 
+> JarzRover note: these inherited account/Google Drive features are optional and hidden in the default experience. Do not use the upstream OpenBot Firebase project. Authorized JARzLabs devices should follow [`docs/FIREBASE_SETUP.md`](../../../../../../../docs/FIREBASE_SETUP.md); normal rover, model, ball, and Creature Lab flows do not require Firebase.
+
 <p align="center">
   <span>English</span> |
   <a href="README.zh-CN.md">简体中文</a> |

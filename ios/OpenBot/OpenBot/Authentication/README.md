@@ -1,5 +1,7 @@
 ## Google Firebase
 
+> JarzRover note: this inherited account/Google Drive feature is optional. A default build does not include or initialize Firebase. Authorized JARzLabs devices should follow [`docs/FIREBASE_SETUP.md`](../../../../docs/FIREBASE_SETUP.md); normal robot and Creature Lab flows do not require Firebase.
+
 <p align="center">
   <span>English</span> |
   <a href="README.zh-CN.md">简体中文</a> |

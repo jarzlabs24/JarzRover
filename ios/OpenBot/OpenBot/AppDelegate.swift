@@ -32,13 +32,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.'
         DropDown.startListeningToKeyboard()
-        FirebaseApp.configure();
-        GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
-            if error != nil || user == nil {
-                // The user isn't signed in or there was an error restoring their session.
-            } else {
-                // The user is signed in and their session has been restored.
-
+        if let path = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist"),
+           let options = FirebaseOptions(contentsOfFile: path) {
+            FirebaseApp.configure(options: options)
+            GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
+                if error != nil || user == nil {
+                    // The user isn't signed in or there was an error restoring their session.
+                } else {
+                    // The user is signed in and their session has been restored.
+                }
             }
         }
         return true
@@ -68,7 +70,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         // The signed-in user is stored in the user property of the GIDSignIn instance.
-        let userIdToken = user.accessToken
-        print("Access Token: \(userIdToken )")
     }
 }

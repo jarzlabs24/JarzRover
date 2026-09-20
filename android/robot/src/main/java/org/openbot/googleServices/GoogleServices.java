@@ -46,6 +46,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.openbot.BuildConfig;
 import org.openbot.databinding.FragmentProjectsBinding;
 import org.openbot.env.SharedPreferencesManager;
 import org.openbot.main.MainActivity;
@@ -93,26 +94,32 @@ public class GoogleServices extends Fragment {
         mContext = context;
         mCallback = callback;
         projectsFragment = new ProjectsFragment();
-        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth = BuildConfig.CLOUD_SERVICES_ENABLED ? FirebaseAuth.getInstance() : null;
         // Set up Google Sign-In options
-        GoogleSignInOptions gso =
+        GoogleSignInOptions.Builder gsoBuilder =
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                         .requestEmail()
-                        .requestIdToken(
-                                "955078484078-kbadvp54dljcpk0g0j5bnf5c17q63ir2.apps.googleusercontent.com")
-                        .requestProfile()
-                        .build();
+                        .requestProfile();
+        if (isConfigured()) {
+            gsoBuilder.requestIdToken(BuildConfig.GOOGLE_WEB_CLIENT_ID);
+        }
+        GoogleSignInOptions gso = gsoBuilder.build();
         // Set up Shared Preferences
         // Set up Google Sign-In client
         mGoogleSignInClient = GoogleSignIn.getClient(mActivity, gso);
         // Check if there is a signed-in account already and notify the callback accordingly
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+        FirebaseUser user = firebaseAuth == null ? null : firebaseAuth.getCurrentUser();
         if (user != null) {
             mCallback.onSignInSuccess(user);
         } else {
-            mCallback.onSignInFailed(null);
+            mCallback.onSignInFailed(
+                    isConfigured() ? null : new IllegalStateException("Cloud services are not configured"));
         }
         sharedPreferencesManager = new SharedPreferencesManager(mContext);
+    }
+
+    public static boolean isConfigured() {
+        return BuildConfig.CLOUD_SERVICES_ENABLED && !BuildConfig.GOOGLE_WEB_CLIENT_ID.isEmpty();
     }
 
 
@@ -122,6 +129,10 @@ public class GoogleServices extends Fragment {
      * @param credential use for firebase login.
      */
     private void firebaseAuthWithGoogle(AuthCredential credential) {
+        if (firebaseAuth == null) {
+            mCallback.onSignInFailed(new IllegalStateException("Cloud services are not configured"));
+            return;
+        }
         firebaseAuth
                 .signInWithCredential(credential)
                 .addOnCompleteListener(
@@ -148,6 +159,10 @@ public class GoogleServices extends Fragment {
      * Method to sign out of the current Google account.
      */
     public void signOut() {
+        if (firebaseAuth == null) {
+            mCallback.onSignOutFailed(new IllegalStateException("Cloud services are not configured"));
+            return;
+        }
         mGoogleSignInClient
                 .signOut()
                 .addOnCompleteListener(

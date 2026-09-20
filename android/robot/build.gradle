@@ -1,8 +1,27 @@
+import groovy.json.JsonSlurper
+
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'de.undercouch.download'
     id 'io.github.reactivecircus.app-versioning' version "1.1.2"
+}
+
+def firebaseConfigFile = file('google-services.json')
+def cloudServicesEnabled = firebaseConfigFile.exists()
+def googleWebClientId = ''
+
+if (cloudServicesEnabled) {
+    def firebaseConfig = new JsonSlurper().parse(firebaseConfigFile)
+    def matchingClient = firebaseConfig.client?.find {
+        it.client_info?.android_client_info?.package_name == 'com.jarzlabs.jarzrover'
+    }
+    def webClient = matchingClient?.oauth_client?.find { it.client_type == 3 }
+    googleWebClientId = webClient?.client_id ?: ''
+}
+
+def asBuildConfigString = { value ->
+    '"' + value.replace('\\', '\\\\').replace('"', '\\"') + '"'
 }
 
 appVersioning {
@@ -22,6 +41,8 @@ android {
         applicationId "com.jarzlabs.jarzrover"
         minSdkVersion 21
         targetSdkVersion 32
+        buildConfigField "boolean", "CLOUD_SERVICES_ENABLED", cloudServicesEnabled.toString()
+        buildConfigField "String", "GOOGLE_WEB_CLIENT_ID", asBuildConfigString(googleWebClientId)
         ndk {
             abiFilters 'armeabi-v7a', 'arm64-v8a'
         }
@@ -71,6 +92,10 @@ android {
     packagingOptions {
         resources.excludes.add("META-INF/*")
     }
+}
+
+if (cloudServicesEnabled) {
+    apply plugin: 'com.google.gms.google-services'
 }
 
 // Download default models
