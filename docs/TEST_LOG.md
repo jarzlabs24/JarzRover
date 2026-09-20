@@ -221,3 +221,32 @@ Next checks should establish installed hardware and flashed firmware, then verif
 - Final targeted Creature Lab lint and `npm run build`: pass.
 - Commit-candidate filename and content review found no tracked/untracked API key or credential. Ignored `.env` files are intentionally excluded from Git.
 - Not run: iOS build, Arduino firmware compilation (Arduino CLI is not installed), signed Android release/AAB generation, Play App Signing setup, Play Console validation, or Google Play policy/store-listing checks. Those remain the next release-readiness task on the other Mac.
+
+## Android Free Roam controller stabilization — 2026-09-13
+
+- User reported that Free Roam motion jerked and would not hold a steady speed, matching the previously deferred observation that forward controller input repeatedly stopped and restarted while held.
+- Added a 120 ms confirmation before accepting a zero reading from the analog controller so a single transient zero sample does not stop the motors. A real released control still stops after the short confirmation delay.
+- Added a 3% material-change threshold so small analog-stick noise does not continually change motor speed.
+- Restricted button-derived drive commands to D-pad keys so unrelated gamepad button events cannot replace the active drive command with zero. Corrected the left/right comparison so a change to either motor is accepted.
+- Added unit coverage for drive-button identification, stopped-control identification, jitter rejection, and real control changes.
+- `./gradlew :robot:assembleDebug :robot:testDebugUnitTest`: pass (`BUILD SUCCESSFUL` in 18 seconds; 47 tasks, 11 executed and 36 up-to-date).
+- Updated APK installation on the connected Pixel 7: pass. Physical held-forward stability, release-stop timing, steering, and D-pad behavior remain pending.
+
+## Android manual-assist colored-ball detection — 2026-09-13
+
+- Changed Object Tracking so camera inference and colored-ball recognition continue while Auto is off.
+- Auto on remains fully autonomous: patrol, sonar wall avoidance, and colored-ball actions control the rover. Auto off remains visitor-driven except while a detected red, green, or blue behavior is active; wall avoidance and patrol do not run in this mode.
+- Controller commands received during a ball action are retained but prevented from fighting the AI motor command. When the action finishes or the ball disappears, the latest controller command is restored.
+- Reset green centering/approach state when the green ball disappears so a later encounter starts fresh.
+- `./gradlew :robot:assembleDebug :robot:testDebugUnitTest`: pass (`BUILD SUCCESSFUL` in 19 seconds; 47 tasks, 10 executed and 37 up-to-date).
+- Updated APK installation on the connected Pixel 7: pass. Physical manual driving, each color takeover, controller restoration, and Auto-mode regression remain pending.
+
+## Creature Lab iPhone remote — 2026-09-19
+
+- Added a dedicated Creature Lab control screen to the Flutter iPhone controller with live Android status, Learn Empty Area, Watch/Stop, Take Picture, Not Yet, Create Creature, and Retake controls.
+- Added Android-to-controller Creature Lab state updates and controller-to-Android commands. The remote connection uses control-only mode so it does not intentionally start a competing WebRTC camera stream.
+- Fixed controller startup and WebRTC signaling on iOS, added Bonjour/local-network declarations, and made WebRTC the Android default streaming mode.
+- Fixed WebRTC shutdown so it stops and disposes its video capturer before CameraX opens Creature Lab. This addressed logs showing WebRTC still capturing at 30 FPS after its renderer had been released.
+- Flutter release build, signing, and installation on Aarav's iPhone: pass. User confirmed the iPhone connected and displayed all Creature Lab controls.
+- `./gradlew :robot:assembleDebug :robot:testDebugUnitTest`: pass (`BUILD SUCCESSFUL` in 8 seconds; 47 tasks, 5 executed and 42 up-to-date).
+- Updated APK installation on the connected Pixel 7: pass. Final physical confirmation of the Android preview after the camera-release fix remains pending.

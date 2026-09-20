@@ -1,6 +1,8 @@
 package org.openbot.common;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -28,6 +30,7 @@ import org.openbot.R;
 import org.openbot.env.AudioPlayer;
 import org.openbot.env.BotToControllerEventBus;
 import org.openbot.env.ControllerToBotEventBus;
+import org.openbot.env.GameController;
 import org.openbot.env.PhoneController;
 import org.openbot.env.SharedPreferencesManager;
 import org.openbot.main.MainViewModel;
@@ -46,6 +49,8 @@ import timber.log.Timber;
 
 public abstract class ControlsFragment extends Fragment implements ServerListener {
   private static final String NO_SERVER = "No server";
+  private static final long CONTROLLER_STOP_CONFIRMATION_MS = 120;
+  private static final float CONTROLLER_CHANGE_EPSILON = 0.03f;
 
   protected MainViewModel mViewModel;
   protected Vehicle vehicle;
@@ -65,6 +70,9 @@ public abstract class ControlsFragment extends Fragment implements ServerListene
   private ArrayAdapter<String> serverAdapter;
   private Spinner modelSpinner;
   private Spinner serverSpinner;
+  private final Handler controllerInputHandler = new Handler(Looper.getMainLooper());
+  private Runnable pendingControllerStop;
+  private Control latestControllerControl = new Control(0, 0);
 
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,8 +101,8 @@ public abstract class ControlsFragment extends Fragment implements ServerListene
             this,
             (requestKey, result) -> {
               MotionEvent motionEvent = result.getParcelable(Constants.DATA);
-              vehicle.setControl(vehicle.getGameController().processJoystickInput(motionEvent, -1));
-              processControllerKeyData(Constants.CMD_DRIVE);
+              applyGameControllerMotion(
+                  vehicle.getGameController().processJoystickInput(motionEvent, -1));
             });
     requireActivity()
         .getSupportFragmentManager()
@@ -106,13 +114,12 @@ public abstract class ControlsFragment extends Fragment implements ServerListene
               if (KeyEvent.ACTION_UP == event.getAction()) {
                 processKeyEvent(result.getParcelable(Constants.DATA));
               }
-              Control newControl =
-                  vehicle
-                      .getGameController()
-                      .processButtonInput(result.getParcelable(Constants.DATA));
-              if (vehicle.getControl().getLeft() != newControl.getLeft()
-                  && vehicle.getControl().getRight() != newControl.getRight()) {
-                vehicle.setControl(newControl);
+              if (GameController.isDriveButton(event.getKeyCode())) {
+                cancelPendingControllerStop();
+                Control newControl = vehicle.getGameController().processButtonInput(event);
+                if (submitControllerControl(newControl)) {
+                  processControllerKeyData(Constants.CMD_DRIVE);
+                }
               }
             });
 
@@ -183,6 +190,57 @@ public abstract class ControlsFragment extends Fragment implements ServerListene
             });
 
     handlePhoneControllerEvents();
+  }
+
+  private void applyGameControllerMotion(Control requestedControl) {
+    cancelPendingControllerStop();
+
+    if (GameController.isStopped(requestedControl)
+        && !GameController.isStopped(vehicle.getControl())) {
+      pendingControllerStop =
+          () -> {
+            pendingControllerStop = null;
+            if (submitControllerControl(new Control(0, 0))) {
+              processControllerKeyData(Constants.CMD_DRIVE);
+            }
+          };
+      controllerInputHandler.postDelayed(
+          pendingControllerStop, CONTROLLER_STOP_CONFIRMATION_MS);
+      return;
+    }
+
+    if (submitControllerControl(requestedControl)) {
+      processControllerKeyData(Constants.CMD_DRIVE);
+    }
+  }
+
+  private boolean submitControllerControl(Control requestedControl) {
+    latestControllerControl = requestedControl;
+    if (!allowsControllerDriveCommand()) return false;
+
+    if (GameController.materiallyDifferent(
+        vehicle.getControl(), requestedControl, CONTROLLER_CHANGE_EPSILON)) {
+      vehicle.setControl(requestedControl);
+      return true;
+    }
+    return false;
+  }
+
+  protected boolean allowsControllerDriveCommand() {
+    return true;
+  }
+
+  protected void resumeLatestControllerControl() {
+    if (allowsControllerDriveCommand()) {
+      vehicle.setControl(latestControllerControl);
+    }
+  }
+
+  private void cancelPendingControllerStop() {
+    if (pendingControllerStop != null) {
+      controllerInputHandler.removeCallbacks(pendingControllerStop);
+      pendingControllerStop = null;
+    }
   }
 
   protected void processKeyEvent(KeyEvent keyCode) {
@@ -256,7 +314,7 @@ public abstract class ControlsFragment extends Fragment implements ServerListene
             case Constants.CMD_DRIVE:
               JSONObject driveValue = event.getJSONObject("driveCmd");
 
-              vehicle.setControl(
+              submitControllerControl(
                   new Control(
                       Float.parseFloat(driveValue.getString("l")),
                       Float.parseFloat(driveValue.getString("r"))));
@@ -320,11 +378,16 @@ public abstract class ControlsFragment extends Fragment implements ServerListene
           result -> {
             result.forEach((permission, granted) -> allGranted = allGranted && granted);
 
-            if (allGranted) phoneController.connect(requireContext());
+            if (allGranted) connectPhoneControllerAfterPermission();
             else {
               PermissionUtils.showControllerPermissionsToast(requireActivity());
             }
           });
+
+  /** Allows camera-owning features to request a controller connection without video capture. */
+  protected void connectPhoneControllerAfterPermission() {
+    phoneController.connect(requireContext());
+  }
 
   @NotNull
   protected List<String> getModelNames(Predicate<Model> filter) {
@@ -343,6 +406,8 @@ public abstract class ControlsFragment extends Fragment implements ServerListene
   @Override
   public void onDestroy() {
     Timber.d("onDestroy");
+    cancelPendingControllerStop();
+    latestControllerControl = new Control(0, 0);
     ControllerToBotEventBus.unsubscribe(this.getClass().getSimpleName());
     vehicle.setControl(0, 0);
     super.onDestroy();
@@ -351,6 +416,8 @@ public abstract class ControlsFragment extends Fragment implements ServerListene
   @Override
   public synchronized void onPause() {
     Timber.d("onPause");
+    cancelPendingControllerStop();
+    latestControllerControl = new Control(0, 0);
     serverCommunication.stop();
     vehicle.setControl(0, 0);
     super.onPause();

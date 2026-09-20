@@ -35,6 +35,7 @@ public class PhoneController {
   private IVideoServer videoServer;
   private View view = null;
   private WebSocket webSocket;
+  private boolean controlOnly;
 
   public static PhoneController getInstance(Context context) {
     if (_phoneController == null) { // Check for the first time
@@ -109,6 +110,23 @@ public class PhoneController {
   }
 
   public void connect(Context context) {
+    controlOnly = false;
+    connectLocalController(context);
+  }
+
+  /** Connects the remote controller without competing with a fragment for the camera. */
+  public void connectControlOnly(Context context) {
+    prepareControlOnly();
+    connectLocalController(context);
+  }
+
+  /** Releases controller video before a camera-owning fragment initializes. */
+  public void prepareControlOnly() {
+    controlOnly = true;
+    videoServer.setConnected(false);
+  }
+
+  private void connectLocalController(Context context) {
     ILocalConnection connection = connectionSelector.getConnection();
 
     if (!connection.isConnected()) {
@@ -168,6 +186,7 @@ public class PhoneController {
 
   public void disconnect() {
     connectionSelector.getConnection().stop();
+    controlOnly = false;
   }
 
   public void send(JSONObject info) {
@@ -199,7 +218,9 @@ public class PhoneController {
         event -> {
           switch (event.getString("command")) {
             case "CONNECTED":
-              new Handler(Looper.getMainLooper()).post(() -> videoServer.setConnected(true));
+              if (!controlOnly) {
+                new Handler(Looper.getMainLooper()).post(() -> videoServer.setConnected(true));
+              }
 //              videoServer.setConnected(true);
               break;
 

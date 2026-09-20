@@ -3,14 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:openbot_controller/screens/controller.dart';
 
 void main() {
-  // We need to call it manually,
-  // because we going to call setPreferredOrientations()
-  // before the runApp() call
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Than we setup preferred orientations,
-  // and only after it finished we run our app
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
-  SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft])
-      .then((value) => runApp(const Controller()));
+  SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
+
+  // Do not make app startup depend on the orientation request completing.
+  // Recent iOS versions may delay or reject that request while launching.
+  runApp(const Controller());
 }

@@ -23,7 +23,11 @@ Source context: user-provided handoff from [Make Project Available](chatgpt-conv
 
 Work is focused on OpenBot object navigation and green-ball behavior: detection, centering, approach, and stopping. This describes the development goal; the supplied history does not establish an end-to-end pass or a verified stopping distance.
 
+Object Tracking now has two colored-ball operating modes. With Auto on, the rover controls patrol, wall avoidance, and all ball actions. With Auto off, camera detection remains active as a manual-assist layer: the visitor drives with the selected controller, a red/green/blue behavior temporarily takes motor control when triggered, and the latest controller command resumes when that behavior finishes or the ball disappears. Wall avoidance and autonomous patrol remain Auto-only.
+
 Creature Lab is being developed in `tools/creature-lab` as a separate, computer-first Maker Faire experience. Its initial flow uses the computer camera to capture one object, creates a local demo creature when paid AI generation is unavailable, and displays a creature image with a generated name, type, description, and special ability. Keep this experience stationary while it is being built and tested; rover roaming is out of scope for this phase.
+
+The Flutter iPhone controller now provides a dedicated Creature Lab remote when the Android app opens that feature. It mirrors status and generation progress and can learn the empty area, start or stop watching, respond to the object-found prompt, take or retake a photo, and start creature generation. Creature Lab uses a control-only phone connection so Android CameraX retains exclusive ownership of the rover camera.
 
 The selected Creature Lab visual direction is original, clean late-1990s/early-2000s Japanese game-guide creature art: smooth medium-thin outlines, simple friendly silhouettes, expressive geometric eyes, mostly flat moderately saturated colors, one restrained cel-shadow layer, small highlights, and a plain white background. Avoid watercolor, paper grain, sketch texture, painterly rendering, photorealism, and 3D rendering. Prompts must describe these general visual properties while continuing to prohibit imitation of Pokemon, existing characters, or a named artist.
 

@@ -56,7 +56,7 @@
         app:title="@string/video_streaming">
 
         <ListPreference
-            app:defaultValue="RTSP"
+            app:defaultValue="WebRTC"
             app:entries="@array/stream_server"
             app:entryValues="@array/stream_server"
             app:icon="@drawable/ic_videocam"

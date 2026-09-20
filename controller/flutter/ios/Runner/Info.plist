@@ -29,7 +29,10 @@
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_openbot._tcp.</string>
+		<string>_openbot-server._tcp.</string>
 	</array>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Allow Openbot Controller to discover and connect to the OpenBot driver on your local network.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>This app needs access to the camera</string>
 	<key>NSMicrophoneUsageDescription</key>

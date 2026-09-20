@@ -29,6 +29,11 @@ import org.json.JSONObject;
 import org.openbot.R;
 import org.openbot.common.CameraFragment;
 import org.openbot.databinding.FragmentCreatureLabBinding;
+import org.openbot.env.BotToControllerEventBus;
+import org.openbot.utils.ConnectionUtils;
+import org.openbot.utils.Constants;
+import org.openbot.utils.Enums;
+import org.openbot.utils.PermissionUtils;
 
 /** Manual Android milestone for capturing an object and generating its Creature Lab result. */
 public class CreatureLabFragment extends CameraFragment {
@@ -37,6 +42,12 @@ public class CreatureLabFragment extends CameraFragment {
   private static final String SERVER_ADDRESS_KEY = "server_address";
   private static final int OUTPUT_SIZE = 1024;
   private static final int DETECTION_FRAME_STRIDE = 6;
+  private static final String CMD_LEARN_AREA = "CREATURE_LEARN_AREA";
+  private static final String CMD_TOGGLE_WATCHING = "CREATURE_TOGGLE_WATCHING";
+  private static final String CMD_TAKE_PHOTO = "CREATURE_TAKE_PHOTO";
+  private static final String CMD_NOT_YET = "CREATURE_NOT_YET";
+  private static final String CMD_CREATE = "CREATURE_CREATE";
+  private static final String CMD_RETAKE = "CREATURE_RETAKE";
   private static final MediaType JSON_MEDIA_TYPE =
       MediaType.get("application/json; charset=utf-8");
 
@@ -55,14 +66,19 @@ public class CreatureLabFragment extends CameraFragment {
   private volatile boolean captureRequested;
   private int analyzedFrameCount;
   private boolean watchingOnUi;
+  private boolean objectPromptVisible;
+  private boolean generating;
   private Bitmap capturedBitmap;
   private Bitmap generatedBitmap;
+  private AlertDialog objectDiscoveredDialog;
 
   @Override
   public View onCreateView(
       @NonNull LayoutInflater inflater,
       @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
+    phoneController = org.openbot.env.PhoneController.getInstance(requireContext());
+    phoneController.prepareControlOnly();
     binding = FragmentCreatureLabBinding.inflate(inflater, container, false);
     return inflateFragment(binding, inflater, container);
   }
@@ -82,16 +98,32 @@ public class CreatureLabFragment extends CameraFragment {
     binding.createButton.setOnClickListener(ignored -> createCreature());
     binding.learnAreaButton.setOnClickListener(ignored -> learnEmptyArea());
     binding.watchButton.setOnClickListener(ignored -> setWatching(!watchingOnUi));
+
+    BotToControllerEventBus.emitEvent(
+        ConnectionUtils.createStatus(
+            "FRAGMENT_TYPE", Enums.FragmentType.CREATURELAB.getFragment()));
+    if (!PermissionUtils.hasControllerPermissions(requireActivity())) {
+      requestPermissionLauncher.launch(Constants.PERMISSIONS_CONTROLLER);
+    } else {
+      phoneController.connectControlOnly(requireContext());
+    }
+    emitControllerState(getString(R.string.creature_lab_camera_ready));
   }
 
   private void requestPhoto() {
     if (captureRequested) return;
+    objectPromptVisible = false;
+    if (objectDiscoveredDialog != null) {
+      objectDiscoveredDialog.dismiss();
+      objectDiscoveredDialog = null;
+    }
     setWatching(false);
     binding.discoveryGuide.setVisibility(View.GONE);
     binding.discoveryPanel.setVisibility(View.GONE);
     binding.takePhotoButton.setEnabled(false);
     binding.statusText.setText(R.string.creature_lab_capturing);
     captureRequested = true;
+    emitControllerState(getString(R.string.creature_lab_capturing));
   }
 
   @Override
@@ -119,6 +151,7 @@ public class CreatureLabFragment extends CameraFragment {
             binding.takePhotoButton.setEnabled(true);
             binding.statusText.setText(R.string.creature_lab_photo_ready);
             clearProfile();
+            emitControllerState(getString(R.string.creature_lab_photo_ready));
           });
       return;
     }
@@ -140,6 +173,7 @@ public class CreatureLabFragment extends CameraFragment {
             if (watchingOnUi) {
               binding.statusText.setText(
                   getString(R.string.creature_lab_watching_change, changedPercent));
+              emitControllerState(binding.statusText.getText().toString());
             }
           });
     }
@@ -153,12 +187,14 @@ public class CreatureLabFragment extends CameraFragment {
     binding.watchButton.setEnabled(false);
     binding.discoveryGuide.setVisibility(View.VISIBLE);
     binding.statusText.setText(R.string.creature_lab_learning);
+    emitControllerState(getString(R.string.creature_lab_learning));
   }
 
   private void onBaselineLearned() {
     binding.learnAreaButton.setEnabled(true);
     binding.watchButton.setEnabled(true);
     binding.statusText.setText(R.string.creature_lab_learned);
+    emitControllerState(getString(R.string.creature_lab_learned));
   }
 
   private void setWatching(boolean watching) {
@@ -169,21 +205,25 @@ public class CreatureLabFragment extends CameraFragment {
     binding.watchButton.setText(
         watchingOnUi ? R.string.creature_lab_stop_watching : R.string.creature_lab_watch);
     if (watchingOnUi) binding.statusText.setText(R.string.creature_lab_watching);
+    emitControllerState(binding.statusText.getText().toString());
   }
 
   private void showObjectDiscoveredPrompt() {
     if (binding == null || !isAdded()) return;
     setWatching(false);
-    new AlertDialog.Builder(requireContext())
+    objectPromptVisible = true;
+    emitControllerState(getString(R.string.creature_lab_object_found_message));
+    objectDiscoveredDialog =
+        new AlertDialog.Builder(requireContext())
         .setTitle(R.string.creature_lab_object_found_title)
         .setMessage(R.string.creature_lab_object_found_message)
         .setNegativeButton(
             R.string.creature_lab_not_yet,
-            (dialog, which) ->
-                binding.statusText.setText(R.string.creature_lab_discovery_paused))
+            (dialog, which) -> dismissObjectPrompt())
         .setPositiveButton(
             R.string.creature_lab_take_photo, (dialog, which) -> requestPhoto())
-        .show();
+        .create();
+    objectDiscoveredDialog.show();
   }
 
   private void postToUi(Runnable action) {
@@ -221,12 +261,62 @@ public class CreatureLabFragment extends CameraFragment {
 
   @Override
   protected void processControllerKeyData(String command) {
-    // Creature Lab's first Android milestone is stationary and does not consume drive commands.
+    if (Constants.CMD_CONNECTED.equals(command)) {
+      postToUi(
+          () -> {
+            BotToControllerEventBus.emitEvent(
+                ConnectionUtils.createStatus(
+                    "FRAGMENT_TYPE", Enums.FragmentType.CREATURELAB.getFragment()));
+            emitControllerState(binding.statusText.getText().toString());
+          });
+      return;
+    }
+
+    postToUi(
+        () -> {
+          switch (command) {
+            case CMD_LEARN_AREA:
+              learnEmptyArea();
+              break;
+            case CMD_TOGGLE_WATCHING:
+              setWatching(!watchingOnUi);
+              break;
+            case CMD_TAKE_PHOTO:
+              requestPhoto();
+              break;
+            case CMD_NOT_YET:
+              dismissObjectPrompt();
+              break;
+            case CMD_CREATE:
+              createCreature();
+              break;
+            case CMD_RETAKE:
+              resetForRetake();
+              break;
+            default:
+              break;
+          }
+        });
+  }
+
+  private void dismissObjectPrompt() {
+    objectPromptVisible = false;
+    if (objectDiscoveredDialog != null) {
+      objectDiscoveredDialog.dismiss();
+      objectDiscoveredDialog = null;
+    }
+    binding.statusText.setText(R.string.creature_lab_discovery_paused);
+    emitControllerState(getString(R.string.creature_lab_discovery_paused));
   }
 
   @Override
   protected void processUSBData(String data) {
     // USB telemetry is intentionally left untouched for the later patrol integration milestone.
+  }
+
+  @Override
+  protected void connectPhoneControllerAfterPermission() {
+    phoneController.connectControlOnly(requireContext());
   }
 
   private static Bitmap makeSquarePhoto(Bitmap source, int rotationDegrees) {
@@ -345,6 +435,7 @@ public class CreatureLabFragment extends CameraFragment {
               binding.retakeButton.setText(R.string.creature_lab_try_again);
               binding.createButton.setVisibility(View.GONE);
               setGenerating(false);
+              emitControllerState(getString(R.string.creature_lab_result_ready));
             });
   }
 
@@ -356,18 +447,26 @@ public class CreatureLabFragment extends CameraFragment {
               if (binding == null) return;
               setGenerating(false);
               binding.statusText.setText(getString(R.string.creature_lab_generation_failed, message));
+              emitControllerState(binding.statusText.getText().toString());
             });
   }
 
   private void setGenerating(boolean generating) {
+    this.generating = generating;
     binding.progress.setVisibility(generating ? View.VISIBLE : View.GONE);
     binding.retakeButton.setEnabled(!generating);
     binding.createButton.setEnabled(!generating);
     binding.serverAddress.setEnabled(!generating);
     if (generating) binding.statusText.setText(R.string.creature_lab_generating);
+    emitControllerState(binding.statusText.getText().toString());
   }
 
   private void resetForRetake() {
+    objectPromptVisible = false;
+    if (objectDiscoveredDialog != null) {
+      objectDiscoveredDialog.dismiss();
+      objectDiscoveredDialog = null;
+    }
     binding.photoPreview.setImageDrawable(null);
     binding.photoPreview.setVisibility(View.GONE);
     binding.serverPanel.setVisibility(View.VISIBLE);
@@ -386,6 +485,27 @@ public class CreatureLabFragment extends CameraFragment {
     clearProfile();
     replaceCapturedBitmap(null);
     replaceGeneratedBitmap(null);
+    emitControllerState(getString(R.string.creature_lab_camera_ready));
+  }
+
+  private void emitControllerState(String message) {
+    if (binding == null) return;
+    try {
+      JSONObject state = new JSONObject();
+      state.put("message", message);
+      state.put("watching", watchingOnUi);
+      state.put("objectFound", objectPromptVisible);
+      state.put("generating", generating);
+      state.put("canLearn", !generating && !watchingOnUi && capturedBitmap == null);
+      state.put("canWatch", !generating && capturedBitmap == null && sceneDetector.hasBaseline());
+      state.put("canTakePhoto", !generating && capturedBitmap == null && !captureRequested);
+      state.put("canCreate", !generating && capturedBitmap != null && generatedBitmap == null);
+      state.put("canRetake", !generating && (capturedBitmap != null || generatedBitmap != null));
+      JSONObject status = new JSONObject().put("CREATURE_LAB_STATE", state);
+      BotToControllerEventBus.emitEvent(new JSONObject().put("status", status));
+    } catch (Exception ignored) {
+      // Controller status is helpful but must never interrupt camera or generation work.
+    }
   }
 
   private void clearProfile() {
@@ -425,6 +545,9 @@ public class CreatureLabFragment extends CameraFragment {
   @Override
   public void onDestroyView() {
     captureRequested = false;
+    if (objectDiscoveredDialog != null) objectDiscoveredDialog.dismiss();
+    BotToControllerEventBus.emitEvent(ConnectionUtils.createStatus("FRAGMENT_TYPE", "CLOSE"));
+    phoneController.disconnect();
     binding = null;
     super.onDestroyView();
   }
