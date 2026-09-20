@@ -1,6 +1,6 @@
 # JarzRover Creature Lab
 
-Creature Lab is a computer-first Maker Faire experience that captures an object, generates an original creature concept through a separately configured local service, and displays recent discoveries in a session gallery.
+Creature Lab is a computer-first experience that captures an object, generates an original creature concept through a separately configured local service, and displays recent discoveries in a session gallery.
 
 The Android robot app and Flutter controller contain the capture/control experience. This directory contains the local web experience and server-side generation support. Firebase is not required.
 
