@@ -21,6 +21,7 @@ Do not spell the brand as `JarzLabs`, `JARZLABS`, or `Jarzlabs` in user-facing p
 | `source/jarzlabs-brand-reference-back.png` | Contact-card layout and service-icon reference | Official user-provided brand reference; may contain contact details that should be reviewed before publication |
 | `review/jarzrover-app-icon-v1-wheel-hubs.png` | First checked-in square app-icon candidate | Superseded review version; currently still used by the Android manifest |
 | `source/jarzrover-app-icon-master.png` | White-background printer/rover sketch with straight tires and no wheel-hub circles | Approved app-icon master as of 2026-09-19 |
+| `generated/jarzlabs-readme-banner.png` | Wide JARzLabs repository banner derived from the official front brand reference | Approved for the JarzRover README in the first public-source milestone |
 | `review/jarzrover-app-icon-v2-straight-wheels.png` | Approved revision before promotion | Retained as review history; identical to the approved master |
 
 The app icon intentionally omits the JARzLabs wordmark and tagline because those details are not legible at launcher sizes. The full logo remains the preferred large-format brand mark.
@@ -41,6 +42,6 @@ The source and review images were supplied or directed by the JarzRover project 
 
 ## Platform scope
 
-The approved master is exported to the Android robot launcher resources and the native iOS robot asset catalog. The Flutter controller icon is intentionally unchanged until its shared-versus-badged identity is decided.
+The approved master is exported to the Android robot launcher resources and the native iOS robot asset catalog. For the first public binary milestone, the Android and Flutter controller apps share the JarzRover mark and use their display names to distinguish the controller role. A controller-badged variation may be introduced later after visual review.
 
 The exporter currently uses macOS `sips`, which is available on the supported iOS build host. If cross-platform brand generation becomes a contributor requirement, replace or complement it with a pinned image tool and verify byte and visual output before switching workflows.

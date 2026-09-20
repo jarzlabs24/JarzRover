@@ -15,7 +15,7 @@ Planning baseline: 2026-09-07. Source: JarzRover Bot Design and Testing (convers
 
 ## Product and ownership decisions
 
-Dad owns release engineering, platform compatibility, accounts, privacy, signing and submission. Aarav owns inference, behavior algorithms and later experiments. Both validate hardware and agree the final scope.
+@jarvis414-bot owns release engineering, platform compatibility, accounts, privacy, signing and submission. @jarzlabs24 owns inference, behavior algorithms and later experiments. Both verified maintainers validate hardware and agree the final scope.
 
 The selected Android product is the native robot app named **JarzRover**, published under **JARzLabs**, application ID `com.jarzlabs.jarzrover`, and audience 13+. Candidate Android 1.0 scope is connection, manual drive, diagnostics, camera, colored-ball behavior, setup and safe recovery. Sonar requires installed/enabled hardware and integrated evidence; Blockly is conditional on stability. Creature Lab is in the 1.0 product scope but is disabled in the Play distribution until its reliable HTTPS service and privacy disclosures are ready; it remains enabled in the Maker Faire distribution. Google sign-in, OpenBot Playground/cloud projects, and Google Drive saving are excluded from 1.0. OpenBot attribution belongs in About and packaged notices.
 
@@ -27,16 +27,16 @@ Keep the current directory layout. Add supporting documents/assets when their im
 
 | Group | Owner | Exit gate |
 | --- | --- | --- |
-| M0 Repo workflow | Dad | Context, issue map and repeatable Codex handoff available |
-| M1 Release scope | Dad + Aarav agreement | Explicit included/deferred features and acceptance thresholds |
-| M2 Repo hardening | Dad | Branch workflow, license/secrets review, reproducible debug build, account setup |
-| M3 Android production | Dad | Compatible signed release, privacy evidence, failure recovery, reviewer path and CI |
-| M4 Feature stabilization | Aarav / Both for QA | Inference/behavior regression coverage and physical release evidence |
-| M5 Google Play beta | Dad | Internal/required closed testing, feedback and eligibility evidence |
-| M6 Android 1.0 | Dad | Submission outcome, release record and rollout/support plan |
-| M7 iOS POC | Both | Real iPhone camera/inference/control/reconnect and fail-safe evidence |
-| M8 iOS production | Dad | Production application, TestFlight validation and submission outcome |
-| M9 Feature 1.1+ | Aarav | Isolated creature prototype and decision on future scope |
+| M0 Repo workflow | @jarvis414-bot | Context, issue map and repeatable Codex handoff available |
+| M1 Release scope | @jarvis414-bot + @jarzlabs24 agreement | Explicit included/deferred features and acceptance thresholds |
+| M2 Repo hardening | @jarvis414-bot | Branch workflow, license/secrets review, reproducible debug build, account setup |
+| M3 Android production | @jarvis414-bot | Compatible signed release, privacy evidence, failure recovery, reviewer path and CI |
+| M4 Feature stabilization | @jarzlabs24 / both maintainers for QA | Inference/behavior regression coverage and physical release evidence |
+| M5 Google Play beta | @jarvis414-bot | Internal/required closed testing, feedback and eligibility evidence |
+| M6 Android 1.0 | @jarvis414-bot | Submission outcome, release record and rollout/support plan |
+| M7 iOS POC | @jarvis414-bot and @jarzlabs24 | Real iPhone camera/inference/control/reconnect and fail-safe evidence |
+| M8 iOS production | @jarvis414-bot | Production application, TestFlight validation and submission outcome |
+| M9 Feature 1.1+ | @jarzlabs24 | Isolated creature prototype and decision on future scope |
 
 Milestones group outcomes; dependencies in issues determine readiness. iOS exploration can start alongside Android work. Proposed future branches are main for released code, develop for integration, release/1.0 for stabilization and feature branches for experiments. REL-002 must map these roles to existing branches before creating or renaming anything. Return stabilization fixes to development and select only accepted features for release.
 
@@ -46,7 +46,7 @@ Milestones group outcomes; dependencies in issues determine readiness. iOS explo
 2. Scan secrets/artifacts safely, rotate exposed credentials and document secure storage (REL-004). Record exact tools, model hashes and clean-build steps in BUILD_ANDROID (REL-005). Reconcile branch/CI workflows (REL-002/008).
 3. Upgrade Android compatibility (AND-001), production identity/logging/lint/configuration (AND-002), and secure signing/AAB generation (AND-003). Evaluate native dependency compatibility as part of the upgrade.
 4. Audit permissions, SDK traffic, accounts, image storage, telemetry and retention (AND-004). Produce PRIVACY and public policy/support pages (REL-007). Decide target audience and applicable family/children requirements from actual positioning; no unverified no-data or no-upload claims.
-5. Version inference assets and define a stable interface: recognition class/confidence/bounds/timestamp into behavior logic; bounded motor commands with expiry out. Aarav stabilizes color behavior and meaningful regression tests (AI-001/002/003). Dad handles camera/transport/lifecycle failures and STOP on loss (AND-006). No stale commands should resume after reconnect.
+5. Version inference assets and define a stable interface: recognition class/confidence/bounds/timestamp into behavior logic; bounded motor commands with expiry out. @jarzlabs24 stabilizes color behavior and meaningful regression tests (AI-001/002/003). @jarvis414-bot handles camera/transport/lifecycle failures and STOP on loss (AND-006). No stale commands should resume after reconnect.
 6. Provide clear disconnected/setup and labeled demo experiences (AND-005). Demo mode must not actuate motors; reviewer instructions identify remaining hardware-dependent functions.
 7. Run QA-001 against exact candidate app/firmware/device/hardware revisions. Cover permission refusal, missing models, camera failure, manual/color behavior, disconnect, reconnect, app background/restart and sustained performance. Agree numerical thresholds before testing; document failures and unrun checks in TEST_LOG. Do not substitute demo/unit tests for physical evidence.
 8. Set up accurate developer identity (PLAY-001); prepare store graphics/screenshots/descriptions, audience/rating/Data Safety, app access, support/policy and release notes. Distribute internal and any applicable closed tests (PLAY-002), resolve findings, then submit and record production outcome (PLAY-003). Keep a release tag/artifact hash, rollout halt/hotfix process and support owner.
@@ -57,7 +57,7 @@ Milestones group outcomes; dependencies in issues determine readiness. iOS explo
 
 Supporting deliverables belong to their issues: BUILD_ANDROID (REL-005), THIRD_PARTY_LICENSES and notices (REL-003), PRIVACY/public pages (REL-007), RELEASE_CHECKLIST (QA-001), ARCHITECTURE (IOS-001), BUILD_IOS (IOS-004), store assets/release notes (PLAY-002/003 and IOS-004/003). Do not claim these documents exist until created.
 
-A release candidate needs a reproducible signed artifact, verified scope, resolved blocking findings, current policy evidence, accurate metadata, a physical test record and reviewer access resources. Every build increments its platform build number. Dad records the submission decision and outcome; this backlog setup does not submit or publish an app.
+A release candidate needs a reproducible signed artifact, verified scope, resolved blocking findings, current policy evidence, accurate metadata, a physical test record and reviewer access resources. Every build increments its platform build number. @jarvis414-bot records the submission decision and outcome; this backlog setup does not submit or publish an app.
 
 Official sources checked again on 2026-09-12; recheck at submission:
 

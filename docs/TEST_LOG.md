@@ -98,7 +98,7 @@ Next checks should establish installed hardware and flashed firmware, then verif
 - Flutter analysis: 64 informational findings, no warnings/errors. Flutter tests unavailable (no test directory). Unsigned Flutter iOS release build passed. nsd_ios produced a Swift Package Manager support warning.
 - No physical robot tests, device pairing, app signing, store submission, or merge performed. Ball safety/target-loss behavior remains unverified and has code-level blockers.
 - Read-only merge preview found an iOS Podfile deployment-target conflict with origin/master (15.0 versus 14.0).
-- Detailed review: /Users/aarav/.codex/.chatgpt-projects/g-p-69eeb1ada73c81918e529342f131fd89/MERGE_READINESS_2026-09-07.md. Temporary build logs are /tmp/jarz-*-review.log and /tmp/jarz-*-ios.log, plus /tmp/jarz-flutter-analyze.log and /tmp/jarz-flutter-test.log.
+- Detailed review was recorded in the other Mac's local Codex project context. Temporary build logs were stored under `/tmp/jarz-*`; they were not committed.
 
 - Native OpenBot unsigned iOS Debug device build: PASS with Xcode 26.3, using a fresh /tmp/jarz-native-ios-review derived-data directory and existing Pods. No simulator tests or signed device install performed.
 
@@ -114,7 +114,7 @@ Next checks should establish installed hardware and flashed firmware, then verif
 - Hardware impact: none in this change; motor, Bluetooth, wiring, and firmware behavior were not modified.
 - After the first physical-device installation, opening Creature Lab terminated the app. Inspection found `AVCaptureSession.startRunning()` was called before `commitConfiguration()`, an invalid AVFoundation camera-session sequence.
 - Corrected the sequence to commit the camera configuration before starting the session. Swift type-check, project plist validation, and `git diff --check` pass after the correction.
-- The corrected build was installed and launched on Aarav's iPhone through Xcode. Reopening Creature Lab and testing capture/generation remain user-device checks.
+- The corrected build was installed and launched on the project test iPhone through Xcode. Reopening Creature Lab and testing capture/generation remain user-device checks.
 - Physical iPhone verification: pass. Creature Lab opened without crashing, captured a photo, reached the Mac-hosted server at `http://192.168.251.244:3000`, and returned an AI-generated creature result.
 - This verification used the iPhone and Mac on the same local network with the development server running; rover mounting, motor behavior, autonomous detection, and Maker Faire network reliability remain untested.
 
@@ -123,7 +123,7 @@ Next checks should establish installed hardware and flashed firmware, then verif
 - Added a visible center discovery zone, empty-arena calibration, low-resolution on-device scene comparison, stable-object confirmation, and a user approval prompt before photo capture.
 - Detection sends no camera frames to the server and issues no motor commands. Generation still starts only after the visitor approves a captured photo and taps Create Creature.
 - Direct Swift type-check against the installed iPhone SDK, project plist validation, and `git diff --check`: pass.
-- Incremental Xcode build, installation, and launch on Aarav's iPhone: pass.
+- Incremental Xcode build, installation, and launch on the project test iPhone: pass.
 - Physical calibration sensitivity, stable-object prompt timing, false positives, capture framing, and generation from the discovery flow: not yet tested.
 - Physical orientation test reported that the UIKit discovery guide rotated in landscape while the AVFoundation preview remained sideways.
 - Added explicit interface-orientation updates for the camera preview and photo-output connection. Direct Swift type-check and incremental iPhone build/install: pass; corrected landscape preview and saved-photo orientation await user verification.
@@ -153,7 +153,7 @@ Next checks should establish installed hardware and flashed firmware, then verif
 - Final `./gradlew :robot:assembleDebug :robot:testDebugUnitTest`: pass (`BUILD SUCCESSFUL` in 14 seconds; 47 tasks, 13 executed and 34 up-to-date).
 - APK inspection: pass. `robot-debug.apk` includes `colored_ball_yolov5.tflite`, `colored_balls.txt`, and the Creature Lab layout.
 - `git diff --check`: pass.
-- Android SDK `adb` was found at `/Users/aarav/Library/Android/sdk/platform-tools/adb`. The debug APK installed successfully on the connected Pixel 7 and `org.openbot/.main.MainActivity` launched and remained running in the foreground.
+- Android SDK `adb` was found in the other Mac's user SDK directory. The debug APK installed successfully on the connected Pixel 7 and `org.openbot/.main.MainActivity` launched and remained running in the foreground.
 - The Mac-hosted Creature Lab returned HTTP 200 at `http://localhost:3000`; the Mac Wi-Fi address was `192.168.251.244` at this checkpoint.
 - Physical Android camera capture, landscape orientation, same-network generation, Nano USB connection, colored-ball behavior, and rover motion: not run. The Pixel was showing its system shade during the automated UI-label check and requires user interaction for the feature tests.
 - First physical Android Creature Lab test: generation completed successfully, but the square result image was cropped by the full-screen `centerCrop` presentation. Changed the photo/result view to `fitCenter` on a white background so the complete square creature image is visible on portrait and landscape displays.
@@ -246,7 +246,7 @@ Next checks should establish installed hardware and flashed firmware, then verif
 - Added Android-to-controller Creature Lab state updates and controller-to-Android commands. The remote connection uses control-only mode so it does not intentionally start a competing WebRTC camera stream.
 - Fixed controller startup and WebRTC signaling on iOS, added Bonjour/local-network declarations, and made WebRTC the Android default streaming mode.
 - Fixed WebRTC shutdown so it stops and disposes its video capturer before CameraX opens Creature Lab. This addressed logs showing WebRTC still capturing at 30 FPS after its renderer had been released.
-- Flutter release build, signing, and installation on Aarav's iPhone: pass. User confirmed the iPhone connected and displayed all Creature Lab controls.
+- Flutter release build, signing, and installation on the project test iPhone: pass. User confirmed the iPhone connected and displayed all Creature Lab controls.
 - `./gradlew :robot:assembleDebug :robot:testDebugUnitTest`: pass (`BUILD SUCCESSFUL` in 8 seconds; 47 tasks, 5 executed and 42 up-to-date).
 - Updated APK installation on the connected Pixel 7: pass. Final physical confirmation of the Android preview after the camera-release fix remains pending.
 
@@ -330,3 +330,16 @@ Next checks should establish installed hardware and flashed firmware, then verif
 - Artifact inspection found no `google-services.json`/`GoogleService-Info.plist` in either debug APK or the iOS app bundle, and no upstream OpenBot Firebase project identifier remained in current Android/iOS source outside historical documentation.
 - `./gradlew :robot:checkStyle` could not run because the robot project defines no `checkStyle` task; this is a missing verification entry point, not a style-test pass.
 - Not run: app launch on an emulator or device, physical rover behavior, JARzLabs Firebase sign-in/Drive flow with local configuration, Firebase Security Rules/App Check review, or signed/release artifact validation. The iOS build retained existing dependency and Markdown-resource warnings.
+
+## Public-readiness branding and build verification — 2026-09-20
+
+- Added the approved JARzLabs README banner and applied the approved JarzRover icon to the Android robot, native Android controller, native iOS robot, and Flutter controller export sets. Updated product labels and set controller identifiers to `com.jarzlabs.jarzrover.controller`.
+- Removed upstream-owner issue automation, GPT workflows with broad permissions/API-secret dependencies, traffic collection, and automatic debug-APK release publishing. Android CI now builds the supported JarzRover robot variants and controller on `jarz-development` and `master`.
+- Added SHA-256 verification for the three OpenBot-hosted Android AAR downloads. Verification passed with the locally downloaded payloads.
+- Android debug build and unit-test command passed: `:robot:assembleStandardDebug`, `:robot:assembleMakerFaireDebug`, `:robot:testStandardDebugUnitTest`, `:robot:testMakerFaireDebugUnitTest`, and `:controller:assembleDebug` (`BUILD SUCCESSFUL` in 12 seconds; 121 tasks, 43 executed and 78 up-to-date).
+- Android unsigned release build passed for `:robot:assembleStandardRelease` and `:controller:assembleRelease` (`BUILD SUCCESSFUL` in 30 seconds). Outputs are explicitly named `*-unsigned.apk` and are not distribution artifacts.
+- Flutter dependencies resolved. `flutter analyze` completed with a nonzero exit because of 63 inherited informational style/deprecation findings; no analyzer errors were reported. `flutter test` could not run because the project has no `test` directory.
+- `flutter build ios --release --no-codesign` passed and produced a 30.6 MB device app at `controller/flutter/build/ios/iphoneos/Runner.app`. It is unsigned and cannot be emailed or hosted as an installable iOS binary.
+- `security find-identity -v -p codesigning` reports zero valid Apple signing identities on this Mac. No JARzLabs Android release keystore was found. Signed distribution remains blocked on those credentials/profiles.
+- Installed Gitleaks 8.30.1 and scanned the final 1,041-commit history. The scan passed with no leaks after applying a checked-in allowlist limited to inherited OpenBot Firebase client configurations already present in the public upstream/history and CocoaPods checksum false positives.
+- Not run: Android/iOS device installation, simulator UI, website/email installation, physical rover/controller behavior, signed APK/IPA creation, TestFlight/Ad Hoc provisioning, or public GitHub push. Model/AAR notice gaps documented in `docs/THIRD_PARTY_LICENSES.md` remain binary-release gates.

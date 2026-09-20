@@ -1,4 +1,8 @@
-# Robot App
+# JarzRover Android Robot App
+
+This is the primary JarzRover robot-brain app for an Android phone mounted on the rover. The currently supported JARzLabs reference path connects the phone to an Arduino Nano over USB OTG using the documented OpenBot DIY protocol and pin configuration. See the [hardware baseline](../../docs/HARDWARE.md), [wiring guide](../../docs/WIRING.md), and [test log](../../docs/TEST_LOG.md) before changing firmware or wiring assumptions.
+
+The app is derived from OpenBot and retains inherited OpenBot technical names where compatibility matters. JarzRover adds JARzLabs branding, colored-ball behaviors, Creature Lab, and event-specific configuration.
 
 <p align="center">
   <span>English</span> |
@@ -8,6 +12,8 @@
   <a href="README.es-ES.md">Español</a> |
   <a href="README.ko-KR.md">한국어</a>
 </p>
+
+> Translation note: linked translations are inherited OpenBot documentation and have not yet been adapted to JarzRover. Use this English page for the supported JarzRover configuration.
 
 ## DISCLAIMERS
 

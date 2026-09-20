@@ -27,7 +27,7 @@ class DiscoveringDeviceState extends State<DiscoveringDevice> {
               ),
               const Padding(
                   padding: EdgeInsets.all(10),
-                  child: BlinkText("Searching for OpenBot...",
+                  child: BlinkText("Searching for JarzRover...",
                       style: TextStyle(fontSize: 25, color: Colors.black),
                       beginColor: Colors.black,
                       endColor: Colors.white,

@@ -4,28 +4,28 @@ Revision 1 — 2026-09-06. Stable local IDs; no GitHub issues posted. Human owne
 
 ## JR-001 — Choose shipping apps and v1 scope
 
-- Owner: Dad
+- Owner: @jarvis414-bot
 - Milestone: M0
 - Status: Ready
 - Dependencies: none
-- Suggested branch: dad/JR-001-task
-- Suggested labels: app-store-readiness, owner:dad
+- Suggested branch: jarvis414-bot/JR-001-task
+- Suggested labels: app-store-readiness, owner:jarvis414-bot
 - GitHub URL: not created
 
 **Scope:** Compare all four app roles from the audit; record platform matrix, included/excluded features, audience, monetization and launch sequencing.
 
 **Acceptance / validation:**
 
-- [ ] Dad records one explicit shipping matrix; Aarav confirms feature boundaries; unresolved product choices have an owner and block dependent changes.
+- [ ] @jarvis414-bot records one explicit shipping matrix; @jarzlabs24 confirms feature boundaries; unresolved product choices have an owner and block dependent changes.
 - [ ] Record evidence, remaining gaps and completed handoff; update status after review.
 ## JR-002 — Establish repository and build baseline
 
-- Owner: Dad
+- Owner: @jarvis414-bot
 - Milestone: M0
 - Status: Ready
 - Dependencies: none
-- Suggested branch: dad/JR-002-task
-- Suggested labels: app-store-readiness, owner:dad
+- Suggested branch: jarvis414-bot/JR-002-task
+- Suggested labels: app-store-readiness, owner:jarvis414-bot
 - GitHub URL: not created
 
 **Scope:** Verify private repository visibility, live default branch, branch divergence and preserved second-Mac work; record JDK/SDK/Flutter/Xcode/CocoaPods versions and build commands for candidate apps.
@@ -37,12 +37,12 @@ Revision 1 — 2026-09-06. Stable local IDs; no GitHub issues posted. Human owne
 
 ## JR-003 — Finalize identity and store ownership
 
-- Owner: Dad
+- Owner: @jarvis414-bot
 - Milestone: M1
 - Status: Todo
 - Dependencies: 001
-- Suggested branch: dad/JR-003-task
-- Suggested labels: app-store-readiness, owner:dad
+- Suggested branch: jarvis414-bot/JR-003-task
+- Suggested labels: app-store-readiness, owner:jarvis414-bot
 - GitHub URL: not created
 
 **Scope:** Inventory existing store registrations before changing IDs; decide distinct app IDs, names, versions, icons, support/privacy URLs and developer account owner.
@@ -54,12 +54,12 @@ Revision 1 — 2026-09-06. Stable local IDs; no GitHub issues posted. Human owne
 
 ## JR-004 — Prepare selected Android apps
 
-- Owner: Dad
+- Owner: @jarvis414-bot
 - Milestone: M1
 - Status: Todo
 - Dependencies: 001,002,003
-- Suggested branch: dad/JR-004-task
-- Suggested labels: app-store-readiness, owner:dad
+- Suggested branch: jarvis414-bot/JR-004-task
+- Suggested labels: app-store-readiness, owner:jarvis414-bot
 - GitHub URL: not created
 
 **Scope:** Check current Play target/API and native-library requirements; upgrade selected modules incrementally; examine permissions, exported components, storage, background behavior, ABI/native dependencies and release lint.
@@ -71,12 +71,12 @@ Revision 1 — 2026-09-06. Stable local IDs; no GitHub issues posted. Human owne
 
 ## JR-005 — Validate iOS role and platform readiness
 
-- Owner: Dad
+- Owner: @jarvis414-bot
 - Milestone: M1
 - Status: Todo
 - Dependencies: 001,002,003
-- Suggested branch: dad/JR-005-task
-- Suggested labels: app-store-readiness, owner:dad
+- Suggested branch: jarvis414-bot/JR-005-task
+- Suggested labels: app-store-readiness, owner:jarvis414-bot
 - GitHub URL: not created
 
 **Scope:** Prove intended robot/controller connectivity on physical iPhone; reconcile deployment targets, dependencies, entitlements and usage descriptions; verify current Xcode/SDK submission requirements.
@@ -88,12 +88,12 @@ Revision 1 — 2026-09-06. Stable local IDs; no GitHub issues posted. Human owne
 
 ## JR-006 — Configure production signing and artifacts
 
-- Owner: Dad
+- Owner: @jarvis414-bot
 - Milestone: M1
 - Status: Todo
 - Dependencies: 003,004,005 (selected platforms only)
-- Suggested branch: dad/JR-006-task
-- Suggested labels: app-store-readiness, owner:dad
+- Suggested branch: jarvis414-bot/JR-006-task
+- Suggested labels: app-store-readiness, owner:jarvis414-bot
 - GitHub URL: not created
 
 **Scope:** Replace debug signing for selected Flutter Android release and remove native controller release debugging if shipped; establish upload keys, Apple team/profiles and secure credential storage/recovery.
@@ -105,12 +105,12 @@ Revision 1 — 2026-09-06. Stable local IDs; no GitHub issues posted. Human owne
 
 ## JR-007 — Audit service configuration and secrets
 
-- Owner: Dad
+- Owner: @jarvis414-bot
 - Milestone: M1
 - Status: Todo
 - Dependencies: 001,002
-- Suggested branch: dad/JR-007-task
-- Suggested labels: app-store-readiness, owner:dad
+- Suggested branch: jarvis414-bot/JR-007-task
+- Suggested labels: app-store-readiness, owner:jarvis414-bot
 - GitHub URL: not created
 
 **Scope:** Map Firebase, network endpoints, analytics/crash reporting and generation services actually used; inspect tracked configuration and history with redacted secret scanning; separate development/production access.
@@ -122,12 +122,12 @@ Revision 1 — 2026-09-06. Stable local IDs; no GitHub issues posted. Human owne
 
 ## JR-008 — Implement privacy and audience requirements
 
-- Owner: Dad
+- Owner: @jarvis414-bot
 - Milestone: M1
 - Status: Todo
 - Dependencies: 001,007
-- Suggested branch: dad/JR-008-task
-- Suggested labels: app-store-readiness, owner:dad
+- Suggested branch: jarvis414-bot/JR-008-task
+- Suggested labels: app-store-readiness, owner:jarvis414-bot
 - GitHub URL: not created
 
 **Scope:** Trace camera, microphone, local network, images, identifiers, analytics, accounts and deletion flows; decide child-directed scope; check current official store privacy/account/AI rules applicable to selected features.
@@ -139,12 +139,12 @@ Revision 1 — 2026-09-06. Stable local IDs; no GitHub issues posted. Human owne
 
 ## JR-009 — Preserve attribution and review dependencies
 
-- Owner: Dad
+- Owner: @jarvis414-bot
 - Milestone: M1
 - Status: Todo
 - Dependencies: 001,002
-- Suggested branch: dad/JR-009-task
-- Suggested labels: app-store-readiness, owner:dad
+- Suggested branch: jarvis414-bot/JR-009-task
+- Suggested labels: app-store-readiness, owner:jarvis414-bot
 - GitHub URL: not created
 
 **Scope:** Inventory OpenBot code, models, datasets, fonts, media and new packages; retain LICENSE/notices and confirm redistribution/use rights for shipped assets.
@@ -156,12 +156,12 @@ Revision 1 — 2026-09-06. Stable local IDs; no GitHub issues posted. Human owne
 
 ## JR-010 — Make CI cover the chosen workflow
 
-- Owner: Dad
+- Owner: @jarvis414-bot
 - Milestone: M2
 - Status: Todo
 - Dependencies: 002,004,005 (selected platforms only)
-- Suggested branch: dad/JR-010-task
-- Suggested labels: app-store-readiness, owner:dad
+- Suggested branch: jarvis414-bot/JR-010-task
+- Suggested labels: app-store-readiness, owner:jarvis414-bot
 - GitHub URL: not created
 
 **Scope:** Adapt existing workflows to agreed integration/release PR bases; add selected Flutter coverage and actual iOS builds/tests; preserve dependency locks; separate debug checks from signed release jobs.
@@ -173,12 +173,12 @@ Revision 1 — 2026-09-06. Stable local IDs; no GitHub issues posted. Human owne
 
 ## JR-011 — Run release acceptance on devices and rover
 
-- Owner: Dad
+- Owner: @jarvis414-bot
 - Milestone: M2
 - Status: Todo
 - Dependencies: 004,005,006,008
-- Suggested branch: dad/JR-011-task
-- Suggested labels: app-store-readiness, owner:dad
+- Suggested branch: jarvis414-bot/JR-011-task
+- Suggested labels: app-store-readiness, owner:jarvis414-bot
 - GitHub URL: not created
 
 **Scope:** Create docs/TESTING.md covering install/upgrade, onboarding, permissions denied, connect/reconnect, disconnect, stop, background/lock, offline operation, accessibility, latency and prolonged use; confirm flashed firmware and hardware.
@@ -190,12 +190,12 @@ Revision 1 — 2026-09-06. Stable local IDs; no GitHub issues posted. Human owne
 
 ## JR-012 — Prepare store listings and reviewer instructions
 
-- Owner: Dad
+- Owner: @jarvis414-bot
 - Milestone: M3
 - Status: Todo
 - Dependencies: 001,003,008,009
-- Suggested branch: dad/JR-012-task
-- Suggested labels: app-store-readiness, owner:dad
+- Suggested branch: jarvis414-bot/JR-012-task
+- Suggested labels: app-store-readiness, owner:jarvis414-bot
 - GitHub URL: not created
 
 **Scope:** Create store-assets/google-play and store-assets/apple only for selected apps; prepare actual screenshots, icon, descriptions, age/content ratings, support URLs, hardware requirements and review demo/access instructions.
@@ -207,12 +207,12 @@ Revision 1 — 2026-09-06. Stable local IDs; no GitHub issues posted. Human owne
 
 ## JR-013 — Distribute and validate beta builds
 
-- Owner: Dad
+- Owner: @jarvis414-bot
 - Milestone: M3
 - Status: Todo
 - Dependencies: 010,011,012,016
-- Suggested branch: dad/JR-013-task
-- Suggested labels: app-store-readiness, owner:dad
+- Suggested branch: jarvis414-bot/JR-013-task
+- Suggested labels: app-store-readiness, owner:jarvis414-bot
 - GitHub URL: not created
 
 **Scope:** Use selected platform beta channels after authorization; verify current account-specific testing eligibility/requirements; gather tester feedback and triage defects against release commit.
@@ -224,15 +224,15 @@ Revision 1 — 2026-09-06. Stable local IDs; no GitHub issues posted. Human owne
 
 ## JR-014 — Prove ball detection and rover behavior
 
-- Owner: Aarav
+- Owner: @jarzlabs24
 - Milestone: F1
 - Status: Todo
 - Dependencies: 002
-- Suggested branch: aarav/JR-014-task
-- Suggested labels: app-store-readiness, owner:aarav
+- Suggested branch: jarzlabs24/JR-014-task
+- Suggested labels: app-store-readiness, owner:jarzlabs24
 - GitHub URL: not created
 
-**Scope:** Locate actual mobile detection/control path, distinguish tests/colorBalls.js from production; define detection, centering, approach, stopping and target-loss criteria before implementation; confirm hardware with Dad.
+**Scope:** Locate actual mobile detection/control path, distinguish tests/colorBalls.js from production; define detection, centering, approach, stopping and target-loss criteria before implementation; confirm hardware with @jarvis414-bot.
 
 **Acceptance / validation:**
 
@@ -241,15 +241,15 @@ Revision 1 — 2026-09-06. Stable local IDs; no GitHub issues posted. Human owne
 
 ## JR-015 — Define and integrate object-to-creature experience
 
-- Owner: Aarav
+- Owner: @jarzlabs24
 - Milestone: F2
 - Status: Todo
 - Dependencies: 002
-- Suggested branch: aarav/JR-015-task
-- Suggested labels: app-store-readiness, owner:aarav
+- Suggested branch: jarzlabs24/JR-015-task
+- Suggested labels: app-store-readiness, owner:jarzlabs24
 - GitHub URL: not created
 
-**Scope:** Inspect tools/creature-lab demo and choose actual mobile integration; decide local/cloud generation, inputs/outputs, persistence, latency/cost limits and audience-appropriate behavior with Dad.
+**Scope:** Inspect tools/creature-lab demo and choose actual mobile integration; decide local/cloud generation, inputs/outputs, persistence, latency/cost limits and audience-appropriate behavior with @jarvis414-bot.
 
 **Acceptance / validation:**
 
@@ -258,15 +258,15 @@ Revision 1 — 2026-09-06. Stable local IDs; no GitHub issues posted. Human owne
 
 ## JR-016 — Gate feature promotion into release
 
-- Owner: Dad
+- Owner: @jarvis414-bot
 - Milestone: M2
 - Status: Todo
 - Dependencies: 001; 014/015 only if included
-- Suggested branch: dad/JR-016-task
-- Suggested labels: app-store-readiness, owner:dad
+- Suggested branch: jarvis414-bot/JR-016-task
+- Suggested labels: app-store-readiness, owner:jarvis414-bot
 - GitHub URL: not created
 
-**Scope:** With Aarav, choose include/defer for each feature; review protocol, permissions, data and dependency changes; verify disabled features are inaccessible and absent from store claims.
+**Scope:** With @jarzlabs24, choose include/defer for each feature; review protocol, permissions, data and dependency changes; verify disabled features are inaccessible and absent from store claims.
 
 **Acceptance / validation:**
 
@@ -275,12 +275,12 @@ Revision 1 — 2026-09-06. Stable local IDs; no GitHub issues posted. Human owne
 
 ## JR-017 — Submit, respond and operate release
 
-- Owner: Dad
+- Owner: @jarvis414-bot
 - Milestone: M4
 - Status: Todo
 - Dependencies: 013
-- Suggested branch: dad/JR-017-task
-- Suggested labels: app-store-readiness, owner:dad
+- Suggested branch: jarvis414-bot/JR-017-task
+- Suggested labels: app-store-readiness, owner:jarvis414-bot
 - GitHub URL: not created
 
 **Scope:** After explicit submission authorization, submit selected apps; track review questions/rejections and version changes; prepare phased rollout, support triage and recovery procedure.

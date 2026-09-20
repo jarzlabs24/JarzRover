@@ -10,7 +10,7 @@ Read AGENTS.md, PROJECT_CONTEXT.md, APP_STORE_READINESS.md and RELEASE_BACKLOG.m
 CODEX HANDOFF
 Goal / user-visible outcome:
 Issue ID(s) and GitHub URL(s):
-Owner: Dad / Aarav / Both
+Owner: @jarvis414-bot / @jarzlabs24 / joint
 Milestone and dependency status:
 Repository / verified base branch / base commit / task branch:
 Accepted decisions and relevant context files:
@@ -42,6 +42,6 @@ GitHub is authoritative for issue status. Update the backlog snapshot and releva
 ## First execution packet
 
 Goal: freeze the Android 1.0 product and release scope.
-Task: REL-001, with Dad owning the document and Dad/Aarav agreeing included features and thresholds.
+Task: REL-001, with @jarvis414-bot owning the document and @jarvis414-bot/@jarzlabs24 agreeing included features and thresholds.
 Read first: AGENTS, PROJECT_CONTEXT, APP_STORE_READINESS, RELEASE_BACKLOG, then hardware notes for sonar decisions.
 Definition of done: approved scope/identity decisions and unresolved questions recorded, post-1.0 boundary explicit, measurable release criteria agreed, linked issue and handoff updated.

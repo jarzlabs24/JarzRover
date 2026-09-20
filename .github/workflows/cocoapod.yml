@@ -5,12 +5,12 @@ name: IOS CI with cocoapods
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, jarz-development ]
     paths:
     - 'ios/OpenBot/**'
     - '.github/workflows/cocoapod.yml'
   pull_request:
-    branches: [ master ]
+    branches: [ master, jarz-development ]
     paths:
     - 'ios/OpenBot/**'
     - '.github/workflows/cocoapod.yml'

@@ -1,5 +1,7 @@
 # Firmware
 
+JarzRover's current reference rover uses the inherited OpenBot DIY firmware configuration on an ATmega328P Arduino Nano. Preserve the checked-in pin mappings and verify the actually flashed sketch before changing hardware assumptions. The separate iOS/ESP32 path is in development and must not silently replace the working Nano configuration. See [JarzRover hardware](../docs/HARDWARE.md), [wiring](../docs/WIRING.md), and [test evidence](../docs/TEST_LOG.md).
+
 <p align="center">
   <span>English</span> |
   <a href="README.zh-CN.md">简体中文</a> |
@@ -8,6 +10,8 @@
   <a href="README.es-ES.md">Español</a> |
   <a href="README.ko-KR.md">한국어</a>
 </p>
+
+> Translation note: linked translations are inherited OpenBot documentation and have not yet been adapted to JarzRover. Use this English page with the JarzRover hardware documents.
 
 We use a microcontroller unit (MCU) to act as a bridge between the robot body and the smartphone.  We provide our [firmware](openbot/openbot.ino) for the Arduino Nano with an ATmega328P microcontroller as well as for the ESP32 development kit.
 

@@ -4,13 +4,13 @@ name: Python style check
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, jarz-development ]
     paths:
     - 'controller/**'
     - 'policy/**'
     - '.github/workflows/python.yml'
   pull_request:
-    branches: [ master ]
+    branches: [ master, jarz-development ]
     paths:
     - 'controller/**'
     - 'policy/**'

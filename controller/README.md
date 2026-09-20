@@ -1,4 +1,4 @@
-# OpenBot Controllers
+# JarzRover Controllers
 
 <p align="center">
   <span>English</span> |
@@ -9,7 +9,9 @@
   <a href="README.ko-KR.md">한국어</a>
 </p>
 
-There are several ways for controlling the OpenBot robot.
+> Translation note: linked translations are inherited OpenBot documentation and have not yet been adapted to JarzRover.
+
+There are several ways to control JarzRover. Most controller implementations are inherited from OpenBot and retain OpenBot protocol names for compatibility.
 
 ## Bluetooth Controller
 
@@ -29,7 +31,7 @@ Special thanks to Ivo Zivkov [izivkov@gmail.com](mailto:izivkov@gmail.com) for t
 
 ## [Flutter Controller App](flutter)
 
-This controller app serves as a remote controller for the OpenBot vehicle similar as a BT controller (e.g. PS3/4 or Xbox). It runs on another Android/iOS device and supports live video/audio streaming in addition to control.
+This is the preferred cross-platform JarzRover controller. It runs on another Android/iOS device and supports remote driving, live video/audio streaming, and Creature Lab controls.
 
 ## [Web Server Controller](web-server)
 

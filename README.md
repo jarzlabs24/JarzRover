@@ -1,109 +1,94 @@
-<a href="https://www.openbot.org/" target="_blank">
-  <img align="center" alt="Banner" width="100%" src="docs/images/banner.jpg" />
-</a>
-
-<h1 align="center"><a>Turning Smartphones into Robots</a></h1>
-
 <p align="center">
-   <img alt="GitHub build" src="https://img.shields.io/github/actions/workflow/status/ob-f/OpenBot/gradle.yml?branch=master"></a>
-   <img alt="GitHub issues" src="https://img.shields.io/github/issues/ob-f/OpenBot"></a>
-   <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/ob-f/OpenBot"></a>
-   <img alt="GitHub forks" src="https://img.shields.io/github/forks/ob-f/OpenBot"></a>
-   <img alt="GitHub stars" src="https://img.shields.io/github/stars/ob-f/OpenBot"></a>
-   <img alt="Github downloads" src="https://img.shields.io/github/downloads/ob-f/OpenBot/total"></a>
-   <img alt="Github size" src="https://img.shields.io/github/repo-size/ob-f/OpenBot"></a>
-   <img alt="Github license" src="https://img.shields.io/github/license/ob-f/OpenBot"></a>
-</p>
-
-<p align="center">
-  <span>English</span> |
-  <a href="README.zh-CN.md">简体中文</a> |
-  <a href="README.de-DE.md">Deutsch</a> |
-  <a href="README.fr-FR.md">Français</a> |
-  <a href="README.es-ES.md">Español</a> |
-  <a href="README.ko-KR.md">한국어</a>
-</p>
-
-OpenBot leverages smartphones as brains for low-cost robots. We have designed a small electric vehicle that costs about $50 and serves as a robot body. Our software stack for Android smartphones supports advanced robotics workloads such as person following and real-time autonomous navigation.
-
-## JarzRover / JarZLabs context
-
-This checkout is the JarzRover implementation workspace for the broader JarZLabs youth STEM and 3D-printing project. Start with [AGENTS.md](AGENTS.md) and [project context](docs/PROJECT_CONTEXT.md); see [hardware and pin mappings](docs/HARDWARE.md), [direct-wiring notes](docs/WIRING.md), and [test history and status](docs/TEST_LOG.md).
-
-## Get started with OpenBot
-
-- Read the [Disclaimer](DISCLAIMER.md)
-- Build your own [Robot Body](body/README.md)
-- Flash the [Arduino Firmware](firmware/README.md)
-- Install the [Android Apps](android/README.md)
-- Drive the robot via a [Controller](controller/README.md)
-- Program your robot in the [Playground](open-code/README.md)
-- Train your own [Driving Policy](policy/README.md)
-
-## Get the source code
-
-- You can download the repo as a [zip file](https://github.com/ob-f/OpenBot/archive/master.zip) and extract it into a folder of your choice.
-- You can clone the OpenBot repository from GitHub with the following command:
-    ```bash
-    git clone https://github.com/ob-f/OpenBot.git
-    ```
-- You can fork the OpenBot repository and then clone your local copy. This is recommended, especially if you want to [contribute](CONTRIBUTING.md).
-
-## Videos
-
-<a href="https://www.youtube.com/watch?v=RbzPXywJifA" >
-  <img align="center" width="300" alt="youtube video" src="https://img.youtube.com/vi/RbzPXywJifA/hqdefault.jpg" />
-</a>
-
-<a href="https://www.youtube.com/watch?v=qc8hFLyWDOM" >
-  <img align="center" width="300" alt="youtube video" src="https://img.youtube.com/vi/qc8hFLyWDOM/hqdefault.jpg" />
-</a>
-
-## Cool projects using OpenBot
-
-There are a lot of cool projects using OpenBot already. Below is a small selection. Click on the images to be redirected to the respective projects.
-
-<p float="left">
-  <a href="https://www.thingiverse.com/thing:4670884" target="_blank">
-    <img alt="Tank OpenBot" width="24%" src="docs/images/openbot_tank.jpg" />
-  </a>
-  <a href="https://diyrobocars.com/2020/12/14/an-improved-version-of-the-intel-openbot" target="_blank">
-    <img alt="2WD OpenBot" width="24%" src="docs/images/openbot_2wd.jpg" />
-  </a>
-  <a href="https://custom-build-robots.com/raspberry-pi-robot-cars/openbot-your-smartphone-controls-a-robot-car-introduction/13860?lang=en" target="_blank">
-    <img alt="Cardboard OpenBot" width="24%" src="docs/images/chassis_cardboard_1.jpg" />
-  </a>
-  <a href="https://www.youtube.com/watch?v=PEj8jWapGt4" target="_blank">
-    <img alt="Baby Yoda OpenBot" width="24%" src="docs/images/openbot_yoda.jpg" />
+  <a href="https://www.jarzlabs.com/">
+    <img alt="JARzLabs — Where Imagination Takes Shape" width="100%" src="branding/generated/jarzlabs-readme-banner.png" />
   </a>
 </p>
 
-## Contact
+<h1 align="center">JarzRover</h1>
 
-- Join our [Slack](https://join.slack.com/t/openbot-community/shared_invite/zt-jl8ygxqt-WNRNi9yzh7Lu60qui6Nh6w) channel to connect with the OpenBot community.
-- Contact us via [Email](mailto:openbot.team@gmail.com)
+<p align="center"><strong>Smartphone-powered robotics by JARzLabs</strong></p>
 
-## Contribute
+JarzRover is JARzLabs' open-source robotics project for hands-on STEM learning and experimentation. Derived from [OpenBot](https://github.com/ob-f/OpenBot), it combines a low-cost 3D-printed rover with a tested Android-to-Arduino Nano control path, colored-ball behaviors, Creature Lab, companion controllers, and an in-development iOS-to-ESP32 path.
 
-Please read the [contribution guidelines](CONTRIBUTING.md). If you are not sure where to start have a look at the [open issues](https://github.com/ob-f/OpenBot/issues).
+JarzRover retains OpenBot's MIT license and attribution. OpenBot remains the upstream project and does not endorse or maintain JarzRover.
 
-## Citation
+## Project status
 
-Please cite our [paper](https://arxiv.org/abs/2008.10631) if you use OpenBot.
+| Path | Status | Notes |
+| --- | --- | --- |
+| Android robot app + Arduino Nano over USB OTG | Primary tested architecture | Uses the OpenBot DIY hardware configuration; preserve the documented pin map |
+| Flutter controller on Android/iOS | Active | Remote driving, video/control connection, and Creature Lab controls |
+| Creature Lab | Included | Runs without Firebase; AI generation uses a separately configured local HTTPS service |
+| Colored-ball detection and behaviors | Active development | Red, green, and blue behaviors require physical regression testing |
+| Native iOS robot app + ESP32 over BLE | In development | Separate from the Android/Nano architecture; exact ESP32 hardware must be verified before wiring changes |
 
-```bib
+The repository builds without Firebase and does not connect public clones to a shared backend. Authorized JARzLabs devices can opt in to the JARzLabs Firebase project using ignored local configuration described in [the Firebase setup guide](docs/FIREBASE_SETUP.md).
+
+## Start here
+
+- [Project context and current decisions](docs/PROJECT_CONTEXT.md)
+- [Supported hardware baseline](docs/HARDWARE.md)
+- [Wiring and pin mappings](docs/WIRING.md)
+- [Recorded build and physical-test evidence](docs/TEST_LOG.md)
+- [Android apps](android/README.md)
+- [Controller options](controller/README.md)
+- [Firmware](firmware/README.md)
+- [Robot body designs](body/README.md)
+- [Creature Lab](tools/creature-lab/README.md)
+- [Native iOS build guide](docs/BUILD_IOS.md)
+- [Binary and website distribution](docs/DISTRIBUTION.md)
+
+## Get the source
+
+```bash
+git clone https://github.com/jarzlabs24/JarzRover.git
+cd JarzRover
+```
+
+The integration branch is `jarz-development`. Tagged releases identify reviewed source and binary milestones. Do not download JarzRover binaries from upstream OpenBot links; the products and configurations are different.
+
+## Apps and downloads
+
+Reviewed release artifacts are published through this repository's [Releases](https://github.com/jarzlabs24/JarzRover/releases) page and may also be linked from [jarzlabs.com](https://www.jarzlabs.com/).
+
+- Android robot and controller apps are distributed as signed APK files. Website installation requires Android's **Install unknown apps** permission for the browser or file manager used to open the APK.
+- iOS does not support unrestricted public IPA installation. Public beta distribution uses TestFlight; development or Ad Hoc builds work only on appropriately signed and registered devices.
+- Release pages must include version information, SHA-256 checksums, supported hardware, installation steps, known limitations, and third-party notices.
+
+Until the first signed release is posted, build from source and treat generated debug artifacts as development builds—not public releases.
+
+## Safety
+
+JarzRover is an experimental moving robot. Test new firmware and app behavior with the wheels raised or motors disconnected first. Keep a reliable STOP control available, operate away from people and fragile objects, and verify battery polarity, voltage, motor-driver wiring, and the exact flashed firmware before powered testing. Use at your own risk.
+
+## OpenBot attribution
+
+JarzRover is based on OpenBot, originally developed by Matthias Müller and Vladlen Koltun. The inherited OpenBot source, documentation, technical identifiers, body designs, and paper citation remain identified as OpenBot where that history or compatibility matters.
+
+If you use the underlying OpenBot research, cite:
+
+```bibtex
 @inproceedings{mueller2021openbot,
     title     = {OpenBot: Turning Smartphones into Robots},
     author    = {M{\"u}ller, Matthias and Koltun, Vladlen},
     booktitle = {Proceedings of the International Conference on Robotics and Automation (ICRA)},
-    year = {2021},
+    year      = {2021}
 }
 ```
 
-<a href="https://www.openbot.org//" target="_blank">
-  <img align="center" alt="Footer" width="100%" src="docs/images/footer.gif" />
-</a>
+See [third-party licenses and provenance](docs/THIRD_PARTY_LICENSES.md) for the current audit and remaining release gates.
 
-## JarzRover planning and app-store execution
+## Contributing
 
-Use the [JarZLabs → Codex workflow](docs/CODEX_WORKFLOW.md), [app-store milestones](docs/plans/app-store-readiness/PLAN.md), and [Dad/Aarav backlog](docs/plans/app-store-readiness/BACKLOG.md) to turn planning into bounded implementation tasks. Existing OpenBot documentation and hardware history remain relevant.
+Issues and pull requests are welcome after the public repository opens. Read [CONTRIBUTING.md](CONTRIBUTING.md), preserve the working hardware configuration, keep changes small and testable, and clearly distinguish results you observed from tests that remain pending.
+
+Release/security work is owned by [@jarvis414-bot](https://github.com/jarvis414-bot). Ball, creature, and behavior development is owned by [@jarzlabs24](https://github.com/jarzlabs24). Joint hardware validation requires both maintainers.
+
+## License, branding, and support
+
+The software and covered documentation are provided under the repository's [MIT license](LICENSE), including the retained OpenBot/Intel ISL notice. JARzLabs and JarzRover names and artwork are governed separately by the [brand policy](BRAND_POLICY.md); the software license does not grant trademark rights.
+
+- Website: [jarzlabs.com](https://www.jarzlabs.com/)
+- Support and security contact: [jarzlabs24@gmail.com](mailto:jarzlabs24@gmail.com)
+- Instagram: [@jarzlabs24](https://www.instagram.com/jarzlabs24/)
+- YouTube: [@JarzLabs](https://www.youtube.com/@JarzLabs)

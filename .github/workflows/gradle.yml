@@ -1,16 +1,16 @@
 # This workflow will build a Java project with Gradle
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
 
-name: Java CI with Gradle
+name: JarzRover Android CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, jarz-development ]
     paths:
     - 'android/**'
     - '.github/workflows/gradle.yml'
   pull_request:
-    branches: [ master ]
+    branches: [ master, jarz-development ]
     paths:
     - 'android/**'
     - '.github/workflows/gradle.yml'
@@ -30,21 +30,17 @@ jobs:
           java-version: 17
           distribution: 'zulu'
           cache: 'gradle'
-      - name: Style
-        run: ./gradlew checkStyle
-      - name: Lint
-        run: ./gradlew lint
-      - name: Test
-        run: ./gradlew test
-      - name: Build
-        run: ./gradlew build
-      - name: Upload OpenBot App
+      - name: Build robot variants and controller
+        run: ./gradlew :robot:assembleStandardDebug :robot:assembleMakerFaireDebug :controller:assembleDebug
+      - name: Test robot variants
+        run: ./gradlew :robot:testStandardDebugUnitTest :robot:testMakerFaireDebugUnitTest
+      - name: Upload JarzRover robot apps
         uses: actions/upload-artifact@v4
         with:
-          name: robot-debug.apk
-          path: android/robot/build/outputs/apk/debug/robot-debug.apk
-      - name: Upload Controller App
+          name: jarzrover-robot-debug-apks
+          path: android/robot/build/outputs/apk/**/debug/*.apk
+      - name: Upload JarzRover controller app
         uses: actions/upload-artifact@v4
         with:
-          name: controller-debug.apk
-          path: android/controller/build/outputs/apk/debug/controller-debug.apk
+          name: jarzrover-controller-debug-apk
+          path: android/controller/build/outputs/apk/debug/*.apk

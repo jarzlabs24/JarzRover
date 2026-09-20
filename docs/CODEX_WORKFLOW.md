@@ -8,13 +8,13 @@ Start with [project context](PROJECT_CONTEXT.md), [readiness plan](plans/app-sto
 
 ## Ownership and branches
 
-Dad owns release scope, platform selection, identity, privacy, signing, store accounts, release acceptance and submission. Aarav owns ball detection, creature generation, and feature demos. Dad reviews release/security/configuration changes; Aarav reviews feature behavior. These are human roles, not assumed GitHub usernames.
+@jarvis414-bot owns release scope, platform selection, identity, privacy, signing, store accounts, release acceptance and submission. @jarzlabs24 owns ball detection, creature generation, and feature demos. @jarvis414-bot reviews release/security/configuration changes; @jarzlabs24 reviews feature behavior. These are the verified GitHub identities for the maintainers.
 
 Keep `jarz-development` as the existing integration branch. Do not rename `master` or discard `codex/import-second-mac-flutter`. Local `origin/HEAD` points to the import branch; verify the live GitHub default before setting PR bases or branch protection.
 
-Use short branches `dad/JR-<id>-<slug>` and `aarav/JR-<id>-<slug>` from the agreed integration commit, with a separate checkout/worktree per concurrent coding task. First inspect uncommitted changes and preserve them; never reset or stash someone else's work implicitly. Proposed names are conventions, not branches created by this setup.
+Use short branches `jarvis414-bot/JR-<id>-<slug>` and `jarzlabs24/JR-<id>-<slug>` from the agreed integration commit, with a separate checkout/worktree per concurrent coding task. First inspect uncommitted changes and preserve them; never reset or stash someone else's work implicitly. Proposed names are conventions, not branches created by this setup.
 
-After M2 passes, Dad cuts `release/1.0.0` from a recorded tested commit (version provisional until JR-001). Only scoped release fixes enter it. Merge fixes back to `jarz-development`; avoid merging the entire moving feature branch into the release branch. New features remain on integration or behind verified disabled-by-default gates. Tag accepted releases only after artifact validation. Use explicit private `origin` for pushes; `public-fork` and `upstream` are separate remotes.
+After M2 passes, @jarvis414-bot cuts `release/1.0.0` from a recorded tested commit (version provisional until JR-001). Only scoped release fixes enter it. Merge fixes back to `jarz-development`; avoid merging the entire moving feature branch into the release branch. New features remain on integration or behind verified disabled-by-default gates. Tag accepted releases only after artifact validation. Use explicit private `origin` for pushes; `public-fork` and `upstream` are separate remotes.
 
 ## Planning to implementation
 
@@ -38,6 +38,6 @@ Existing test log remains the hardware evidence source. Documentation-only work 
 
 ## Ready-to-use next coding prompt
 
-> Work in the saved JarzRover project, private origin JarzRover-Private. Read AGENTS.md, docs/PROJECT_CONTEXT.md, docs/CODEX_WORKFLOW.md, and docs/plans/app-store-readiness/{PLAN,BACKLOG,REPOSITORY_AUDIT}.md. Start JR-001 and JR-002 on a Dad task branch based on the explicitly verified jarz-development state. Preserve all existing changes and history. Inventory the candidate apps and establish reproducible baseline checks. Present the app/identity decisions Dad must resolve; do not silently select a shipping app or change registered identifiers. Update the backlog and return a completed handoff with evidence. Do not submit or publish builds as part of this task.
+> Work in the saved JarzRover project, private origin JarzRover-Private. Read AGENTS.md, docs/PROJECT_CONTEXT.md, docs/CODEX_WORKFLOW.md, and docs/plans/app-store-readiness/{PLAN,BACKLOG,REPOSITORY_AUDIT}.md. Start JR-001 and JR-002 on a `jarvis414-bot/` task branch based on the explicitly verified jarz-development state. Preserve all existing changes and history. Inventory the candidate apps and establish reproducible baseline checks. Present the app/identity decisions @jarvis414-bot must resolve; do not silently select a shipping app or change registered identifiers. Update the backlog and return a completed handoff with evidence. Do not submit or publish builds as part of this task.
 
 Official reference: [Codex AGENTS.md guidance](https://learn.chatgpt.com/docs/agent-configuration/agents-md). Keep durable instructions in AGENTS.md and detailed evolving plans in linked documents.

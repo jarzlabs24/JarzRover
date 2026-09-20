@@ -1,4 +1,4 @@
-# Flutter Controller App
+# JarzRover Flutter Controller
 
 <p align="center">
   <span>English</span> |
@@ -9,7 +9,9 @@
   <a href="README.ko-KR.md">한국어</a>
 </p>
 
-This Controller app serves as a `remote controller` for the [OpenBot](https://www.openbot.org) vehicle similar as a BT controller (e.g. PS3/4 or Xbox). It runs on another Android/iOS device and supports live video/audio streaming in addition to control.
+> Translation note: linked translations are inherited OpenBot documentation and have not yet been adapted to JarzRover. Use this English page for current controller behavior.
+
+The JarzRover Flutter Controller runs on a second Android or iOS device. It supports remote driving, live video/audio streaming, and dedicated Creature Lab controls. It is derived from the OpenBot Flutter controller and retains compatible discovery and control protocols.
 
 ## Getting Started
 Begin by installing [Flutter](https://flutter.dev/) on your system. Choose the appropriate download for your operating system, which includes options for Windows, macOS, Linux, and ChromeOS. Follow the official Flutter installation guide for detailed instructions: [Flutter Installation Guide](https://docs.flutter.dev/get-started/install)

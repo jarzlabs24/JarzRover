@@ -19,6 +19,7 @@ android {
     buildToolsVersion "33.0.1"
 
     defaultConfig {
+        applicationId "com.jarzlabs.jarzrover.controller"
         minSdkVersion 21
         targetSdkVersion 32
 
@@ -40,8 +41,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            versionNameSuffix '1.0'
-            debuggable true
+            debuggable false
         }
     }
 

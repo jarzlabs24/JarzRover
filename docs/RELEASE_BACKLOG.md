@@ -6,38 +6,38 @@ Snapshot: 2026-09-07. [GitHub issues](https://github.com/jarzlabs24/JarzRover-Pr
 
 The 20 agreed IDs are preserved. REL-006/007/008, AND-006, PLAY-003 and IOS-004 make the original roadmap's context, privacy, CI, failure recovery and final store submissions explicit. There were no existing issues or milestones to duplicate. Existing code, hardware context and issue templates were inspected first.
 
-Owner labels are `owner:Dad`, `owner:Aarav`, `owner:Both`. Account assignments are intentionally unset until actual GitHub identities are verified. Dad owns REL-001 execution; scope approval is joint. Milestones group outcomes, not strict serial phases. Dependencies gate completion; preparatory work may start earlier. AI-004 is post-1.0 and does not block Android launch.
+Owner labels are `owner:jarvis414-bot`, `owner:jarzlabs24`, and `owner:joint`. The GitHub identities are verified. @jarvis414-bot owns REL-001 execution; scope approval is joint. Milestones group outcomes, not strict serial phases. Dependencies gate completion; preparatory work may start earlier. Creature Lab has since been promoted into the open-source baseline; the retained store backlog remains deferred.
 
 ## Issue map
 
 | Task | Issue | Owner | Milestone | Depends on | Snapshot |
 | --- | --- | --- | --- | --- | --- |
-| REL-006: Maintain repository context and Codex handoff | [#1](https://github.com/jarzlabs24/JarzRover-Private/issues/1) | Dad | M0 — Repo workflow | None | Open / planned |
-| REL-001: Define JarzRover 1.0 feature scope | [#2](https://github.com/jarzlabs24/JarzRover-Private/issues/2) | Dad | M1 — Release scope | [REL-006 (#1)](https://github.com/jarzlabs24/JarzRover-Private/issues/1) | Open / planned |
-| PLAY-001: Set up Google Play Console | [#15](https://github.com/jarzlabs24/JarzRover-Private/issues/15) | Dad | M2 — Repo hardening | [REL-001 (#2)](https://github.com/jarzlabs24/JarzRover-Private/issues/2) | Open / planned |
-| REL-002: Establish develop and release/1.0 workflow | [#3](https://github.com/jarzlabs24/JarzRover-Private/issues/3) | Dad | M2 — Repo hardening | [REL-001 (#2)](https://github.com/jarzlabs24/JarzRover-Private/issues/2) | Open / planned |
-| REL-003: Audit dependencies, models and licenses | [#4](https://github.com/jarzlabs24/JarzRover-Private/issues/4) | Dad | M2 — Repo hardening | [REL-001 (#2)](https://github.com/jarzlabs24/JarzRover-Private/issues/2) | Open / planned |
-| REL-004: Remove secrets and development artifacts | [#5](https://github.com/jarzlabs24/JarzRover-Private/issues/5) | Dad | M2 — Repo hardening | None | Open / planned |
-| REL-005: Document reproducible Android build | [#6](https://github.com/jarzlabs24/JarzRover-Private/issues/6) | Dad | M2 — Repo hardening | [REL-003 (#4)](https://github.com/jarzlabs24/JarzRover-Private/issues/4), [REL-004 (#5)](https://github.com/jarzlabs24/JarzRover-Private/issues/5) | Open / planned |
-| AND-001: Upgrade Android target and compile SDK for Play | [#7](https://github.com/jarzlabs24/JarzRover-Private/issues/7) | Dad | M3 — Android production | [REL-001 (#2)](https://github.com/jarzlabs24/JarzRover-Private/issues/2), [REL-005 (#6)](https://github.com/jarzlabs24/JarzRover-Private/issues/6) | Open / planned |
-| AND-002: Create production release configuration | [#8](https://github.com/jarzlabs24/JarzRover-Private/issues/8) | Dad | M3 — Android production | [AND-001 (#7)](https://github.com/jarzlabs24/JarzRover-Private/issues/7), [REL-001 (#2)](https://github.com/jarzlabs24/JarzRover-Private/issues/2) | Open / planned |
-| AND-003: Configure signing and Android App Bundle | [#20](https://github.com/jarzlabs24/JarzRover-Private/issues/20) | Dad | M3 — Android production | [AND-002 (#8)](https://github.com/jarzlabs24/JarzRover-Private/issues/8), [REL-004 (#5)](https://github.com/jarzlabs24/JarzRover-Private/issues/5), [PLAY-001 (#15)](https://github.com/jarzlabs24/JarzRover-Private/issues/15) | Open / planned |
-| AND-004: Audit permissions and SDK privacy behavior | [#9](https://github.com/jarzlabs24/JarzRover-Private/issues/9) | Dad | M3 — Android production | [REL-001 (#2)](https://github.com/jarzlabs24/JarzRover-Private/issues/2), [REL-003 (#4)](https://github.com/jarzlabs24/JarzRover-Private/issues/4) | Open / planned |
-| AND-005: Add reviewer and hardware-free demo mode | [#10](https://github.com/jarzlabs24/JarzRover-Private/issues/10) | Dad | M3 — Android production | [AND-002 (#8)](https://github.com/jarzlabs24/JarzRover-Private/issues/8), [AND-004 (#9)](https://github.com/jarzlabs24/JarzRover-Private/issues/9) | Open / planned |
-| AND-006: Harden lifecycle and communication failure recovery | [#21](https://github.com/jarzlabs24/JarzRover-Private/issues/21) | Dad | M3 — Android production | [AND-001 (#7)](https://github.com/jarzlabs24/JarzRover-Private/issues/7), [AI-002 (#12)](https://github.com/jarzlabs24/JarzRover-Private/issues/12) | Open / planned |
-| REL-007: Document privacy, audience and public support | [#18](https://github.com/jarzlabs24/JarzRover-Private/issues/18) | Dad | M3 — Android production | [REL-001 (#2)](https://github.com/jarzlabs24/JarzRover-Private/issues/2), [REL-003 (#4)](https://github.com/jarzlabs24/JarzRover-Private/issues/4), [AND-004 (#9)](https://github.com/jarzlabs24/JarzRover-Private/issues/9) | Open / planned |
-| REL-008: Align continuous integration with release workflow | [#19](https://github.com/jarzlabs24/JarzRover-Private/issues/19) | Dad | M3 — Android production | [REL-002 (#3)](https://github.com/jarzlabs24/JarzRover-Private/issues/3), [REL-005 (#6)](https://github.com/jarzlabs24/JarzRover-Private/issues/6), [AND-001 (#7)](https://github.com/jarzlabs24/JarzRover-Private/issues/7), [AI-003 (#13)](https://github.com/jarzlabs24/JarzRover-Private/issues/13) | Open / planned |
-| AI-001: Stabilize colored-ball inference | [#11](https://github.com/jarzlabs24/JarzRover-Private/issues/11) | Aarav | M4 — Feature stabilization | [REL-001 (#2)](https://github.com/jarzlabs24/JarzRover-Private/issues/2), [REL-003 (#4)](https://github.com/jarzlabs24/JarzRover-Private/issues/4) | Open / planned |
-| AI-002: Harden red, green and blue behaviors | [#12](https://github.com/jarzlabs24/JarzRover-Private/issues/12) | Aarav | M4 — Feature stabilization | [AI-001 (#11)](https://github.com/jarzlabs24/JarzRover-Private/issues/11) | Open / planned |
-| AI-003: Add regression tests for behavior logic | [#13](https://github.com/jarzlabs24/JarzRover-Private/issues/13) | Aarav | M4 — Feature stabilization | [AI-002 (#12)](https://github.com/jarzlabs24/JarzRover-Private/issues/12) | Open / planned |
-| QA-001: Create and execute physical rover release checklist | [#22](https://github.com/jarzlabs24/JarzRover-Private/issues/22) | Both | M4 — Feature stabilization | [AI-003 (#13)](https://github.com/jarzlabs24/JarzRover-Private/issues/13), [AND-003 (#20)](https://github.com/jarzlabs24/JarzRover-Private/issues/20), [AND-005 (#10)](https://github.com/jarzlabs24/JarzRover-Private/issues/10), [AND-006 (#21)](https://github.com/jarzlabs24/JarzRover-Private/issues/21), [REL-007 (#18)](https://github.com/jarzlabs24/JarzRover-Private/issues/18) | Open / planned |
-| PLAY-002: Distribute internal and closed testing release | [#23](https://github.com/jarzlabs24/JarzRover-Private/issues/23) | Dad | M5 — Google Play beta | [QA-001 (#22)](https://github.com/jarzlabs24/JarzRover-Private/issues/22), [REL-008 (#19)](https://github.com/jarzlabs24/JarzRover-Private/issues/19), [PLAY-001 (#15)](https://github.com/jarzlabs24/JarzRover-Private/issues/15) | Open / planned |
-| PLAY-003: Submit Android 1.0 and prepare rollout support | [#24](https://github.com/jarzlabs24/JarzRover-Private/issues/24) | Dad | M6 — Android 1.0 | [PLAY-002 (#23)](https://github.com/jarzlabs24/JarzRover-Private/issues/23) | Open / planned |
-| IOS-001: Decide iPhone-to-rover communication architecture | [#16](https://github.com/jarzlabs24/JarzRover-Private/issues/16) | Dad | M7 — iOS POC | [REL-001 (#2)](https://github.com/jarzlabs24/JarzRover-Private/issues/2) | Open / planned |
-| IOS-002: Build connectivity and vision proof of concept | [#17](https://github.com/jarzlabs24/JarzRover-Private/issues/17) | Both | M7 — iOS POC | [IOS-001 (#16)](https://github.com/jarzlabs24/JarzRover-Private/issues/16), [AI-001 (#11)](https://github.com/jarzlabs24/JarzRover-Private/issues/11) | Open / planned |
-| IOS-003: Establish TestFlight pipeline and App Store submission | [#26](https://github.com/jarzlabs24/JarzRover-Private/issues/26) | Dad | M8 — iOS production | [IOS-004 (#25)](https://github.com/jarzlabs24/JarzRover-Private/issues/25) | Open / planned |
-| IOS-004: Prepare iOS production application and review package | [#25](https://github.com/jarzlabs24/JarzRover-Private/issues/25) | Dad | M8 — iOS production | [IOS-002 (#17)](https://github.com/jarzlabs24/JarzRover-Private/issues/17), [REL-007 (#18)](https://github.com/jarzlabs24/JarzRover-Private/issues/18), [REL-003 (#4)](https://github.com/jarzlabs24/JarzRover-Private/issues/4) | Open / planned |
-| AI-004: Prototype creature generation after 1.0 | [#14](https://github.com/jarzlabs24/JarzRover-Private/issues/14) | Aarav | M9 — Feature 1.1+ | [REL-001 (#2)](https://github.com/jarzlabs24/JarzRover-Private/issues/2) | Open / planned |
+| REL-006: Maintain repository context and Codex handoff | [#1](https://github.com/jarzlabs24/JarzRover-Private/issues/1) | @jarvis414-bot | M0 — Repo workflow | None | Open / planned |
+| REL-001: Define JarzRover 1.0 feature scope | [#2](https://github.com/jarzlabs24/JarzRover-Private/issues/2) | @jarvis414-bot | M1 — Release scope | [REL-006 (#1)](https://github.com/jarzlabs24/JarzRover-Private/issues/1) | Open / planned |
+| PLAY-001: Set up Google Play Console | [#15](https://github.com/jarzlabs24/JarzRover-Private/issues/15) | @jarvis414-bot | M2 — Repo hardening | [REL-001 (#2)](https://github.com/jarzlabs24/JarzRover-Private/issues/2) | Open / planned |
+| REL-002: Establish develop and release/1.0 workflow | [#3](https://github.com/jarzlabs24/JarzRover-Private/issues/3) | @jarvis414-bot | M2 — Repo hardening | [REL-001 (#2)](https://github.com/jarzlabs24/JarzRover-Private/issues/2) | Open / planned |
+| REL-003: Audit dependencies, models and licenses | [#4](https://github.com/jarzlabs24/JarzRover-Private/issues/4) | @jarvis414-bot | M2 — Repo hardening | [REL-001 (#2)](https://github.com/jarzlabs24/JarzRover-Private/issues/2) | Open / planned |
+| REL-004: Remove secrets and development artifacts | [#5](https://github.com/jarzlabs24/JarzRover-Private/issues/5) | @jarvis414-bot | M2 — Repo hardening | None | Open / planned |
+| REL-005: Document reproducible Android build | [#6](https://github.com/jarzlabs24/JarzRover-Private/issues/6) | @jarvis414-bot | M2 — Repo hardening | [REL-003 (#4)](https://github.com/jarzlabs24/JarzRover-Private/issues/4), [REL-004 (#5)](https://github.com/jarzlabs24/JarzRover-Private/issues/5) | Open / planned |
+| AND-001: Upgrade Android target and compile SDK for Play | [#7](https://github.com/jarzlabs24/JarzRover-Private/issues/7) | @jarvis414-bot | M3 — Android production | [REL-001 (#2)](https://github.com/jarzlabs24/JarzRover-Private/issues/2), [REL-005 (#6)](https://github.com/jarzlabs24/JarzRover-Private/issues/6) | Open / planned |
+| AND-002: Create production release configuration | [#8](https://github.com/jarzlabs24/JarzRover-Private/issues/8) | @jarvis414-bot | M3 — Android production | [AND-001 (#7)](https://github.com/jarzlabs24/JarzRover-Private/issues/7), [REL-001 (#2)](https://github.com/jarzlabs24/JarzRover-Private/issues/2) | Open / planned |
+| AND-003: Configure signing and Android App Bundle | [#20](https://github.com/jarzlabs24/JarzRover-Private/issues/20) | @jarvis414-bot | M3 — Android production | [AND-002 (#8)](https://github.com/jarzlabs24/JarzRover-Private/issues/8), [REL-004 (#5)](https://github.com/jarzlabs24/JarzRover-Private/issues/5), [PLAY-001 (#15)](https://github.com/jarzlabs24/JarzRover-Private/issues/15) | Open / planned |
+| AND-004: Audit permissions and SDK privacy behavior | [#9](https://github.com/jarzlabs24/JarzRover-Private/issues/9) | @jarvis414-bot | M3 — Android production | [REL-001 (#2)](https://github.com/jarzlabs24/JarzRover-Private/issues/2), [REL-003 (#4)](https://github.com/jarzlabs24/JarzRover-Private/issues/4) | Open / planned |
+| AND-005: Add reviewer and hardware-free demo mode | [#10](https://github.com/jarzlabs24/JarzRover-Private/issues/10) | @jarvis414-bot | M3 — Android production | [AND-002 (#8)](https://github.com/jarzlabs24/JarzRover-Private/issues/8), [AND-004 (#9)](https://github.com/jarzlabs24/JarzRover-Private/issues/9) | Open / planned |
+| AND-006: Harden lifecycle and communication failure recovery | [#21](https://github.com/jarzlabs24/JarzRover-Private/issues/21) | @jarvis414-bot | M3 — Android production | [AND-001 (#7)](https://github.com/jarzlabs24/JarzRover-Private/issues/7), [AI-002 (#12)](https://github.com/jarzlabs24/JarzRover-Private/issues/12) | Open / planned |
+| REL-007: Document privacy, audience and public support | [#18](https://github.com/jarzlabs24/JarzRover-Private/issues/18) | @jarvis414-bot | M3 — Android production | [REL-001 (#2)](https://github.com/jarzlabs24/JarzRover-Private/issues/2), [REL-003 (#4)](https://github.com/jarzlabs24/JarzRover-Private/issues/4), [AND-004 (#9)](https://github.com/jarzlabs24/JarzRover-Private/issues/9) | Open / planned |
+| REL-008: Align continuous integration with release workflow | [#19](https://github.com/jarzlabs24/JarzRover-Private/issues/19) | @jarvis414-bot | M3 — Android production | [REL-002 (#3)](https://github.com/jarzlabs24/JarzRover-Private/issues/3), [REL-005 (#6)](https://github.com/jarzlabs24/JarzRover-Private/issues/6), [AND-001 (#7)](https://github.com/jarzlabs24/JarzRover-Private/issues/7), [AI-003 (#13)](https://github.com/jarzlabs24/JarzRover-Private/issues/13) | Open / planned |
+| AI-001: Stabilize colored-ball inference | [#11](https://github.com/jarzlabs24/JarzRover-Private/issues/11) | @jarzlabs24 | M4 — Feature stabilization | [REL-001 (#2)](https://github.com/jarzlabs24/JarzRover-Private/issues/2), [REL-003 (#4)](https://github.com/jarzlabs24/JarzRover-Private/issues/4) | Open / planned |
+| AI-002: Harden red, green and blue behaviors | [#12](https://github.com/jarzlabs24/JarzRover-Private/issues/12) | @jarzlabs24 | M4 — Feature stabilization | [AI-001 (#11)](https://github.com/jarzlabs24/JarzRover-Private/issues/11) | Open / planned |
+| AI-003: Add regression tests for behavior logic | [#13](https://github.com/jarzlabs24/JarzRover-Private/issues/13) | @jarzlabs24 | M4 — Feature stabilization | [AI-002 (#12)](https://github.com/jarzlabs24/JarzRover-Private/issues/12) | Open / planned |
+| QA-001: Create and execute physical rover release checklist | [#22](https://github.com/jarzlabs24/JarzRover-Private/issues/22) | @jarvis414-bot and @jarzlabs24 | M4 — Feature stabilization | [AI-003 (#13)](https://github.com/jarzlabs24/JarzRover-Private/issues/13), [AND-003 (#20)](https://github.com/jarzlabs24/JarzRover-Private/issues/20), [AND-005 (#10)](https://github.com/jarzlabs24/JarzRover-Private/issues/10), [AND-006 (#21)](https://github.com/jarzlabs24/JarzRover-Private/issues/21), [REL-007 (#18)](https://github.com/jarzlabs24/JarzRover-Private/issues/18) | Open / planned |
+| PLAY-002: Distribute internal and closed testing release | [#23](https://github.com/jarzlabs24/JarzRover-Private/issues/23) | @jarvis414-bot | M5 — Google Play beta | [QA-001 (#22)](https://github.com/jarzlabs24/JarzRover-Private/issues/22), [REL-008 (#19)](https://github.com/jarzlabs24/JarzRover-Private/issues/19), [PLAY-001 (#15)](https://github.com/jarzlabs24/JarzRover-Private/issues/15) | Open / planned |
+| PLAY-003: Submit Android 1.0 and prepare rollout support | [#24](https://github.com/jarzlabs24/JarzRover-Private/issues/24) | @jarvis414-bot | M6 — Android 1.0 | [PLAY-002 (#23)](https://github.com/jarzlabs24/JarzRover-Private/issues/23) | Open / planned |
+| IOS-001: Decide iPhone-to-rover communication architecture | [#16](https://github.com/jarzlabs24/JarzRover-Private/issues/16) | @jarvis414-bot | M7 — iOS POC | [REL-001 (#2)](https://github.com/jarzlabs24/JarzRover-Private/issues/2) | Open / planned |
+| IOS-002: Build connectivity and vision proof of concept | [#17](https://github.com/jarzlabs24/JarzRover-Private/issues/17) | @jarvis414-bot and @jarzlabs24 | M7 — iOS POC | [IOS-001 (#16)](https://github.com/jarzlabs24/JarzRover-Private/issues/16), [AI-001 (#11)](https://github.com/jarzlabs24/JarzRover-Private/issues/11) | Open / planned |
+| IOS-003: Establish TestFlight pipeline and App Store submission | [#26](https://github.com/jarzlabs24/JarzRover-Private/issues/26) | @jarvis414-bot | M8 — iOS production | [IOS-004 (#25)](https://github.com/jarzlabs24/JarzRover-Private/issues/25) | Open / planned |
+| IOS-004: Prepare iOS production application and review package | [#25](https://github.com/jarzlabs24/JarzRover-Private/issues/25) | @jarvis414-bot | M8 — iOS production | [IOS-002 (#17)](https://github.com/jarzlabs24/JarzRover-Private/issues/17), [REL-007 (#18)](https://github.com/jarzlabs24/JarzRover-Private/issues/18), [REL-003 (#4)](https://github.com/jarzlabs24/JarzRover-Private/issues/4) | Open / planned |
+| AI-004: Prototype creature generation after 1.0 | [#14](https://github.com/jarzlabs24/JarzRover-Private/issues/14) | @jarzlabs24 | M9 — Feature 1.1+ | [REL-001 (#2)](https://github.com/jarzlabs24/JarzRover-Private/issues/2) | Open / planned |
 
 ## Acceptance criteria by task
 
@@ -51,7 +51,7 @@ Criteria below mirror the initial issues. Update the issue and this snapshot whe
 
 ### REL-001 — Define JarzRover 1.0 feature scope
 
-- [ ] Dad and Aarav record approved included/deferred features and measurable release thresholds
+- [ ] @jarvis414-bot and @jarzlabs24 record approved included/deferred features and measurable release thresholds
 - [x] Decide Android app identity, robot distribution, package ID, temporary support contact, audience and account needs
 - [ ] Decide minimum Android version and explicit sonar/Blockly release scope against installed hardware and tests; Creature Lab is in 1.0 but stays disabled in Play until its service/privacy gate passes
 
@@ -167,7 +167,7 @@ Criteria below mirror the initial issues. Update the issue and this snapshot whe
 
 - [ ] Resolve release blockers and complete applicable production-access requirements
 - [ ] Finalize screenshots, description, privacy/support URLs, reviewer instructions and release notes matching shipped scope
-- [ ] Dad submits approved candidate; record submission/result, release tag, staged rollout and halt/hotfix plan; monitor initial crashes
+- [ ] @jarvis414-bot submits approved candidate; record submission/result, release tag, staged rollout and halt/hotfix plan; monitor initial crashes
 
 ### IOS-001 — Decide iPhone-to-rover communication architecture
 
@@ -185,7 +185,7 @@ Criteria below mirror the initial issues. Update the issue and this snapshot whe
 
 - [ ] Configure secure signing/provisioning and reproducible archive with correct bundle/version/build identity
 - [ ] Upload to App Store Connect and validate TestFlight installs; complete applicable external beta review and address feedback
-- [ ] Dad submits approved candidate with review notes; record outcome and release/hotfix process without claiming approval from upload alone
+- [ ] @jarvis414-bot submits approved candidate with review notes; record outcome and release/hotfix process without claiming approval from upload alone
 
 ### IOS-004 — Prepare iOS production application and review package
 
@@ -195,7 +195,7 @@ Criteria below mirror the initial issues. Update the issue and this snapshot whe
 
 ### AI-004 — Prototype creature generation after 1.0
 
-- [ ] Keep experiment outside release/1.0 unless Dad and Aarav explicitly approve promotion
+- [ ] Keep experiment outside release/1.0 unless @jarvis414-bot and @jarzlabs24 explicitly approve promotion
 - [ ] Specify object-to-creature experience, model/service licensing, image retention and any cloud transmission/cost
 - [ ] Demonstrate bounded prototype and document results, privacy implications and next feature decision
 

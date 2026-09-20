@@ -7,4 +7,27 @@ task downloadAars(type: Download) {
     dest project.ext.LIB_DIR
     onlyIfModified true
     overwrite false
+
+    doLast {
+        def expectedSha256 = [
+                'Wroup-master-release.aar'      : '349347bcc434339ca31fb6580fff2c97f7b608cddf3e61f8d0392df534cf4558',
+                'google-webrtc-1.0.32006.aar'   : '8caa3ceb74927738d34389b751a5a7ebd8623b74814e941dbb3359c49d937787',
+                'usbserial-6.1.0-release.aar'   : '3273ce6cde2655f044c5f32ef4e4819b8333c1fbcf2bd2d41c20e5e506f65f58',
+        ]
+
+        expectedSha256.each { fileName, expected ->
+            def aar = file("${project.ext.LIB_DIR}/${fileName}")
+            if (!aar.exists()) {
+                throw new GradleException("Required AAR was not downloaded: ${fileName}")
+            }
+            def digest = java.security.MessageDigest.getInstance('SHA-256')
+                    .digest(aar.bytes)
+                    .encodeHex()
+                    .toString()
+            if (digest != expected) {
+                throw new GradleException(
+                        "SHA-256 mismatch for ${fileName}: expected ${expected}, received ${digest}")
+            }
+        }
+    }
 }

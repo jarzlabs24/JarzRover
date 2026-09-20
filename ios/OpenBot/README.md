@@ -1,4 +1,6 @@
-# Robot iOS App - Beta Release
+# JarzRover Native iOS Robot App — Development
+
+This app is the native iPhone robot-brain path for an ESP32 rover over BLE. It is not a wired replacement for the working Android/Arduino Nano configuration. The exact ESP32 board, voltage levels, motor-driver wiring, power, pins, and fail-safe behavior must be verified before physical testing.
 
 <p align="center">
   <span>English</span> |
@@ -9,6 +11,8 @@
   <a href="README.ko-KR.md">한국어</a>
 </p>
 
+> Translation note: linked translations are inherited OpenBot documentation and have not yet been adapted to JarzRover. Use this English page for current native iOS status.
+
 ## DISCLAIMERS
 
 1. **Safety:** Always make sure you operate in a safe environment. Keep in mind, that your phone could be damaged in a collision! Special
@@ -16,7 +20,7 @@
 
 2. **App under development:** The application is under development and may crash or exhibit unexpected behaviour depending on your phone model and version of the operating system. Make sure to test all functionalities with no wheels connected. Use at your own risk!
 
-3. **The app will be `available` soon on the `App Store`.**
+3. **Distribution:** No App Store release is currently promised. Development uses Xcode; future public beta distribution should use TestFlight.
 
 ## App Screens
 

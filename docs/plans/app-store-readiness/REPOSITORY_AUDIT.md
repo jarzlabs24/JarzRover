@@ -21,8 +21,8 @@ AGENTS.md, README.md and docs/PROJECT_CONTEXT.md already establish JarZLabs/Code
 
 ## Intended workflow versus current state
 
-Existing context handoff is a sound starting point but lacks a release backlog, explicit Dad/Aarav ownership, a release-branch gate and a reusable task packet. This change adds those components without reorganizing implementation directories. App-store readiness is still work to execute, not a claim of compliance.
+Existing context handoff is a sound starting point but lacks a release backlog, explicit @jarvis414-bot/@jarzlabs24 ownership, a release-branch gate and a reusable task packet. This change adds those components without reorganizing implementation directories. App-store readiness is still work to execute, not a claim of compliance.
 
 ## Source conversation and limits
 
-[JarzRover Bot Design and Testing](chatgpt-conversation://6a6f8d1e-a238-83ea-902c-71b13ec9e8f6), retrieved 2026-09-06: Dad requested Android/iOS store preparation; Aarav owns ball detection and creature generation. Prior assistant suggested com.jarzlabs.jarzrover and 1.0.0 as examples, not confirmed identifiers. Retrieved readiness answer is truncated after its proposed folder layout; no unseen remainder is treated as agreed scope. Recent discussion mentions a 2S LiPo and switch/pigtail work, but no verified as-built change is imported into the hardware baseline.
+[JarzRover Bot Design and Testing](chatgpt-conversation://6a6f8d1e-a238-83ea-902c-71b13ec9e8f6), retrieved 2026-09-06: @jarvis414-bot requested Android/iOS store preparation; @jarzlabs24 owns ball detection and creature generation. Prior assistant suggested com.jarzlabs.jarzrover and 1.0.0 as examples, not confirmed identifiers. Retrieved readiness answer is truncated after its proposed folder layout; no unseen remainder is treated as agreed scope. Recent discussion mentions a 2S LiPo and switch/pigtail work, but no verified as-built change is imported into the hardware baseline.

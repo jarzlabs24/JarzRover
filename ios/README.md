@@ -1,4 +1,6 @@
-# iOS Apps - Beta Release
+# JarzRover iOS Apps — Development
+
+The Flutter controller is the active iOS companion app. The native iOS robot app is an in-development BLE path intended for a separately verified ESP32 rover; it cannot control the current Arduino Nano rover over the iPhone's wired connection.
 
 <p align="center">
   <span>English</span> |
@@ -9,6 +11,8 @@
   <a href="README.ko-KR.md">한국어</a>
 </p>
 
+> Translation note: linked translations are inherited OpenBot documentation and have not yet been adapted to JarzRover. Use this English page for current iOS status.
+
 ## Features
 
 Click on the links below to read about the features of the apps.
@@ -16,7 +20,8 @@ Click on the links below to read about the features of the apps.
 - [Robot App](./OpenBot/README.md)
 - [Controller App](../controller/flutter/README.md)
 ## Install the apps
-Currently, the only way to run the iOS apps on your phones is via the developer builds, as described in the section below.
+
+Development builds can be installed from Xcode on registered devices. Public beta distribution should use TestFlight; a raw IPA cannot be installed freely on arbitrary iPhones. Ad Hoc packages work only on devices included in the provisioning profile.
 
 ## Build the apps
 
@@ -24,7 +29,7 @@ Currently, the only way to run the iOS apps on your phones is via the developer 
 
 - [Xcode iOS 13 or Later](https://developer.apple.com/xcode/) for building and installing the apps.
 - [Cocoapods](https://cocoapods.org/) installed on your system.
-- Setup   [firebase project](./OpenBot/OpenBot/Authentication/README.md).
+- Firebase is optional and is not required for robot control or Creature Lab. See the [local Firebase setup](../docs/FIREBASE_SETUP.md) only when testing inherited account/Drive features.
 - Currently, we're using iOS deployment target version 15.5.
 - Project is configured as "Automatically manage signing", so you can configure your own independent account for building the app -
   <img alt="iOS App" width="100%" src="../docs/images/ios_automatically_manage_signing.png" />

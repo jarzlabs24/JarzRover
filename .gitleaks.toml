@@ -1,0 +1,19 @@
+title = "JarzRover gitleaks configuration"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Inherited OpenBot Firebase client configurations already present in the public upstream history"
+commits = [
+  "caeba0574f22db445b0c139b2e186631db605c2d",
+  "70bd0cf5816161477e6a7a7c1fab4b72c5ac26b0",
+  "de166415a691d39f4136b28f3a465ff1294c30bb",
+  "339397ec868403982b8c8eb694f5cd51325d6f58",
+]
+
+[[allowlists]]
+description = "CocoaPods lockfile checksum values misidentified as generic API keys"
+paths = [
+  '''ios/OpenBot/Podfile\.lock''',
+]

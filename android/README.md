@@ -1,4 +1,6 @@
-# Android Apps
+# JarzRover Android Apps
+
+JarzRover provides a robot app for the phone mounted on the rover and a separate controller app. These apps are derived from OpenBot, but JarzRover releases, package identities, branding, and supported configurations are maintained by JARzLabs.
 
 <p align="center">
   <span>English</span> |
@@ -9,6 +11,8 @@
   <a href="README.ko-KR.md">한국어</a>
 </p>
 
+> Translation note: linked translations are inherited OpenBot documentation and have not yet been adapted to JarzRover. Use this English page for current JarzRover release instructions.
+
 ## Features
 
 Click on the links below to read about the features of the apps.
@@ -18,28 +22,9 @@ Click on the links below to read about the features of the apps.
 
 ## Install the apps
 
-The easiest way to get either of the apps is to download it directly to the phone using the corresponding QR code. If you are on the phone browser, you can also just click on the QR code. You can then open the apk on your phone and [install](https://www.lifewire.com/install-apk-on-android-4177185) it. Note that the apk is only signed with a debug key.
+Download reviewed JarzRover APKs only from the [JarzRover releases](https://github.com/jarzlabs24/JarzRover/releases) page or an official link on [jarzlabs.com](https://www.jarzlabs.com/). Do not use the inherited OpenBot QR codes or release links; those install upstream OpenBot builds rather than JarzRover.
 
-<table style="width:100%;border:none;text-align:center">
-  <tr>
-    <td>  <a href="https://app.openbot.org/robot" target="_blank">
-    <img alt="🤖 App" width="50%" src="../docs/images/robot_app_qr_code.png" />
-  </a>
-    </td>
-    <td>
-  <a href="https://app.openbot.org/controller" target="_blank">
-    <img alt="🎮 App" width="50%" src="../docs/images/controller_app_qr_code.png" />
-  </a>
-      </td>
-  </tr>
-  <tr>
-    <td>🤖 App</td>
-    <td>🎮 App</td>
-  </tr>
-</table>
-
-
-Alternatively, you can download the apks from the assets of any [release](https://github.com/ob-f/OpenBot/releases). If you want the latest app from the master branch, you can also download it from the build artifacts [here](https://github.com/ob-f/OpenBot/actions?query=workflow%3A%22Java+CI+with+Gradle%22). Note, that it may not be stable. If you would like to make changes to the app later, follow the steps below to compile the app and deploy it on your phone.
+Website installation requires Android's **Install unknown apps** permission for the browser or file manager opening the APK. Verify the release version and published SHA-256 checksum before installation. Debug APKs generated during development are not public release artifacts.
 
 ## Build the apps
 
@@ -68,4 +53,3 @@ Alternatively, you can download the apks from the assets of any [release](https:
 #### Versions
 
 If you get a message like `The project is using an incompatible version (AGP 7.4.0) of the Android Gradle plugin. Latest supported version is AGP 7.3.0` you need to upgrade Android Studio or downgrade your gradle plugin. You can read more about the version compatablility between Android Studio and the gradle plugin [here](https://developer.android.com/studio/releases/gradle-plugin#android_gradle_plugin_and_android_studio_compatibility).
-

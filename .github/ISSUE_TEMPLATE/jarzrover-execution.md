@@ -9,7 +9,7 @@ assignees: ''
 ## Plan and ownership
 
 - Stable task ID (REL/AND/AI/QA/PLAY/IOS or existing JR ID) / backlog path:
-- Owner: Dad / Aarav / Both (apply owner label; assign only a verified GitHub account)
+- Owner: @jarvis414-bot / @jarzlabs24 / joint (apply the matching owner label)
 - Reviewer / milestone:
 - Source conversation / accepted decision summary:
 - Dependencies / status:

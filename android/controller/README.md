@@ -1,4 +1,6 @@
-# Controller App
+# JarzRover Android Controller App
+
+This inherited native Android controller can connect to the JarzRover robot app. JARzLabs also maintains the cross-platform [Flutter controller](../../controller/flutter/README.md), which is the preferred controller for Android/iOS feature parity and Creature Lab controls.
 
 <p align="center">
   <span>English</span> |
@@ -8,6 +10,8 @@
   <a href="README.es-ES.md">Español</a> |
   <a href="README.ko-KR.md">한국어</a>
 </p>
+
+> Translation note: linked translations are inherited OpenBot documentation and have not yet been adapted to JarzRover.
 
 This Android app serves as a `remote controller` for the [OpenBot](https://www.openbot.org) vehicle.  Basically it performs similar function as PS3/4 or Xbox remote controller, but running on another Android device.
 

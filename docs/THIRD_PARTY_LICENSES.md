@@ -28,7 +28,7 @@ The authoritative versions are in the listed manifests and lockfiles. Before the
 | Product/tool | Authoritative manifests | Audit note |
 | --- | --- | --- |
 | Android robot/controller | `android/build.gradle`, module `build.gradle` files, Gradle resolution | AndroidX, Material, TensorFlow Lite, Google Play/Firebase/ARCore, CameraX, WebRTC/RTSP, networking, image, permissions, BLE, and utility libraries are used. Their terms are not replaced by this repository's MIT license. Generate notices from the exact resolved graph. |
-| Android downloaded AARs | `android/comlib/download.gradle` | `Wroup-master-release.aar`, `google-webrtc-1.0.32006.aar`, and `usbserial-6.1.0-release.aar` are fetched from an OpenBot bucket without pinned hashes or adjacent source/license metadata. Identify upstream source and license, record SHA-256, and fail on a mismatch before public release. |
+| Android downloaded AARs | `android/comlib/download.gradle` | `Wroup-master-release.aar`, `google-webrtc-1.0.32006.aar`, and `usbserial-6.1.0-release.aar` are fetched from an OpenBot bucket. The download task now verifies their reviewed SHA-256 values. `usb-serial-for-android` identifies its current source and MIT license; WebRTC documents its BSD license, but the exact source revisions and complete notices for these downloaded binaries—and the source/license for Wroup—still need to be preserved before a binary release. |
 | Native iOS robot | `ios/OpenBot/Podfile`, `Podfile.lock`, Xcode `Package.resolved` | Includes Firebase/Google SDKs, TensorFlow Lite Swift, GoogleWebRTC, Starscream, Socket.IO, ZIPFoundation, and others. Replace the TensorFlow Lite nightly dependency with a tested release if practical. Replace branch-based Socket.IO resolution with an immutable version or document the pinned revision. Generate acknowledgements for the resolved graph. |
 | Flutter controller | `controller/flutter/openbot_controller/pubspec.yaml`, `pubspec.lock` | Generate notices from the locked pub graph and verify bundled fonts/images independently. |
 | Creature Lab and web tooling | npm manifests/lockfiles under `tools/creature-lab`, `open-code`, and `policy`; Python requirements under `policy` and `tools` | Review each shipped service separately. Add or refresh lockfiles where reproducible installation is required; development-only tools need not appear in an app notice but still need license-compatible use. |
@@ -39,7 +39,7 @@ Google service SDKs and hosted APIs can carry product terms and configuration re
 ## Required work before a public release
 
 1. Complete the colored-ball [model card](models/COLORED_BALL_MODEL.md), verify the exact CC BY 4.0 dataset/weights record, and add required attribution—or exclude the binary and explain how contributors can supply/retrain one.
-2. Verify the provenance, licenses, and hashes of downloaded AARs and OpenBot-hosted model files.
+2. Finish the source-revision and license-notice provenance for downloaded AARs and OpenBot-hosted model files. The AAR payload hashes are now enforced by the build.
 3. Produce transitive dependency reports/acknowledgements from the exact Android, iOS, Flutter, JavaScript, Python, and firmware release graphs.
 4. Pin mutable/nightly dependencies or document why a reviewed immutable revision is used.
 5. Add the final acknowledgements to repository documentation and, where appropriate, to the app About/legal UI.

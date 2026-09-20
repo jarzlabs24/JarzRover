@@ -1,5 +1,5 @@
 name: openbot_controller
-description: controller application to control android and ios openbot application
+description: JARzLabs controller application for the JarzRover robot apps
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.

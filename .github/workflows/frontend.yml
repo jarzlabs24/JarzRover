@@ -3,12 +3,12 @@ name: Build frontend
 # Run this workflow for every new commit and PR that changes the frontend
 on: 
   push:
-    branches: [ master ]
+    branches: [ master, jarz-development ]
     paths:
     - 'policy/frontend/**'
     - '.github/workflows/frontend.yml'
   pull_request:
-    branches: [ master ]
+    branches: [ master, jarz-development ]
     paths:
     - 'policy/frontend/**'
     - '.github/workflows/frontend.yml'

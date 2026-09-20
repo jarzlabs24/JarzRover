@@ -1,5 +1,7 @@
 # OpenBot: Robot Body
 
+JarzRover currently uses the OpenBot DIY body and hardware approach described here. This inherited section remains branded OpenBot to preserve the origin and meaning of the original body designs; JarzRover-specific as-built hardware is documented in [the hardware baseline](../docs/HARDWARE.md).
+
 <p align="center">
   <span>English</span> |
   <a href="README.zh-CN.md">简体中文</a> |
@@ -8,6 +10,8 @@
   <a href="README.es-ES.md">Español</a> |
   <a href="README.ko-KR.md">한국어</a>
 </p>
+
+> Translation note: linked translations describe the inherited OpenBot body designs. JarzRover-specific hardware details are maintained in English under `docs/`.
 
 You can buy a [ready-to-run (RTR)](rtr) OpenBot on Amazon:
 - [RTR-TT](https://buy.openbot.org/rtr-tt)

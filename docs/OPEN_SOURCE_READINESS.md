@@ -67,16 +67,16 @@ Acceptance criteria:
 
 ## Current branding gate: OSS-002
 
-Official source images and review candidates are inventoried in [`branding/README.md`](../branding/README.md). The approved app-icon master removes the eye-like wheel hubs while preserving straight tires and the white background. Reproducible exports target the Android and native iOS robot apps. A separate decision remains for whether the Flutter companion controller shares this mark or uses a controller-badged variation.
+Official source images and review candidates are inventoried in [`branding/README.md`](../branding/README.md). The approved app-icon master removes the eye-like wheel hubs while preserving straight tires and the white background. Reproducible exports target the Android robot, native Android controller, native iOS robot, and Flutter controller. For the first public milestone, the controller shares the JarzRover mark; a controller-badged variation can be considered later.
 
 ## Current publication gate: OSS-003
 
-The initial license, provenance, and secret review is recorded in [THIRD_PARTY_LICENSES](THIRD_PARTY_LICENSES.md) and [SECURITY](SECURITY.md). The root OpenBot MIT license and attribution remain intact, and the current tracked tree/history scan found no high-confidence private-key or common provider-token pattern. This was a targeted regex review, not a complete secret-scanner result.
+The license, provenance, and secret review is recorded in [THIRD_PARTY_LICENSES](THIRD_PARTY_LICENSES.md) and [SECURITY](SECURITY.md). The root OpenBot MIT license and attribution remain intact. A full 1,040-commit Gitleaks scan passes with a checked-in allowlist limited to inherited OpenBot Firebase client configurations that already exist in upstream/public history and CocoaPods checksum false positives. No JARzLabs private signing or service credential is allowlisted.
 
-OSS-003 remains open. The first public release is blocked until the project resolves:
+OSS-003 remains open. The public source repository may clearly identify these limitations, but signed public app binaries remain blocked until the project resolves:
 
 - the remaining exact Roboflow dataset-version/export record, validation evidence, and CC BY 4.0 attribution for `colored_ball_yolov5.tflite`, as detailed in its [model card](models/COLORED_BALL_MODEL.md), or removal of that binary;
-- source, license, and immutable hashes for downloaded AARs and OpenBot-hosted model files; and
+- source revisions and complete license notices for downloaded AARs and OpenBot-hosted model files (the three AAR hashes are now enforced by Gradle); and
 - transitive acknowledgements plus mutable/nightly dependency review for each shipped app or service.
 
 These are publication gates, not reasons to alter the known-working Nano wiring or rover behavior. Resolve them in small changes with builds/tests after configuration changes.

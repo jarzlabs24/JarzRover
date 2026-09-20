@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.openbot.flutter_controller">
    <application
-        android:label="OpenBot Controller"
+        android:label="JarzRover Controller"
         android:name="${applicationName}"
-        android:icon="@drawable/ic_controller">
+        android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
             android:exported="true"

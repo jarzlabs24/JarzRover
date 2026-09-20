@@ -1,91 +1,68 @@
-# Contributing
+# Contributing to JarzRover
 
-<p align="center">
-  <span>English</span> |
-  <a href="CONTRIBUTING.zh-CN.md">简体中文</a> |
-  <a href="CONTRIBUTING.de-DE.md">Deutsch</a> |
-  <a href="CONTRIBUTING.fr-FR.md">Français</a> |
-  <a href="CONTRIBUTING.es-ES.md">Español</a> |
-  <a href="CONTRIBUTING.ko-KR.md">한국어</a>
-</p>
+Thank you for helping improve JarzRover. JARzLabs maintains this project as an
+OpenBot-derived, youth-led robotics project.
 
-## Process
+## Before you start
 
-1. Submit an issue describing the changes you want to implement. If it's only minor changes/bug-fixes, you can skip to step 3.
-2. After the scope was discussed in the issue, assign it to yourself. It should show up in the "To do" column in the OpenBot project.
-3. Fork the project and clone it locally:
+1. Search the [issues](https://github.com/jarzlabs24/JarzRover/issues) for an
+   existing report or proposal.
+2. Open an issue before starting a large feature, hardware change, new
+   dependency, or protocol change.
+3. Read [`docs/PROJECT_CONTEXT.md`](docs/PROJECT_CONTEXT.md). Hardware and
+   firmware changes must also follow [`docs/HARDWARE.md`](docs/HARDWARE.md),
+   [`docs/WIRING.md`](docs/WIRING.md), and [`docs/TEST_LOG.md`](docs/TEST_LOG.md).
 
-   `git clone https://github.com/<user_id>/OpenBot.git`
+## Development workflow
 
-4. Create a branch:
-
-   `git checkout -b <branch-name>`
-
-   where `<branch-name>` concisely describes the scope of the work.
-
-5. Do the work, write good commit messages, push your branch to the forked repository:
-
-   ```bash
-   git add <modified file>
-   git commit -m <meaningful description>
-   git push --set-upstream origin <branch-name>
-   ```
-
-6. Create a [pull request](https://github.com/ob-f/OpenBot/pulls) in GitHub and link the issue to it. It should show up in the "In progress" column in the OpenBot project.
-7. Work on any code review feedback you may receive and push it to your fork. The pull request gets updated automatically.
-8. Get a cold drink of your choice to reward yourself for making the world a better place.
-
-## Guidelines
-
-- Use same style and formatting as rest of code.
-  - For the Java (Android) and Python code see [below](#Formatting).
-  - For any other code, just try to blend in.
-- Update documentation associated with code changes you made.
-- If you want to include 3rd party dependencies, please discuss this in the issue first.
-- Pull requests should implement single features with as few changes as possible.
-- Make sure you don't include temporary or binary files (the gitignores should mostly take care of this).
-- Rebase/merge master into your branch before you submit the pull request.
-- If possible, test your code on Windows, Linux and OSX.
-
-## Formatting
-
-### Java
-
-We use a gradle script for formatting java code. Make sure you are in the `android` directory.
-
-You can check your code with:
+Fork the public repository, then clone your fork:
 
 ```bash
-./gradlew checkStyle
+git clone https://github.com/<your-account>/JarzRover.git
+cd JarzRover
+git remote add upstream https://github.com/jarzlabs24/JarzRover.git
+git checkout jarz-development
+git checkout -b <short-feature-name>
 ```
 
-You can apply the style to all files by running:
+Keep changes focused, document user-visible or hardware-visible behavior, and
+never commit signing keys, passwords, API keys, or private service
+configuration. Push your branch and open a pull request against
+`jarz-development` in the JARzLabs repository.
+
+## Checks
+
+Run checks that match the code you changed. For Android work:
 
 ```bash
-./gradlew applyStyle
+cd android
+./gradlew :robot:assembleStandardDebug :robot:assembleMakerFaireDebug
+./gradlew :controller:assembleDebug
+./gradlew :robot:testStandardDebugUnitTest :robot:testMakerFaireDebugUnitTest
 ```
 
-### Python
-
-We use [black](https://pypi.org/project/black/) for formatting python code.
-
-You can check your code in the current directory with:
+For Flutter controller work:
 
 ```bash
-black --check .
+cd controller/flutter
+flutter pub get
+flutter analyze
+flutter test
 ```
 
-You can apply the style to all files in the current directory by running:
+Python code should pass `black --check` for the files or package you changed.
+Record device and hardware validation that you actually performed in
+[`docs/TEST_LOG.md`](docs/TEST_LOG.md); do not report planned testing as a
+completed result.
 
-```bash
-black .
-```
+## Pull-request guidelines
 
-## Further resources
+- Explain the outcome in plain language.
+- Link the related issue and list checks performed and checks not performed.
+- Preserve OpenBot attribution and third-party license notices.
+- Add the source and license for models, images, fonts, and other external assets.
+- Keep generated binaries out of normal source commits; publish approved builds
+  as release assets.
+- Use `@jarvis414-bot` and `@jarzlabs24` for project ownership or review routing.
 
-If you are looking for more information about contributing to open-source projects, here are two good references:
-
-- [How to Contribute to Open Source](http://opensource.guide/how-to-contribute/)
-- [The beginner's guide to contributing to a GitHub project](https://akrabat.com/the-beginners-guide-to-contributing-to-a-github-project/)
-
-Thank you very much!
+See [`docs/DISTRIBUTION.md`](docs/DISTRIBUTION.md) before packaging an app.

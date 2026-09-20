@@ -2,12 +2,12 @@ name: Build and Test Node.js Server
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, jarz-development ]
     paths:
       - 'controller/node-js/**'
       - '.github/workflows/nodejs-server.yml'
   pull_request:
-    branches: [ master ]
+    branches: [ master, jarz-development ]
     paths:
       - 'controller/node-js/**'
       - '.github/workflows/nodejs-server.yml'
