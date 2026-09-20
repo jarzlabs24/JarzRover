@@ -34,11 +34,11 @@
     <application
         android:name=".OpenBotApplication"
         android:allowBackup="false"
-        android:icon="@drawable/ic_openbot"
+        android:icon="@drawable/jarzrover_app_icon_candidate"
         android:label="@string/app_name"
         android:localeConfig="@xml/locales_config"
         android:requestLegacyExternalStorage="true"
-        android:roundIcon="@drawable/ic_openbot"
+        android:roundIcon="@drawable/jarzrover_app_icon_candidate"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">

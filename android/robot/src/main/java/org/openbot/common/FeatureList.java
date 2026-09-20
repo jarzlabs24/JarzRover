@@ -2,6 +2,7 @@ package org.openbot.common;
 
 import java.util.ArrayList;
 import org.jetbrains.annotations.NotNull;
+import org.openbot.BuildConfig;
 import org.openbot.R;
 import org.openbot.model.Category;
 import org.openbot.model.SubCategory;
@@ -96,21 +97,17 @@ public class FeatureList {
     subCategories.add(
         new SubCategory(
             OBJECT_NAV, R.string.tile_object_nav, R.drawable.ic_person_search, "#E7CE88"));
-    subCategories.add(
-        new SubCategory(
-            CREATURE_LAB, R.string.tile_creature_lab, R.drawable.ic_openbot_space, "#7C4DFF"));
+    if (BuildConfig.CREATURE_LAB_ENABLED) {
+      subCategories.add(
+          new SubCategory(
+              CREATURE_LAB, R.string.tile_creature_lab, R.drawable.ic_openbot_space, "#7C4DFF"));
+    }
     subCategories.add(
         new SubCategory(
             POINT_GOAL_NAVIGATION,
             R.string.tile_point_goal_navigation,
             R.drawable.ic_baseline_golf_course,
             "#1BBFBF"));
-    subCategories.add(
-        new SubCategory(
-            MODEL_MANAGEMENT,
-            R.string.tile_model_management,
-            R.drawable.ic_list_bulleted_48,
-            "#BC7680"));
     categories.add(new Category(AI, R.string.tile_ai, subCategories));
 
     subCategories = new ArrayList<>();

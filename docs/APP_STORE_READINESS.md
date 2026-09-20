@@ -6,7 +6,7 @@ Planning baseline: 2026-09-07. Source: JarzRover Bot Design and Testing (convers
 
 - Private repository: `jarzlabs24/JarzRover-Private`; checkout `/Users/naturetracker/Code/3DPrint/OpenBot`, branch `jarz-development`, inspected commit `27ea32b`. GitHub default branch is also `jarz-development`; the local remote HEAD alias was stale. No open/closed issues, milestones or open PRs existed during initial inspection; standard labels and an execution issue template already existed.
 - Existing AGENTS, PROJECT_CONTEXT, HARDWARE, WIRING and TEST_LOG capture working DIY/Nano context. Preserve them. Integrated sonar and end-to-end ball stopping are not established by historical standalone tests.
-- `android/robot/build.gradle` uses application ID `org.openbot`, compile SDK 33, target SDK 32, min SDK 21, Java/Kotlin target 17; release minification is disabled and release lint checks are disabled. Root Android AGP is 7.4.2. These are inspection facts, not a successful build result.
+- Before the branding implementation, `android/robot/build.gradle` used application ID `org.openbot`, compile SDK 33, target SDK 32, min SDK 21, Java/Kotlin target 17; release minification and release lint checks were disabled. The JarzRover branding branch changes the application ID to `com.jarzlabs.jarzrover` and adds explicit Maker Faire and Play distributions. Root Android AGP remains 7.4.2. Build results must be recorded separately.
 - Firebase authentication, storage, Firestore, analytics and Crashlytics dependencies exist. Actual release data flows must be audited before claiming on-device-only/no collection.
 - `ios/OpenBot` and Flutter controller code already exist. Audit reuse and hardware compatibility before assuming a new app or a working iPhone-to-Nano path.
 - Existing Gradle CI targets `master`. Reconcile it with the chosen workflow; do not add duplicate pipelines. Existing GameController/Vehicle tests are a starting point, not evidence of complete ball regression coverage.
@@ -15,7 +15,9 @@ Planning baseline: 2026-09-07. Source: JarzRover Bot Design and Testing (convers
 
 Dad owns release engineering, platform compatibility, accounts, privacy, signing and submission. Aarav owns inference, behavior algorithms and later experiments. Both validate hardware and agree the final scope.
 
-REL-001 freezes app identity, package/bundle IDs, robot/controller distribution, minimum OS versions, support details, audience and account needs. `com.jarzlabs.jarzrover` and `1.0.0` were planning examples, not finalized identifiers. Candidate Android 1.0 scope is connection, manual drive, diagnostics, camera, colored-ball behavior, setup and safe recovery. Sonar requires installed/enabled hardware and integrated evidence; Blockly is conditional on stability. Creature generation remains post-1.0.
+The selected Android product is the native robot app named **JarzRover**, published under **JARzLabs**, application ID `com.jarzlabs.jarzrover`, and audience 13+. Candidate Android 1.0 scope is connection, manual drive, diagnostics, camera, colored-ball behavior, setup and safe recovery. Sonar requires installed/enabled hardware and integrated evidence; Blockly is conditional on stability. Creature Lab is in the 1.0 product scope but is disabled in the Play distribution until its reliable HTTPS service and privacy disclosures are ready; it remains enabled in the Maker Faire distribution. Google sign-in, OpenBot Playground/cloud projects, and Google Drive saving are excluded from 1.0. OpenBot attribution belongs in About and packaged notices.
+
+The intended Play developer identity is an organization profile for Aarambh LLC (DBA JARzLabs), with Mukti Patel as authorized representative. `jarzlabs24@gmail.com` is the temporary business/support contact and may be replaced before submission. The user plans to request a D-U-N-S number for Aarambh LLC; the request and verification remain external dependencies.
 
 Keep the current directory layout. Add supporting documents/assets when their implementation issue has real content; do not move firmware or models to match an illustrative tree.
 
@@ -47,7 +49,7 @@ Milestones group outcomes; dependencies in issues determine readiness. iOS explo
 7. Run QA-001 against exact candidate app/firmware/device/hardware revisions. Cover permission refusal, missing models, camera failure, manual/color behavior, disconnect, reconnect, app background/restart and sustained performance. Agree numerical thresholds before testing; document failures and unrun checks in TEST_LOG. Do not substitute demo/unit tests for physical evidence.
 8. Set up accurate developer identity (PLAY-001); prepare store graphics/screenshots/descriptions, audience/rating/Data Safety, app access, support/policy and release notes. Distribute internal and any applicable closed tests (PLAY-002), resolve findings, then submit and record production outcome (PLAY-003). Keep a release tag/artifact hash, rollout halt/hotfix process and support owner.
 9. Audit iOS code and select a supported transport (IOS-001); prove it on real hardware with inference and connection-loss stopping (IOS-002). Then complete production features, BUILD_IOS, permissions/privacy/SDK requirements and reviewer resources (IOS-004). Configure signing/archive, App Store Connect metadata, TestFlight and submission (IOS-003). Upload is not approval.
-10. Keep creature generation isolated (AI-004), including model/service license, privacy and cost decisions before promotion.
+10. Keep Creature Lab gated by distribution until its model/service license, privacy, reliability and cost decisions are complete; promotion into the Play build requires recorded evidence.
 
 ## Evidence and submission rules
 
@@ -55,9 +57,10 @@ Supporting deliverables belong to their issues: BUILD_ANDROID (REL-005), THIRD_P
 
 A release candidate needs a reproducible signed artifact, verified scope, resolved blocking findings, current policy evidence, accurate metadata, a physical test record and reviewer access resources. Every build increments its platform build number. Dad records the submission decision and outcome; this backlog setup does not submit or publish an app.
 
-Official sources checked for planning on 2026-09-07; recheck at execution/submission:
+Official sources checked again on 2026-09-12; recheck at submission:
 
-- [Google Play target API requirements](https://support.google.com/googleplay/android-developer/answer/11926878): verify the applicable new-app requirement and deadline in AND-001; do not carry a remembered SDK value forward without checking.
+- [Google Play target API requirements](https://support.google.com/googleplay/android-developer/answer/11926878): since 2026-08-31, new phone/tablet apps and updates must target Android 16/API 36 or higher. The current target 32 is therefore a release blocker handled by AND-001.
+- [Google Play organization account information](https://support.google.com/googleplay/android-developer/answer/13628312): an organization profile requires a D-U-N-S number plus matching organization name/address, organization phone and website, authorized contact details, and verified public developer email/phone. Google recommends official organization email addresses; replace the temporary Gmail address before verification if practical.
 - [Apple App Review Guidelines](https://developer.apple.com/app-store/review/guidelines/) and [review preparation](https://developer.apple.com/app-store/review/): reviewer access can require additional hardware/resources beyond a demo. Plan for those resources.
 
 No Android/iOS build or physical robot test was performed for this documentation setup. Existing historical results retain their original limitations.

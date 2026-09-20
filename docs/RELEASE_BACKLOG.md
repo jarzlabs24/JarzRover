@@ -50,12 +50,12 @@ Criteria below mirror the initial issues. Update the issue and this snapshot whe
 ### REL-001 — Define JarzRover 1.0 feature scope
 
 - [ ] Dad and Aarav record approved included/deferred features and measurable release thresholds
-- [ ] Decide app identity, robot versus controller distribution, package/bundle IDs, minimum OS versions, support contacts, audience and account needs
-- [ ] Explicitly decide sonar and Blockly scope against installed hardware and tests; creature generation stays post-1.0
+- [x] Decide Android app identity, robot distribution, package ID, temporary support contact, audience and account needs
+- [ ] Decide minimum Android version and explicit sonar/Blockly release scope against installed hardware and tests; Creature Lab is in 1.0 but stays disabled in Play until its service/privacy gate passes
 
 ### PLAY-001 — Set up Google Play Console
 
-- [ ] Choose accurate account type and complete applicable identity/organization verification
+- [x] Choose organization account type and legal/representative identity; complete D-U-N-S and applicable identity/organization verification
 - [ ] Create app record matching agreed package identity and configure access/tester roles
 - [ ] Record account-specific current testing/production eligibility requirements and secure account recovery ownership
 

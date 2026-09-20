@@ -266,3 +266,13 @@ Next checks should establish installed hardware and flashed firmware, then verif
 - Rebuilt in Release configuration, installed successfully, and launched successfully. The `Runner` process remained present after launch.
 - Corrected the Runner target's Debug, Profile, and Release signing team and bundle ID. This avoided a failed broad build-setting override that had assigned the app bundle ID to the embedded `nsd_ios` framework.
 - Runtime controller discovery, video/control connection to the OpenBot phone, and physical rover behavior have not yet been tested.
+
+## Android JarzRover branding variants — 2026-09-14
+
+- Installed Homebrew OpenJDK 17 and Google's Android command-line tools on this Mac. Accepted the Android SDK license with explicit user authorization, then installed platform tools, Android 33, and build tools 33.0.1 under `/opt/homebrew/share/android-commandlinetools`.
+- Added separate `makerFaire` and `play` distributions. Generated BuildConfig inspection confirms `CREATURE_LAB_ENABLED=true` for Maker Faire and `false` for Play.
+- `./gradlew :robot:assembleMakerFaireDebug :robot:assemblePlayDebug :robot:testMakerFaireDebugUnitTest :robot:testPlayDebugUnitTest`: pass (`BUILD SUCCESSFUL` in 1 minute 36 seconds; 86 tasks executed).
+- Both APK manifests report application ID `com.jarzlabs.jarzrover`, version code `800`, and version name `v0.8.0`.
+- Both variants ran 14 unit tests across six test suites with zero failures and zero errors.
+- Build warnings remain for the command-line-tool/AGP SDK XML version mismatch, deprecated RenderScript use, and native libraries that could not be symbol-stripped. These are not build failures but must be revisited during the API 36/toolchain migration and release packaging checks.
+- Not run: installation or UI smoke test on an emulator/device, signed release/AAB build, release lint, API 36 build, physical USB/robot behavior, or visual confirmation of the candidate launcher icon and removed account surfaces.
