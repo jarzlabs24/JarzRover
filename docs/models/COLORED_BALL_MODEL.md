@@ -1,6 +1,6 @@
 # JarzRover colored-ball model card
 
-Status: provenance partially reconstructed on 2026-09-20. Complete the unknown fields before the first public repository release.
+Status: provenance updated from the Roboflow evidence supplied on 2026-09-20. The dataset/version configuration is now recorded; the exact exported-weight license, training run, and model conversion record still need confirmation before signed binary redistribution.
 
 ## Model artifact
 
@@ -18,19 +18,19 @@ The binary contains generic TensorFlow Lite conversion metadata but no embedded 
 
 The project owner confirmed that the JARzLabs team took the training photographs itself. The source images show red, green, and blue balls, including mixed-ball images. They were uploaded to Roboflow and manually annotated by the team.
 
-A user-provided shared ChatGPT session was reviewed on 2026-09-20. It records:
+A user-provided shared ChatGPT session was reviewed on 2026-09-20. The Roboflow PDFs and screenshots supplied on 2026-09-20 add the following evidence:
 
-- Roboflow project/model name: **OpenBot Colored Ball Detector**.
-- The workspace allowed public models only and asked to create the project publicly under the default **CC BY 4.0** license; the recorded project-creation result says it was created under that license.
-- The initial estimate was roughly 25 images for each color plus mixed-ball images.
-- After annotation, Roboflow displayed **89 images** with bounding boxes.
-- Roboflow class names were `red-ball`, `green-ball`, and `blue-ball`.
-- A 80%/10%/10% train/validation/test split was recommended after the initial screen showed all 89 images in training and none in validation/test. The session does not establish the final applied counts.
-- Auto-orientation was retained in the recommendation. Fit/letterbox/pad to 512×512 was recommended instead of stretch, but the final preprocessing setting is not established.
-- Modest rotation, exposure/brightness, or blur were considered; hue/saturation changes were explicitly discouraged because color is the classification signal. The final augmentation settings are not established.
-- Roboflow initially mentioned SAM-assisted annotation and a possible RF-DETR path. The shipped artifact is integrated as a YOLOv5-compatible TFLite detector, but the exact training architecture, implementation version, checkpoint, and export workflow are not established by the session or binary metadata.
+- Roboflow project: **OpenBot Colored Ball Detector**, workspace slug `aarav-patel-k0rgk`, project slug `openbot-colored-ball-detector`. Browse URL: [`app.roboflow.com/aarav-patel-k0rgk/openbot-colored-ball-detector`](https://app.roboflow.com/aarav-patel-k0rgk/openbot-colored-ball-detector).
+- The project was created as a public project under the default **CC BY 4.0** choice in the recorded workflow. Roboflow's project screen states that the public plan makes datasets public on Roboflow Universe; the exact Universe/license page for the exported version should still be preserved.
+- The Browse capture shows original team photographs with bounding boxes and three color classes. The Create New Version capture shows **89 source images**, **3 classes**, and **0 unannotated** images.
+- Version-generation evidence shows the 80%/10%/10% split applied as **71 training**, **9 validation**, and **9 testing** images.
+- Preprocessing evidence shows **Auto-Orient: Applied** and **Fit (black edges) in 512×512**.
+- The augmentation screen was opened and marked as a credit-using step, but the supplied capture does not show any selected augmentation values. It displays Roboflow's recommendation to set augmentations during training instead, because they run each epoch, add no images, and cost no credits. Do not infer a final augmentation recipe from this screen.
+- The download dialog selected **YOLO v5 PyTorch** and showed the Roboflow Python SDK path: `project(...).version(1).download("yolov5")`. The screenshot also displayed a private API key warning; the key is intentionally not recorded. Never commit or share that snippet. Rotate the key if it was exposed beyond the authorized team.
+- The linked training reference is the Roboflow YOLOv5 custom-data notebook: [train-yolov5-object-detection-on-custom-data.ipynb](https://colab.research.google.com/github/roboflow/notebooks/blob/main/notebooks/train-yolov5-object-detection-on-custom-data.ipynb). The notebook link documents the workflow, not the exact run parameters used for this artifact.
+- The shipped artifact is integrated as a YOLOv5-compatible TFLite detector. The exact YOLOv5 implementation/commit, starting checkpoint, training epochs/hyperparameters, export command, quantization, metrics, and conversion tool version are still not established by the supplied evidence.
 
-The public-project/license statements above are provenance evidence from the recorded workflow. Before redistribution, preserve a Roboflow project/version URL or export manifest in the repository and verify that the exact dataset version and exported weights carry the stated license.
+The public-project/license statements above are provenance evidence from the recorded workflow. Preserve the exact version URL/export manifest when the new version finishes generating, then verify that the exact dataset version and exported weights carry the stated license. Roboflow documents that uploaded images remain owned by the uploader; the team should retain the source-photo/annotation ownership record alongside the export evidence.
 
 ## Known label transformation
 
@@ -52,7 +52,7 @@ Known risks include:
 
 - color shifts caused by lighting and phone-camera processing;
 - a small, project-specific dataset and potentially correlated backgrounds;
-- unknown final train/validation/test split and therefore possible leakage;
+- the split is recorded as 71/9/9, but image-level leakage and the exact generated-version manifest have not been independently checked;
 - no retained training metrics, confusion matrix, per-class precision/recall, or test predictions;
 - unknown preprocessing/augmentation and exact model/export version; and
 - labels whose order must be verified before behavior decisions are trusted.
@@ -63,13 +63,12 @@ This model must not be used for safety-critical perception. Sonar and explicit m
 
 Obtain from Roboflow or the other Mac and preserve without credentials:
 
-1. Public project and exact dataset-version URL/identifier.
-2. Dataset version generation date and final train/validation/test counts.
-3. Exact preprocessing and augmentation configuration.
-4. Training architecture, implementation/version, starting checkpoint, input dimensions, and training parameters.
-5. Evaluation metrics and representative failure cases.
-6. Exact export format, quantization, Roboflow/export-tool version, and label map supplied with the export.
-7. A saved license/export record confirming CC BY 4.0 applies to the exact dataset version and distributed model weights.
-8. The attribution text and link required by CC BY 4.0.
+1. The completed version URL/identifier and generation timestamp (the supplied screen shows the version-creation setup, not a completed export manifest).
+2. Exact augmentation values, if any, and the final training configuration.
+3. Training architecture, implementation/version, starting checkpoint, input dimensions, epochs, and hyperparameters.
+4. Evaluation metrics and representative failure cases.
+5. Exact export format, quantization, Roboflow/export-tool version, and label map supplied with the export.
+6. A saved license/export record confirming CC BY 4.0 applies to the exact dataset version and distributed model weights.
+7. The attribution text and link required by CC BY 4.0.
 
 If this evidence cannot be recovered, exclude the binary from the initial public release and document a reproducible retraining path using a newly versioned dataset.
