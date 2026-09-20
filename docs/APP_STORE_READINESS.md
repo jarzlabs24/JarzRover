@@ -1,5 +1,7 @@
 # JarzRover app-store readiness
 
+> **Status: deferred on 2026-09-19.** JarzRover is currently being prepared as an open-source project, not as a Google Play or Apple App Store submission. This document preserves completed research and prior decisions for a future restart. The active plan is [OPEN_SOURCE_READINESS](OPEN_SOURCE_READINESS.md).
+
 Planning baseline: 2026-09-07. Source: JarzRover Bot Design and Testing (conversation `6a6f8d1e-a238-83ea-902c-71b13ec9e8f6`). Read with [project context](PROJECT_CONTEXT.md), [execution backlog](RELEASE_BACKLOG.md) and [handoff template](CODEX_HANDOFF.md).
 
 ## Inspected repository facts

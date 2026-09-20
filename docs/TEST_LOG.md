@@ -276,3 +276,12 @@ Next checks should establish installed hardware and flashed firmware, then verif
 - Both variants ran 14 unit tests across six test suites with zero failures and zero errors.
 - Build warnings remain for the command-line-tool/AGP SDK XML version mismatch, deprecated RenderScript use, and native libraries that could not be symbol-stripped. These are not build failures but must be revisited during the API 36/toolchain migration and release packaging checks.
 - Not run: installation or UI smoke test on an emulator/device, signed release/AAB build, release lint, API 36 build, physical USB/robot behavior, or visual confirmation of the candidate launcher icon and removed account surfaces.
+
+## Android open-source distributions — 2026-09-19
+
+- Replaced the store-specific `play` distribution with a normal open-source `standard` distribution and retained `makerFaire` for event-specific behavior.
+- Generated BuildConfig inspection confirms Creature Lab is enabled in both distributions. `MAKER_FAIRE_MODE=false` for `standard` and `true` for `makerFaire`.
+- `./gradlew :robot:assembleStandardDebug :robot:assembleMakerFaireDebug :robot:testStandardDebugUnitTest :robot:testMakerFaireDebugUnitTest`: pass (`BUILD SUCCESSFUL` in 18 seconds; 86 tasks, 56 executed and 30 up-to-date).
+- Each distribution ran 16 unit tests across six suites with zero failures and zero errors. Both 44 MB debug APKs were produced under their respective `android/robot/build/outputs/apk` directories.
+- Existing warnings remain for the command-line-tool/AGP SDK XML version mismatch, deprecated RenderScript use, and native libraries that could not be symbol-stripped.
+- Not run: emulator/device installation, UI or launcher-icon inspection, physical Android/Nano rover behavior, iOS/ESP32 work, release build, release lint, or signed artifact generation. This software build does not establish physical rover compatibility.

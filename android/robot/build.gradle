@@ -28,13 +28,15 @@ android {
     }
     flavorDimensions "distribution"
     productFlavors {
+        standard {
+            dimension "distribution"
+            buildConfigField "boolean", "CREATURE_LAB_ENABLED", "true"
+            buildConfigField "boolean", "MAKER_FAIRE_MODE", "false"
+        }
         makerFaire {
             dimension "distribution"
             buildConfigField "boolean", "CREATURE_LAB_ENABLED", "true"
-        }
-        play {
-            dimension "distribution"
-            buildConfigField "boolean", "CREATURE_LAB_ENABLED", "false"
+            buildConfigField "boolean", "MAKER_FAIRE_MODE", "true"
         }
     }
     buildTypes {
