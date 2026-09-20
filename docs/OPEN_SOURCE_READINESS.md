@@ -69,6 +69,21 @@ Acceptance criteria:
 
 Official source images and review candidates are inventoried in [`branding/README.md`](../branding/README.md). The approved app-icon master removes the eye-like wheel hubs while preserving straight tires and the white background. Reproducible exports target the Android and native iOS robot apps. A separate decision remains for whether the Flutter companion controller shares this mark or uses a controller-badged variation.
 
+## Current publication gate: OSS-003
+
+The initial license, provenance, and secret review is recorded in [THIRD_PARTY_LICENSES](THIRD_PARTY_LICENSES.md) and [SECURITY](SECURITY.md). The root OpenBot MIT license and attribution remain intact, and the current tracked tree/history scan found no high-confidence private-key or common provider-token pattern. This was a targeted regex review, not a complete secret-scanner result.
+
+OSS-003 remains open. The first public release is blocked until the project resolves:
+
+- the remaining exact Roboflow dataset-version/export record, validation evidence, and CC BY 4.0 attribution for `colored_ball_yolov5.tflite`, as detailed in its [model card](models/COLORED_BALL_MODEL.md), or removal of that binary;
+- default builds' four tracked configurations for the upstream OpenBot Firebase project;
+- source, license, and immutable hashes for downloaded AARs and OpenBot-hosted model files; and
+- transitive acknowledgements plus mutable/nightly dependency review for each shipped app or service.
+
+These are publication gates, not reasons to alter the known-working Nano wiring or rover behavior. Resolve them in small changes with builds/tests after configuration changes.
+
+Brand ownership is resolved: Aarambh LLC, doing business under the registered Alameda County fictitious business name JARZLABS, owns the original JARzLabs/JarzRover brand assets. [`BRAND_POLICY.md`](../BRAND_POLICY.md) keeps covered software under MIT while reserving the names and artwork and allowing limited truthful/official-release uses.
+
 ## Returning to app stores later
 
 Reactivate [APP_STORE_READINESS](APP_STORE_READINESS.md) and [RELEASE_BACKLOG](RELEASE_BACKLOG.md) only after an explicit product decision. Revalidate policies and SDK requirements at that time. Preserve the existing package/identity research, organization-account and D-U-N-S notes, privacy audit tasks, signing requirements, and store asset work, but treat all time-sensitive policy conclusions as needing a fresh check.

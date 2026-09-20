@@ -5,6 +5,7 @@ This directory keeps JARzLabs brand sources separate from generated platform exp
 ## Naming
 
 - Organization and brand: **JARzLabs**
+- Legal owner: **Aarambh LLC**, operating under the registered Alameda County fictitious business name **JARZLABS**
 - Robotics product: **JarzRover**
 - Upstream project: **OpenBot**
 - Companion controller, when a distinction is needed: **JarzRover Controller**
@@ -36,7 +37,7 @@ The app icon intentionally omits the JARzLabs wordmark and tagline because those
 
 ## Attribution and ownership
 
-The source and review images were supplied or directed by the JarzRover project owner; they are not OpenBot artwork. Their presence in this repository does not by itself establish a public reuse license. Before making the repository public, record the copyright owner and choose an explicit brand-asset license or trademark-use policy. Continue to credit OpenBot for the software ancestry in the app About screen and repository notices.
+The source and review images were supplied or directed by the JarzRover project owner; they are not OpenBot artwork. Copyright in the original JARzLabs/JarzRover brand assets is held by Aarambh LLC, doing business as JARZLABS. Their permitted use is defined in [`BRAND_POLICY.md`](../BRAND_POLICY.md); the repository's MIT software license does not grant trademark rights. Continue to credit OpenBot for the software ancestry in the app About screen and repository notices.
 
 ## Platform scope
 

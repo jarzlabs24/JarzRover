@@ -295,3 +295,27 @@ Next checks should establish installed hardware and flashed firmware, then verif
 - Native iOS robot unsigned generic-device Debug build: pass with `xcodebuild` and `CODE_SIGNING_ALLOWED=NO`; output `/private/tmp/jarzrover-ios-branding-build/Build/Products/Debug-iphoneos/OpenBot.app`. The AppIcon catalog compiled successfully.
 - Existing iOS warnings remain for unassigned/duplicate non-app-icon assets, legacy icon slots, storyboards, Markdown resources, dependency scripts, and a missing inferred SocketIO-to-Starscream dependency. No app-icon error was reported.
 - Visual inspection of the 192-pixel Android export retained the face and rover silhouette. Not run: Android or iOS installation, actual home-screen rendering under platform masks, signed iOS build, Flutter controller build, simulator test, or physical rover behavior.
+
+## Open-source license, provenance, and secret audit — 2026-09-19
+
+- Confirmed that the root MIT license retains the OpenBot/Intel ISL notice and documented the upstream relationship and release-notice boundaries in `docs/THIRD_PARTY_LICENSES.md`.
+- Inventoried app/tool manifests, bundled TFLite assets, model download URLs, three downloaded Android AARs, and the native iOS nightly/branch dependencies. No dependency or model license was inferred merely from a successful build.
+- Recorded SHA-256 hashes for bundled model/label files during review. The JarzRover colored-ball model was introduced by commit `27aa942`, but its training dataset, export version, author declaration, and redistribution license are not recorded; public release remains blocked on provenance or removal.
+- Inspected tracked filenames, current tracked text, and Git history for high-confidence private-key headers and common OpenAI, GitHub, AWS, and Google service-account patterns. No matching high-confidence secret file was found. Values were not printed or recorded.
+- Found four tracked Android/iOS client configurations bound to the upstream OpenBot Firebase project. Firebase client identifiers are not treated as server secrets, but the upstream backend binding must be removed or made optional before publication.
+- Confirmed that local `open-code/.env` is ignored and that the tracked Creature Lab `.env.example` is a placeholder template. The local `.env` contents were not inspected.
+- Limitation: Gitleaks, TruffleHog, and detect-secrets were not installed, so the targeted regex review is not a complete entropy/provider scan. Backend rules, service access, binary-embedded values, app builds, device behavior, and physical rover behavior were not tested in this documentation-only audit.
+
+## Open-source ownership and model-provenance decisions — 2026-09-20
+
+- User confirmed Aarambh LLC as owner of the original JARzLabs/JarzRover brand assets, operating under the registered Alameda County fictitious business name JARZLABS. Added `BRAND_POLICY.md` to reserve the names/artwork separately from MIT-licensed software and updated the branding inventory.
+- User confirmed that the JARzLabs team created the colored-ball training images by photographing different colored balls, uploaded them to Roboflow, trained the model there, and exported the tracked TFLite model.
+- Model provenance is partially resolved. The exact Roboflow workspace/project, dataset version and split, image/annotation ownership record, model family/version, export format/settings, training date, and applicable export terms have not yet been recovered.
+- Documentation-only update: no app build, model inference, device test, network access, or physical rover test was run.
+
+### Shared-session provenance follow-up
+
+- Reviewed the user-provided shared ChatGPT session from the other Mac. It records creation of the public Roboflow project **OpenBot Colored Ball Detector** under default CC BY 4.0, 89 annotated images, and the classes `red-ball`, `green-ball`, and `blue-ball`.
+- The session records recommended 80/10/10 splitting, non-stretch 512×512 preprocessing, and color-preserving augmentation guidance, but does not prove those settings were applied to the exported artifact. It also does not establish the exact dataset-version URL, training architecture/version, final metrics, export/quantization settings, or exact weights-license record.
+- `file` identified the tracked artifact only as generic data. A string inspection found TensorFlow Lite conversion metadata but no embedded author, Roboflow identifier, model version, or license. Added `docs/models/COLORED_BALL_MODEL.md` to separate verified facts from remaining unknowns.
+- No model execution, inference comparison, network service access, app build, device test, or physical rover test was performed.
