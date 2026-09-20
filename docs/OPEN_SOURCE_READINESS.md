@@ -65,6 +65,10 @@ Acceptance criteria:
 - App-store execution documents are marked deferred and link back to this plan.
 - Actual results and limitations are added to TEST_LOG; no physical test is inferred from a software build.
 
+## Current branding gate: OSS-002
+
+Official source images and review candidates are inventoried in [`branding/README.md`](../branding/README.md). The approved app-icon master removes the eye-like wheel hubs while preserving straight tires and the white background. Reproducible exports target the Android and native iOS robot apps. A separate decision remains for whether the Flutter companion controller shares this mark or uses a controller-badged variation.
+
 ## Returning to app stores later
 
 Reactivate [APP_STORE_READINESS](APP_STORE_READINESS.md) and [RELEASE_BACKLOG](RELEASE_BACKLOG.md) only after an explicit product decision. Revalidate policies and SDK requirements at that time. Preserve the existing package/identity research, organization-account and D-U-N-S notes, privacy audit tasks, signing requirements, and store asset work, but treat all time-sensitive policy conclusions as needing a fresh check.

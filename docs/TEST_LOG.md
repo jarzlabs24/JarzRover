@@ -285,3 +285,13 @@ Next checks should establish installed hardware and flashed firmware, then verif
 - Each distribution ran 16 unit tests across six suites with zero failures and zero errors. Both 44 MB debug APKs were produced under their respective `android/robot/build/outputs/apk` directories.
 - Existing warnings remain for the command-line-tool/AGP SDK XML version mismatch, deprecated RenderScript use, and native libraries that could not be symbol-stripped.
 - Not run: emulator/device installation, UI or launcher-icon inspection, physical Android/Nano rover behavior, iOS/ESP32 work, release build, release lint, or signed artifact generation. This software build does not establish physical rover compatibility.
+
+## JarzRover app-icon exports — 2026-09-19
+
+- Promoted the user-approved white-background printer/rover sketch with straight tires and no wheel-hub circles to `branding/source/jarzrover-app-icon-master.png`. Its SHA-256 matches the retained approved review image.
+- Added a macOS `sips` exporter and generated Android robot launcher icons at 48, 72, 96, 144, and 192 pixels plus every filename referenced by the native iOS robot AppIcon catalog. Sample and 1024-pixel iOS files report no alpha channel.
+- Updated the Android robot manifest to use density-specific `@mipmap/ic_launcher` and `@mipmap/ic_launcher_round` resources. The Flutter companion controller icon was intentionally not changed.
+- Android `./gradlew :robot:assembleStandardDebug :robot:assembleMakerFaireDebug :robot:testStandardDebugUnitTest :robot:testMakerFaireDebugUnitTest`: pass (`BUILD SUCCESSFUL` in 7 seconds; 86 tasks, 33 executed and 53 up-to-date). Both 44 MB debug APKs were produced.
+- Native iOS robot unsigned generic-device Debug build: pass with `xcodebuild` and `CODE_SIGNING_ALLOWED=NO`; output `/private/tmp/jarzrover-ios-branding-build/Build/Products/Debug-iphoneos/OpenBot.app`. The AppIcon catalog compiled successfully.
+- Existing iOS warnings remain for unassigned/duplicate non-app-icon assets, legacy icon slots, storyboards, Markdown resources, dependency scripts, and a missing inferred SocketIO-to-Starscream dependency. No app-icon error was reported.
+- Visual inspection of the 192-pixel Android export retained the face and rover silhouette. Not run: Android or iOS installation, actual home-screen rendering under platform masks, signed iOS build, Flutter controller build, simulator test, or physical rover behavior.
