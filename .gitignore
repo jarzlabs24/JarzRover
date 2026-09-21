@@ -8,6 +8,7 @@ Thumbs.db
 wandb/
 
 # JarzLabs local development and training artifacts
+private-data/
 .venv*/
 *.backup
 *.backup2
