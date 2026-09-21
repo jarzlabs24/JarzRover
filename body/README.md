@@ -32,7 +32,7 @@ Below are a number of examples with build instructions and further details:
   </a>
   </td>
   <td>  <a href="diy">
-    <img  alt="DIY" src="../docs/images/assembly.gif" />
+    <img  alt="OpenBot-DIY" src="../docs/images/assembly.gif" />
   </a>
   </td>
   <td>
