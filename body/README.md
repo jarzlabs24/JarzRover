@@ -1,6 +1,6 @@
 # OpenBot: Robot Body
 
-JarzRover currently uses the OpenBot DIY body and hardware approach described here. This inherited section remains branded OpenBot to preserve the origin and meaning of the original body designs; JarzRover-specific as-built hardware is documented in [the hardware baseline](../docs/HARDWARE.md).
+JarzRover currently uses the OpenBot DIY body and hardware approach described here. This inherited section remains branded OpenBot to preserve the origin and meaning of the original body designs; JarzRover-specific public compatibility is documented in [the DIY preview](jarzrover-diy/README.md).
 
 <p align="center">
   <span>English</span> |

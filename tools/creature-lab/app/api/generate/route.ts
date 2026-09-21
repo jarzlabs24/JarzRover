@@ -14,7 +14,7 @@ Subject requirements:
 - Purposeful limbs or other locomotion anatomy are recommended. Prefer two to four legs, arms, wings, fins, tentacles, roots, or similar appendages unless a limbless, radial, or floating form is clearly the stronger creature idea.
 - Do not automatically add two arms, two legs, ears, or a tail. Every appendage must have a clear visual reason connected to the source object.
 - Integrate a readable, expressive face into a natural surface or feature of the object; a conventional head is optional.
-- Make it playful, imaginative, polished, and suitable for children at a Maker Faire.
+- Make it playful, imaginative, polished, and suitable for a family-friendly robotics showcase.
 - Use an original creature design. Do not imitate Pokemon or any existing copyrighted character.
 - Show only one creature, centered, in a dynamic three-quarter pose.
 - Do not include people, hands, or extra objects from the source photograph.`;

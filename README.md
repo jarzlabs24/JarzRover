@@ -27,8 +27,8 @@ The repository builds without Firebase and does not connect public clones to a s
 ## Start here
 
 - [Project context and current decisions](docs/PROJECT_CONTEXT.md)
-- [Supported hardware baseline](docs/HARDWARE.md)
-- [Wiring and pin mappings](docs/WIRING.md)
+- [JarzRover compatibility notes](body/jarzrover-diy/COMPATIBILITY.md)
+- [JarzRover DIY preview](body/jarzrover-diy/README.md)
 - [Recorded build and physical-test evidence](docs/TEST_LOG.md)
 - [Android apps](android/README.md)
 - [Controller options](controller/README.md)
@@ -36,7 +36,7 @@ The repository builds without Firebase and does not connect public clones to a s
 - [Robot body designs](body/README.md)
 - [Creature Lab](tools/creature-lab/README.md)
 - [Native iOS build guide](docs/BUILD_IOS.md)
-- [Binary and website distribution](docs/DISTRIBUTION.md)
+- [Public source and customer-package boundary](body/jarzrover-diy/OVERVIEW.md)
 
 ## Get the source
 

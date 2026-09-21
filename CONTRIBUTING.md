@@ -10,8 +10,7 @@ OpenBot-derived, youth-led robotics project.
 2. Open an issue before starting a large feature, hardware change, new
    dependency, or protocol change.
 3. Read [`docs/PROJECT_CONTEXT.md`](docs/PROJECT_CONTEXT.md). Hardware and
-   firmware changes must also follow [`docs/HARDWARE.md`](docs/HARDWARE.md),
-   [`docs/WIRING.md`](docs/WIRING.md), and [`docs/TEST_LOG.md`](docs/TEST_LOG.md).
+   firmware changes must also follow the public [`body/jarzrover-diy/COMPATIBILITY.md`](body/jarzrover-diy/COMPATIBILITY.md) and [`docs/TEST_LOG.md`](docs/TEST_LOG.md). Complete wiring details are maintained in the private customer package.
 
 ## Development workflow
 
@@ -65,4 +64,4 @@ completed result.
   as release assets.
 - Use `@jarvis414-bot` and `@jarzlabs24` for project ownership or review routing.
 
-See [`docs/DISTRIBUTION.md`](docs/DISTRIBUTION.md) before packaging an app.
+See the public [`body/jarzrover-diy/COMPATIBILITY.md`](body/jarzrover-diy/COMPATIBILITY.md) before packaging an app. Customer package distribution is maintained privately.

@@ -13,7 +13,7 @@ Prepare JarzRover as a maintainable JARzLabs open-source robotics project derive
 - Upstream: OpenBot remains the source project to follow and credit. JarzRover-specific work stays isolated enough to make upstream updates reviewable.
 - Android rover baseline: Android phone to Arduino Nano over USB OTG. Existing pins, firmware behavior, and wiring are preserved.
 - iOS rover architecture: native iOS app to ESP32 over BLE. This is an additional path, not a replacement for Android/Nano.
-- Creature Lab: included in both the normal open-source build and the Maker Faire build.
+- Creature Lab: included in both the normal open-source build and the event build.
 - Accounts, Google Play, App Store Connect, signing, D-U-N-S, privacy forms, and submissions: deferred. Existing research remains in the app-store documents.
 - Secrets: API keys, signing keys, provisioning material, and private service credentials must never be committed.
 
@@ -60,7 +60,7 @@ Features inherited from OpenBot that are currently hidden while account/cloud co
 Acceptance criteria:
 
 - The working branch contains the latest reviewed `origin/jarz-development` Creature Lab and rover-control changes plus the Android branding checkpoint.
-- Android exposes `standard` and `makerFaire` distributions; both include Creature Lab.
+- Android exposes `standard` and `makerFaire` distributions; both include Creature Lab. The `makerFaire` name is retained as a technical build flavor for compatibility; public product wording uses event or latest-build language.
 - Both distributions assemble and their unit tests pass in the documented local SDK/JDK environment.
 - App-store execution documents are marked deferred and link back to this plan.
 - Actual results and limitations are added to TEST_LOG; no physical test is inferred from a software build.

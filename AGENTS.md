@@ -2,7 +2,7 @@
 
 JarzRover is the OpenBot-based robotics implementation project within JarZLabs, a youth-run STEM and 3D-printing project.
 
-Before editing, read [docs/PROJECT_CONTEXT.md](docs/PROJECT_CONTEXT.md). For hardware or firmware work, also read [docs/HARDWARE.md](docs/HARDWARE.md), [docs/WIRING.md](docs/WIRING.md), and [docs/TEST_LOG.md](docs/TEST_LOG.md).
+Before editing, read [docs/PROJECT_CONTEXT.md](docs/PROJECT_CONTEXT.md). For hardware or firmware work, read the public [compatibility notes](body/jarzrover-diy/COMPATIBILITY.md) and [docs/TEST_LOG.md](docs/TEST_LOG.md). Complete wiring details are maintained in the private customer package.
 
 - Preserve the working OPENBOT DIY configuration and pin mappings. Do not change wiring assumptions incidentally to a software change.
 - Prefer small, testable changes. Explain changes in plain language that youth project members can follow.

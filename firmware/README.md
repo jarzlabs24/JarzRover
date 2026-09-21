@@ -1,6 +1,6 @@
 # Firmware
 
-JarzRover's current reference rover uses the inherited OpenBot DIY firmware configuration on an ATmega328P Arduino Nano. Preserve the checked-in pin mappings and verify the actually flashed sketch before changing hardware assumptions. The separate iOS/ESP32 path is in development and must not silently replace the working Nano configuration. See [JarzRover hardware](../docs/HARDWARE.md), [wiring](../docs/WIRING.md), and [test evidence](../docs/TEST_LOG.md).
+JarzRover's current reference rover uses the inherited OpenBot DIY firmware configuration on an ATmega328P Arduino Nano. Preserve the checked-in pin mappings and verify the actually flashed sketch before changing hardware assumptions. The separate iOS/ESP32 path is in development and must not silently replace the working Nano configuration. See the public [compatibility notes](../body/jarzrover-diy/COMPATIBILITY.md) and [test evidence](../docs/TEST_LOG.md). Complete wiring details are maintained in the private customer package.
 
 <p align="center">
   <span>English</span> |

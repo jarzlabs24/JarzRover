@@ -2,7 +2,7 @@
 
 JarzRover does not require Firebase for rover control, the local model configuration, colored-ball detection, or Creature Lab. A fresh clone therefore builds and runs without a Firebase account and does not connect to either JARzLabs or OpenBot cloud services.
 
-JARzLabs may still use its own Firebase project on authorized development or Maker Faire devices. The mobile configuration files identify the Firebase project and apps; they are not service-account private keys. They are nevertheless kept out of this repository so public builds do not automatically use a shared JARzLabs backend. Firebase Security Rules, restricted APIs and, where appropriate, App Check remain the actual backend protections.
+JARzLabs may still use its own Firebase project on authorized development or showcase devices. The mobile configuration files identify the Firebase project and apps; they are not service-account private keys. They are nevertheless kept out of this repository so public builds do not automatically use a shared JARzLabs backend. Firebase Security Rules, restricted APIs and, where appropriate, App Check remain the actual backend protections.
 
 Never put a service-account JSON file, private key, access token, signing key, or visitor data in this repository.
 
@@ -29,6 +29,6 @@ The native iOS app also starts without Firebase. To test the inherited account/G
 
 The plist itself is ignored by Git. Account/cloud screens remain transitional inherited functionality and are not part of the default JarzRover experience.
 
-## Maker Faire devices
+## Showcase devices
 
-Install the local JARzLabs configuration only on devices that actually need an account/cloud demonstration. The normal Maker Faire rover and Creature Lab setup does not need Firebase. Do not distribute service-account credentials to visitors or contributors, and do not rely on the client configuration alone to protect stored data.
+Install the local JARzLabs configuration only on devices that actually need an account/cloud demonstration. The normal rover and Creature Lab setup does not need Firebase. Do not distribute service-account credentials to visitors or contributors, and do not rely on the client configuration alone to protect stored data.
