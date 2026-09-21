@@ -22,7 +22,7 @@ Click on the links below to read about the features of the apps.
 
 ## Install the apps
 
-Download reviewed JarzRover APKs only from the [latest JarzRover release](https://github.com/jarzlabs24/JarzRover/releases/latest) or an official link on [jarzlabs.com](https://www.jarzlabs.com/). Do not use the inherited OpenBot QR codes or release links; those install upstream OpenBot builds rather than JarzRover.
+The public repository contains the Android source. JarzLabs customer binaries with Ball Tracking and Creature Lab are delivered through the official [JARzLabs download page](https://www.jarzlabs.com/jarzrover-download). Do not use inherited OpenBot QR codes or assume that public OpenBot releases include JarzLabs features.
 
 Website installation requires Android's **Install unknown apps** permission for the browser or file manager opening the APK. Verify the release version and published SHA-256 checksum before installation. Debug APKs generated during development are not public release artifacts.
 
