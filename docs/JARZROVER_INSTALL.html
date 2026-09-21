@@ -20,6 +20,8 @@
     h3 { margin:0 0 6px; color:var(--navy); }
     .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; }
     .card { padding:20px; border:1px solid #dce7f7; border-radius:16px; background:var(--panel); }
+    .card p:last-child { margin-bottom:0; }
+    .status { color:var(--purple); font-size:.82rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
     .step { display:flex; gap:14px; margin:14px 0; }
     .num { flex:0 0 30px; height:30px; border-radius:50%; color:#fff; background:var(--blue); text-align:center; line-height:30px; font-weight:800; }
     code { padding:2px 5px; border-radius:4px; background:#e8eef8; font-size:.9em; }
@@ -44,8 +46,6 @@
   </header>
 
   <main class="wrap">
-    <div class="notice"><strong>Safety:</strong> Disconnect the battery before changing wiring. Lift the rover or remove its wheels for the first motor test. Keep hands, cables, and clothing away from moving wheels.</div>
-
     <h2>What is in the kit?</h2>
     <div class="grid">
       <section class="card" id="robot-apk">
@@ -62,6 +62,15 @@
       </section>
     </div>
 
+    <h2>Digital kit contents</h2>
+    <div class="grid">
+      <section class="card"><div class="status">Included</div><h3>Android robot and controller</h3><p>Signed Robot and Controller APKs for the rover phone and the visitor/operator phone.</p><a href="https://github.com/jarzlabs24/JarzRover/releases/latest">Get the current Android release →</a></section>
+      <section class="card"><div class="status">Coming soon</div><h3>iPhone controller</h3><p>The controller binary for iPhone will be added when the Apple build is ready.</p><a href="https://github.com/jarzlabs24/JarzRover/tree/jarz-development/ios">Follow the iPhone source →</a></section>
+      <section class="card"><div class="status">Print files</div><h3>JarzRover 3D-print files</h3><p>STL files for the JarzRover body, phone mount, and related printed parts will be published in the repository.</p><a href="https://github.com/jarzlabs24/JarzRover/tree/jarz-development/body/jarzrover-diy">Open the JarzRover body folder →</a></section>
+      <section class="card"><div class="status">Build reference</div><h3>Wiring and assembly</h3><p>Use the photo guide plus the Nano, motor driver, battery, sonar, and sensor wiring notes before powering the rover.</p><a href="https://github.com/jarzlabs24/JarzRover/blob/jarz-development/docs/WIRING.md">Read wiring instructions →</a></section>
+      <section class="card"><div class="status">Support</div><h3>FAQ and troubleshooting</h3><p>Find connection, USB, motor, sensor, and app troubleshooting guidance in the project documentation.</p><a href="#faq">Jump to the FAQ →</a></section>
+    </div>
+
     <h2>Install and connect</h2>
     <div class="step"><div class="num">1</div><div><strong>Prepare two Android phones.</strong><br>Use one phone on the rover and one as the controller. The rover phone needs a USB OTG connection to the Arduino Nano.</div></div>
     <div class="step"><div class="num">2</div><div><strong>Install the APKs.</strong><br>Android may ask you to allow the browser or file manager to install unknown apps. Enable it temporarily, install the APK, then disable it again if desired.</div></div>
@@ -69,11 +78,11 @@
     <div class="step"><div class="num">4</div><div><strong>Connect the controller.</strong><br>Open JarzRover Controller on the second phone and wait for the rover connection. Keep both phones on the same local network when using the phone controller.</div></div>
     <div class="step"><div class="num">5</div><div><strong>Test safely.</strong><br>Lift the rover for the first drive command, then test manual driving at low speed in a clear area. Try Object Tracking and Creature Lab only after the connection is stable.</div></div>
 
-    <h2>Build and troubleshooting</h2>
+    <h2 id="faq">FAQ and troubleshooting</h2>
     <div class="grid">
-      <section class="card"><h3>Build reference</h3><p>The DIY build uses four TT motors, an L298N motor driver, Arduino Nano, HC-SR04 sonar, optional front speed sensors, a battery/switch, and a phone mount.</p><a href="https://github.com/jarzlabs24/JarzRover/tree/jarz-development/body/jarzrover-diy">View the photo build guide →</a></section>
-      <section class="card"><h3>Important wiring</h3><p>Reference signal pins are left motor D5/D6, right motor D9/D10, speed sensors D2/D3, sonar trigger D12, and sonar echo D11.</p><a href="https://github.com/jarzlabs24/JarzRover/blob/jarz-development/docs/WIRING.md">Read wiring notes →</a></section>
-      <section class="card"><h3>Need help?</h3><p>Check the full source and release notes before changing pins or firmware. For project support, contact <a href="mailto:jarzlabs24@gmail.com">jarzlabs24@gmail.com</a>.</p><a href="https://github.com/jarzlabs24/JarzRover">Open JarzRover on GitHub →</a></section>
+      <section class="card"><h3>Why can’t the app connect?</h3><p>Confirm the Robot phone is connected to the Nano through USB OTG, battery power is on, USB permission was granted, and the controller is using the same local network.</p></section>
+      <section class="card"><h3>Why do the motors not move?</h3><p>Check battery and switch connections, the L298N motor-driver wiring, and the Nano firmware. Compare every signal and power connection with the wiring guide.</p></section>
+      <section class="card"><h3>Where do I get help?</h3><p>Check the full source and release notes before changing pins or firmware. For project support, contact <a href="mailto:jarzlabs24@gmail.com">jarzlabs24@gmail.com</a>.</p><a href="https://github.com/jarzlabs24/JarzRover">Open JarzRover on GitHub →</a></section>
     </div>
 
     <footer>

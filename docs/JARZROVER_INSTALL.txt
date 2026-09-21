@@ -1,5 +1,13 @@
 JARzLabs — JarzRover Android quick start
 
+Digital kit contents
+1. Signed Android Robot APK and Controller APK.
+2. iPhone Controller binary (coming soon).
+3. JarzRover STL print files (being added to the public repository).
+4. Photo assembly guide and wiring instructions for the Nano, motor driver, battery,
+   sonar, and optional sensors.
+5. FAQ and troubleshooting guidance.
+
 What you need
 1. Android phone mounted to the rover.
 2. A second Android phone for the controller.
@@ -15,12 +23,8 @@ Install
 6. Open the Controller app on the second phone and wait for the connection.
 
 First test
-Lift the rover or remove its wheels before the first motor command. Test stop, forward,
-reverse, left, and right at low speed. Then try Object Tracking and Creature Lab.
-
-Safety
-Disconnect the battery before changing wiring. Keep hands and loose cables away from
-the wheels. Use a suitable battery, switch, charger, connectors, and insulation.
+After confirming the wiring, test stop, forward, reverse, left, and right at low speed.
+Then try Object Tracking and Creature Lab.
 
 Full instructions and source
 Latest APK release:
@@ -28,6 +32,11 @@ https://github.com/jarzlabs24/JarzRover/releases/latest
 
 DIY build guide:
 https://github.com/jarzlabs24/JarzRover/tree/jarz-development/body/jarzrover-diy
+
+Wiring instructions:
+https://github.com/jarzlabs24/JarzRover/blob/jarz-development/docs/WIRING.md
+
+Source repository and FAQ:
 https://github.com/jarzlabs24/JarzRover
 
 Support
