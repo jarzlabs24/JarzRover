@@ -8,7 +8,7 @@ JarzRover DIY is the JARzLabs build guide for a low-cost, 3D-printed rover using
 
 ### Printed and mechanical parts
 
-- JarzRover/OpenBot DIY body, top plate, phone mount, and four wheels
+- JarzRover DIY body, top plate, phone mount, and four wheels
 - Four TT gear motors with tires
 - M3 hardware for the motors, electronics, top plate, and phone mount
 - Phone mount spring or rubber band
