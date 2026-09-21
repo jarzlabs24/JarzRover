@@ -31,8 +31,8 @@ Below are a number of examples with build instructions and further details:
     <img  alt="JarzRover DIY" src="jarzrover-diy/images/tile.jpg" />
   </a>
   </td>
-  <td>  <a href="diy">
-    <img  alt="OpenBot-DIY" src="../docs/images/assembly.gif" />
+  <td>  <a href="OpenBot-diy">
+    <img  alt="OpenBot DIY" src="../docs/images/assembly.gif" />
   </a>
   </td>
   <td>
@@ -58,7 +58,7 @@ Below are a number of examples with build instructions and further details:
   </tr>
   <tr>
     <td><a href="jarzrover-diy"> JarzRover DIY </a></td>
-    <td><a href="diy"> DIY </a></td>
+    <td><a href="openbot-diy"> DIY </a></td>
     <td><a href="lite"> Lite </a></td>
     <td><a href="rc_truck"> RC Truck </a></td>
     <td><a href="mtv"> Multi-Terrain Vehicle </a></td>
