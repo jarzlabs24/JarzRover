@@ -4,9 +4,9 @@
 
 JarZLabs is a youth-run STEM and 3D-printing project. JarzRover is its OpenBot-based robot project, using an Android phone for higher-level behavior and an Arduino Nano for motor and sensor control.
 
-The existing Codex project is named **JarzRover**; its repository is the OpenBot checkout. JarZLabs is the broader ChatGPT planning and history project. Maintain this document as the durable handoff between them: bring relevant decisions into the repository and share revised context back into JarZLabs when needed. This setup does not automatically synchronize conversation history.
+The existing AI-agent project is named **JarzRover**; its repository is the OpenBot checkout. JarZLabs is the broader planning and history project. Maintain this document as the durable handoff between them: bring relevant decisions into the repository and share revised context back into JarZLabs when needed. This setup does not automatically synchronize planning history.
 
-Source context: user-provided handoff from [Make Project Available](chatgpt-conversation://6a9b583a-fce0-83e9-9556-47c4a2e1e993), consolidated on 2026-09-04. Hardware outcomes below are historical user reports; their original dates and detailed measurements were not supplied. Firmware facts were checked against `firmware/openbot/openbot.ino` at commit `5d7e4ce`.
+Source context: user-provided project handoff, consolidated on 2026-09-04. Hardware outcomes below are historical user reports; their original dates and detailed measurements were not supplied. Firmware facts were checked against `firmware/openbot/openbot.ino` at commit `5d7e4ce`.
 
 ## Durable history and decisions
 

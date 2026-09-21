@@ -2,7 +2,7 @@
 
 > **Status: deferred on 2026-09-19.** The store-submission backlog below is retained so it can be resumed later; it is not the active execution queue. Current work follows [OPEN_SOURCE_READINESS](OPEN_SOURCE_READINESS.md).
 
-Snapshot: 2026-09-07. [GitHub issues](https://github.com/jarzlabs24/JarzRover-Private/issues) are authoritative for live status. Read [readiness plan](APP_STORE_READINESS.md) and [Codex handoff](CODEX_HANDOFF.md). All items below start **Open / planned**, not completed implementation.
+Snapshot: 2026-09-07. [GitHub issues](https://github.com/jarzlabs24/JarzRover-Private/issues) are authoritative for live status. Read [readiness plan](APP_STORE_READINESS.md) and [AI-agent handoff](CODEX_HANDOFF.md). All items below start **Open / planned**, not completed implementation.
 
 The 20 agreed IDs are preserved. REL-006/007/008, AND-006, PLAY-003 and IOS-004 make the original roadmap's context, privacy, CI, failure recovery and final store submissions explicit. There were no existing issues or milestones to duplicate. Existing code, hardware context and issue templates were inspected first.
 
@@ -12,7 +12,7 @@ Owner labels are `owner:jarvis414-bot`, `owner:jarzlabs24`, and `owner:joint`. T
 
 | Task | Issue | Owner | Milestone | Depends on | Snapshot |
 | --- | --- | --- | --- | --- | --- |
-| REL-006: Maintain repository context and Codex handoff | [#1](https://github.com/jarzlabs24/JarzRover-Private/issues/1) | @jarvis414-bot | M0 — Repo workflow | None | Open / planned |
+| REL-006: Maintain repository context and AI-agent handoff | [#1](https://github.com/jarzlabs24/JarzRover-Private/issues/1) | @jarvis414-bot | M0 — Repo workflow | None | Open / planned |
 | REL-001: Define JarzRover 1.0 feature scope | [#2](https://github.com/jarzlabs24/JarzRover-Private/issues/2) | @jarvis414-bot | M1 — Release scope | [REL-006 (#1)](https://github.com/jarzlabs24/JarzRover-Private/issues/1) | Open / planned |
 | PLAY-001: Set up Google Play Console | [#15](https://github.com/jarzlabs24/JarzRover-Private/issues/15) | @jarvis414-bot | M2 — Repo hardening | [REL-001 (#2)](https://github.com/jarzlabs24/JarzRover-Private/issues/2) | Open / planned |
 | REL-002: Establish develop and release/1.0 workflow | [#3](https://github.com/jarzlabs24/JarzRover-Private/issues/3) | @jarvis414-bot | M2 — Repo hardening | [REL-001 (#2)](https://github.com/jarzlabs24/JarzRover-Private/issues/2) | Open / planned |
@@ -43,11 +43,11 @@ Owner labels are `owner:jarvis414-bot`, `owner:jarzlabs24`, and `owner:joint`. T
 
 Criteria below mirror the initial issues. Update the issue and this snapshot when scope changes. Completion also requires actual evidence, limitations, PR/commit and a result handoff.
 
-### REL-006 — Maintain repository context and Codex handoff
+### REL-006 — Maintain repository context and AI-agent handoff
 
 - [ ] AGENTS.md preserves existing hardware instructions and links readiness, backlog and handoff documents
 - [ ] All tasks have issue links, owner labels, milestones, acceptance criteria and dependencies
-- [ ] A new Codex session can start from repository documents alone; documentation links verified
+- [ ] A new AI-agent session can start from repository documents alone; documentation links verified
 
 ### REL-001 — Define JarzRover 1.0 feature scope
 
@@ -205,7 +205,7 @@ Finish verifying REL-006 documentation setup, then take REL-001. REL-004 can be 
 
 ## Preserved JR planning cross-reference
 
-A concurrent task added [CODEX_WORKFLOW](CODEX_WORKFLOW.md) and [the JR backlog](plans/app-store-readiness/BACKLOG.md) during this setup. Those files are preserved. Their statements that GitHub issues are not created describe the earlier planning snapshot. Use the REL/AND/AI/QA/PLAY/IOS issues above for live execution; do not create duplicate JR issues. Retain useful additional JR acceptance details for the applicable selected app. Milestone numbering differs between snapshots; GitHub M0–M9 is the execution grouping. Branch names in both plans remain proposals to reconcile under REL-002, not adopted settings.
+A concurrent task added [the AI-agent workflow](CODEX_WORKFLOW.md) and [the JR backlog](plans/app-store-readiness/BACKLOG.md) during this setup. Those files are preserved. Their statements that GitHub issues are not created describe the earlier planning snapshot. Use the REL/AND/AI/QA/PLAY/IOS issues above for live execution; do not create duplicate JR issues. Retain useful additional JR acceptance details for the applicable selected app. Milestone numbering differs between snapshots; GitHub M0–M9 is the execution grouping. Branch names in both plans remain proposals to reconcile under REL-002, not adopted settings.
 
 | Preserved planning ID | GitHub execution coverage |
 | --- | --- |

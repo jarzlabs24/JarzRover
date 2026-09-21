@@ -31,7 +31,7 @@ Creature Lab's computer-camera flow is under active development in `tools/creatu
 - Focused `oxlint` check for `app/page.tsx` and `app/api/generate/route.ts`: pass.
 - Local development route at `http://localhost:3000/`: HTTP 200.
 - Full-project `npm run lint`: fail because of 19 existing findings in generated `components/ui/*` and `hooks/use-mobile.ts` files; no reported finding was in the Creature Lab page or generation route changed for this step.
-- Real camera capture, retake, local transformation, result display, and timing: not run by Codex; requires user interaction in the browser.
+- Real camera capture, retake, local transformation, result display, and timing: not run by an AI agent; requires user interaction in the browser.
 
 ## Creature Lab recognition refinement — 2026-09-05
 
@@ -98,7 +98,7 @@ Next checks should establish installed hardware and flashed firmware, then verif
 - Flutter analysis: 64 informational findings, no warnings/errors. Flutter tests unavailable (no test directory). Unsigned Flutter iOS release build passed. nsd_ios produced a Swift Package Manager support warning.
 - No physical robot tests, device pairing, app signing, store submission, or merge performed. Ball safety/target-loss behavior remains unverified and has code-level blockers.
 - Read-only merge preview found an iOS Podfile deployment-target conflict with origin/master (15.0 versus 14.0).
-- Detailed review was recorded in the other Mac's local Codex project context. Temporary build logs were stored under `/tmp/jarz-*`; they were not committed.
+- Detailed review was recorded in the other Mac's local AI-agent project context. Temporary build logs were stored under `/tmp/jarz-*`; they were not committed.
 
 - Native OpenBot unsigned iOS Debug device build: PASS with Xcode 26.3, using a fresh /tmp/jarz-native-ios-review derived-data directory and existing Pods. No simulator tests or signed device install performed.
 
@@ -315,7 +315,7 @@ Next checks should establish installed hardware and flashed firmware, then verif
 
 ### Shared-session provenance follow-up
 
-- Reviewed the user-provided shared ChatGPT session from the other Mac. It records creation of the public Roboflow project **OpenBot Colored Ball Detector** under default CC BY 4.0, 89 annotated images, and the classes `red-ball`, `green-ball`, and `blue-ball`.
+- Reviewed the user-provided project handoff from the other Mac. It records creation of the public Roboflow project **OpenBot Colored Ball Detector** under default CC BY 4.0, 89 annotated images, and the classes `red-ball`, `green-ball`, and `blue-ball`.
 - The session records recommended 80/10/10 splitting, non-stretch 512×512 preprocessing, and color-preserving augmentation guidance, but does not prove those settings were applied to the exported artifact. It also does not establish the exact dataset-version URL, training architecture/version, final metrics, export/quantization settings, or exact weights-license record.
 - `file` identified the tracked artifact only as generic data. A string inspection found TensorFlow Lite conversion metadata but no embedded author, Roboflow identifier, model version, or license. Added `docs/models/COLORED_BALL_MODEL.md` to separate verified facts from remaining unknowns.
 - No model execution, inference comparison, network service access, app build, device test, or physical rover test was performed.
@@ -351,3 +351,26 @@ Next checks should establish installed hardware and flashed firmware, then verif
 - The version setup shows 71 training images, 9 validation images, 9 testing images; Auto-Orient applied; and Fit with black edges at 512×512. The augmentation screen was opened and marked as credit-using, but no selected augmentation values are visible; the screen recommends train-time augmentation instead.
 - The download dialog selected YOLO v5 PyTorch and showed the SDK path `project(...).version(1).download("yolov5")`. A private Roboflow API key was visible in the supplied screenshot; it was not copied into the repository, logs, or model card. Rotate it if it was exposed beyond the authorized team.
 - Updated `docs/models/COLORED_BALL_MODEL.md` and `docs/THIRD_PARTY_LICENSES.md` with the evidence and linked notebook. The completed version/export manifest, exact training run, metrics, weight-license confirmation, and attribution remain required before signed binary redistribution.
+
+## Maker Faire Android APK artifact validation — 2026-09-20
+
+- Validated the user-generated signed Controller APK at `android/controller/release/controller-release.apk` with Android build-tools `33.0.1`: APK signature verification passed with v1 and v2 signatures; v3/v4 and SourceStamp are not present.
+- Controller package metadata: `com.jarzlabs.jarzrover.controller`, version code `800`, version name `v0.8.0`, min SDK `21`, target SDK `32`.
+- Controller SHA-256: `5b3ed4ce8cea58e8de6a3ad50a17b4ebfd637635bb5a159c6cabc4ef6993e57b`.
+- Validated the user-generated signed Robot APK at `android/robot/standard/release/robot-standard-release.apk` with Android build-tools `33.0.1`: APK signature verification passed with v1 and v2 signatures; v3/v4 and SourceStamp are not present.
+- Robot package metadata: `com.jarzlabs.jarzrover`, version code `800`, version name `v0.8.0`, min SDK `21`, target SDK `32`.
+- Robot SHA-256: `5f7b07973c0447e870902e0a4b2bc1de86eac62b3292a3f3cf05f4b367dc3e0a`.
+- Android Developer Console registration was completed by the project owner for both package names and their release certificate.
+- Not run: installation of these exact signed APKs, UI/Creature Lab smoke test, Android/Nano physical behavior, website/email installation, iOS signed distribution, or Maker Faire sustained-operation testing. The target SDK remains `32`; revisit Android target/toolchain requirements before any Google Play submission.
+
+## Signed APK Pixel 7 smoke test — 2026-09-20
+
+- Device: Google Pixel 7, Android 17 (API 37), connected over ADB.
+- Controller APK install: pass. Package `com.jarzlabs.jarzrover.controller`, version `v0.8.0`/code `800`; launch reached the JarzRover connection screen showing `Searching for JarzRover…` and the expected control-mode hint. No app fatal exception was observed.
+- Robot APK install: pass. Package `com.jarzlabs.jarzrover`, version `v0.8.0`/code `800`; launch reached the JarzRover main screen with USB, Settings, Free Roam, Object Tracking, Creature Lab, and other feature entries visible. No app fatal exception was observed.
+- This was a software launch smoke test only. The two apps were tested one at a time on the same phone; controller-to-robot networking, USB/Nano communication, camera inference, Creature Lab generation, motor behavior, and physical safety remain untested here.
+
+## Owner-reported Maker Faire physical verification — 2026-09-20
+
+- The project owner reports that the signed Controller and Robot APKs were physically verified to work with the rover setup after the Pixel 7 install/launch smoke test.
+- This is recorded as user-reported evidence; no additional physical motor, sensor, networking, or sustained-operation measurements were collected by this run.

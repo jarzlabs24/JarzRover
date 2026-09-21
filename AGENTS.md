@@ -12,20 +12,20 @@ Before editing, read [docs/PROJECT_CONTEXT.md](docs/PROJECT_CONTEXT.md). For har
 - Keep durable decisions and current status in PROJECT_CONTEXT.md, hardware details in HARDWARE.md, and connection changes in WIRING.md.
 - Current focus: OpenBot object navigation and green-ball detection, centering, approach, and stopping. End-to-end completion is not yet established in these records.
 
-Shared-context workflow: JarZLabs holds broader planning and discussion; this repository holds implementation context. Carry relevant decisions from ChatGPT into these documents, and share an updated context summary back with JarZLabs when needed. These files are the maintained handoff, not an automatic chat-history synchronization mechanism.
+Shared-context workflow: JarZLabs holds broader planning and discussion; this repository holds implementation context. Carry relevant decisions from the planning workspace into these documents, and share an updated context summary back with JarZLabs when needed. These files are the maintained handoff, not an automatic planning-history synchronization mechanism.
 
 ## App-store and planning execution
 
-Read [docs/CODEX_WORKFLOW.md](docs/CODEX_WORKFLOW.md) for planning handoffs and branch conventions. For release work read [the readiness plan](docs/plans/app-store-readiness/PLAN.md) and [backlog](docs/plans/app-store-readiness/BACKLOG.md). @jarvis414-bot owns store readiness; @jarzlabs24 owns ball/creature features. Preserve existing hardware guidance above.
+Read the [AI-agent workflow](docs/CODEX_WORKFLOW.md) for planning handoffs and branch conventions. For release work read [the readiness plan](docs/plans/app-store-readiness/PLAN.md) and [backlog](docs/plans/app-store-readiness/BACKLOG.md). @jarvis414-bot owns store readiness; @jarzlabs24 owns ball/creature features. Preserve existing hardware guidance above.
 
 - Inspect current branch, status and remote before changes; retain unrelated work and second-Mac history. The integration baseline is jarz-development, while cached origin/HEAD currently points to the import branch; verify before choosing a task base.
 - Keep tasks bounded by stable JR IDs and acceptance criteria. Update status/evidence and return a completed handoff. Do not equate chat suggestions with approved product decisions.
 - Identify the selected app before changing IDs, signing or shared code: native robot apps and Flutter controller are distinct products. Preserve OpenBot attribution and existing code layout.
 - Keep private signing material and service credentials out of tracked files and handoffs. Use the private origin for authorized publication; public-fork and upstream are separate destinations.
 
-## App-store execution and Codex handoff
+## App-store execution and AI-agent handoff
 
-For release work, read [APP_STORE_READINESS](docs/APP_STORE_READINESS.md), [RELEASE_BACKLOG](docs/RELEASE_BACKLOG.md) and [CODEX_HANDOFF](docs/CODEX_HANDOFF.md) after PROJECT_CONTEXT. GitHub issues track execution status; the backlog maps stable task IDs to those issues. Preserve the existing hardware context above.
+For release work, read [APP_STORE_READINESS](docs/APP_STORE_READINESS.md), [RELEASE_BACKLOG](docs/RELEASE_BACKLOG.md) and the [AI-agent handoff](docs/CODEX_HANDOFF.md) after PROJECT_CONTEXT. GitHub issues track execution status; the backlog maps stable task IDs to those issues. Preserve the existing hardware context above.
 
 - @jarvis414-bot owns platform/release/privacy/signing/store work; @jarzlabs24 owns models and behaviors; `owner:joint` means both verified maintainers execute or approve the work.
 - Inspect status, branch, current files, issues and PRs before editing. The inspected working/default branch was `jarz-development`; the proposed main/develop/release workflow is REL-002, not an already-applied change.

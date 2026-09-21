@@ -4,7 +4,7 @@ Baseline: `27ea32b289718196a05d89c1d3aef75d80268860`, branch `jarz-development`,
 
 ## Existing assets retained
 
-AGENTS.md, README.md and docs/PROJECT_CONTEXT.md already establish JarZLabs/Codex handoff. HARDWARE.md, WIRING.md and TEST_LOG.md preserve source-verified pin assignments and explicitly labeled user-reported tests. Recent commits preserve second-Mac Flutter/iOS work and add a Creature Lab demo. Existing translated docs, OpenBot attribution, LICENSE, issue templates and history remain in place. The earlier suggested directory layout is conceptual; moving existing code would add risk without improving the handoff.
+AGENTS.md, README.md and docs/PROJECT_CONTEXT.md already establish the JarZLabs/AI-agent handoff. HARDWARE.md, WIRING.md and TEST_LOG.md preserve source-verified pin assignments and explicitly labeled user-reported tests. Recent commits preserve second-Mac Flutter/iOS work and add a Creature Lab demo. Existing translated docs, OpenBot attribution, LICENSE, issue templates and history remain in place. The earlier suggested directory layout is conceptual; moving existing code would add risk without improving the handoff.
 
 | Area | Observed source | Gap / backlog |
 | --- | --- | --- |
@@ -25,4 +25,4 @@ Existing context handoff is a sound starting point but lacks a release backlog, 
 
 ## Source conversation and limits
 
-[JarzRover Bot Design and Testing](chatgpt-conversation://6a6f8d1e-a238-83ea-902c-71b13ec9e8f6), retrieved 2026-09-06: @jarvis414-bot requested Android/iOS store preparation; @jarzlabs24 owns ball detection and creature generation. Prior assistant suggested com.jarzlabs.jarzrover and 1.0.0 as examples, not confirmed identifiers. Retrieved readiness answer is truncated after its proposed folder layout; no unseen remainder is treated as agreed scope. Recent discussion mentions a 2S LiPo and switch/pigtail work, but no verified as-built change is imported into the hardware baseline.
+[JarzRover Bot Design and Testing] project handoff, retrieved 2026-09-06: @jarvis414-bot requested Android/iOS store preparation; @jarzlabs24 owns ball detection and creature generation. Prior planning suggested com.jarzlabs.jarzrover and 1.0.0 as examples, not confirmed identifiers. Retrieved readiness material is truncated after its proposed folder layout; no unseen remainder is treated as agreed scope. Recent discussion mentions a 2S LiPo and switch/pigtail work, but no verified as-built change is imported into the hardware baseline.

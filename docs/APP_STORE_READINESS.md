@@ -2,7 +2,7 @@
 
 > **Status: deferred on 2026-09-19.** JarzRover is currently being prepared as an open-source project, not as a Google Play or Apple App Store submission. This document preserves completed research and prior decisions for a future restart. The active plan is [OPEN_SOURCE_READINESS](OPEN_SOURCE_READINESS.md).
 
-Planning baseline: 2026-09-07. Source: JarzRover Bot Design and Testing (conversation `6a6f8d1e-a238-83ea-902c-71b13ec9e8f6`). Read with [project context](PROJECT_CONTEXT.md), [execution backlog](RELEASE_BACKLOG.md) and [handoff template](CODEX_HANDOFF.md).
+Planning baseline: 2026-09-07. Source: JarzRover Bot Design and Testing (project handoff `6a6f8d1e-a238-83ea-902c-71b13ec9e8f6`). Read with [project context](PROJECT_CONTEXT.md), [execution backlog](RELEASE_BACKLOG.md) and [handoff template](CODEX_HANDOFF.md).
 
 ## Inspected repository facts
 
@@ -27,7 +27,7 @@ Keep the current directory layout. Add supporting documents/assets when their im
 
 | Group | Owner | Exit gate |
 | --- | --- | --- |
-| M0 Repo workflow | @jarvis414-bot | Context, issue map and repeatable Codex handoff available |
+| M0 Repo workflow | @jarvis414-bot | Context, issue map and repeatable AI-agent handoff available |
 | M1 Release scope | @jarvis414-bot + @jarzlabs24 agreement | Explicit included/deferred features and acceptance thresholds |
 | M2 Repo hardening | @jarvis414-bot | Branch workflow, license/secrets review, reproducible debug build, account setup |
 | M3 Android production | @jarvis414-bot | Compatible signed release, privacy evidence, failure recovery, reviewer path and CI |

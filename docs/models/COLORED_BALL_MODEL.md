@@ -18,7 +18,7 @@ The binary contains generic TensorFlow Lite conversion metadata but no embedded 
 
 The project owner confirmed that the JARzLabs team took the training photographs itself. The source images show red, green, and blue balls, including mixed-ball images. They were uploaded to Roboflow and manually annotated by the team.
 
-A user-provided shared ChatGPT session was reviewed on 2026-09-20. The Roboflow PDFs and screenshots supplied on 2026-09-20 add the following evidence:
+A user-provided project handoff was reviewed on 2026-09-20. The Roboflow PDFs and screenshots supplied on 2026-09-20 add the following evidence:
 
 - Roboflow project: **OpenBot Colored Ball Detector**, workspace slug `aarav-patel-k0rgk`, project slug `openbot-colored-ball-detector`. Browse URL: [`app.roboflow.com/aarav-patel-k0rgk/openbot-colored-ball-detector`](https://app.roboflow.com/aarav-patel-k0rgk/openbot-colored-ball-detector).
 - The project was created as a public project under the default **CC BY 4.0** choice in the recorded workflow. Roboflow's project screen states that the public plan makes datasets public on Roboflow Universe; the exact Universe/license page for the exported version should still be preserved.

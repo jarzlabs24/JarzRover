@@ -6,7 +6,7 @@ Copy this into a task packet; keep the template unchanged. Store accepted packet
 
 - Date / plan revision / author:
 - Source JarZLabs conversation and relevant quoted decision summary:
-- Repository: JarzRover-Private; saved Codex project: JarzRover
+- Repository: JarzRover-Private; saved AI-agent project: JarzRover
 - Local checkout / private origin verified:
 - JR IDs / owner / reviewer:
 - Base branch and full commit / task branch:
@@ -21,7 +21,7 @@ Copy this into a task packet; keep the template unchanged. Store accepted packet
 - Hardware/firmware/permissions/data impacts:
 - Authorized actions and any separately requested publishing:
 
-## Codex return to JarZLabs
+## AI-agent return to JarZLabs
 
 - Result: Done / In review / Blocked / Partial
 - JR IDs / branch / commit or explicitly uncommitted:

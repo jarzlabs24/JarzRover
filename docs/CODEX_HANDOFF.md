@@ -1,13 +1,13 @@
-# Codex handoff
+# AI-agent handoff
 
-JarZLabs/ChatGPT is the planning space; the private repository and GitHub issues are the durable execution record. Copy accepted decisions into repository context. Chat history does not synchronize automatically.
+JarZLabs is the planning space; the private repository and GitHub issues are the durable execution record. Copy accepted decisions into repository context. Planning history does not synchronize automatically.
 
 Read AGENTS.md, PROJECT_CONTEXT.md, APP_STORE_READINESS.md and RELEASE_BACKLOG.md before execution. For hardware work also read HARDWARE.md, WIRING.md and TEST_LOG.md. Reuse the existing [execution issue template](../.github/ISSUE_TEMPLATE/jarzrover-execution.md).
 
 ## Planning → implementation packet
 
 ```text
-CODEX HANDOFF
+AI-AGENT HANDOFF
 Goal / user-visible outcome:
 Issue ID(s) and GitHub URL(s):
 Owner: @jarvis414-bot / @jarzlabs24 / joint
