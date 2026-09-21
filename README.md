@@ -49,7 +49,7 @@ The integration branch is `jarz-development`. Tagged releases identify reviewed 
 
 ## Apps and downloads
 
-Reviewed release artifacts are published through this repository's [Releases](https://github.com/jarzlabs24/JarzRover/releases) page and may also be linked from [jarzlabs.com](https://www.jarzlabs.com/).
+Reviewed release artifacts are published through the [latest JarzRover release](https://github.com/jarzlabs24/JarzRover/releases/latest) and may also be linked from [jarzlabs.com](https://www.jarzlabs.com/).
 
 - Android robot and controller apps are distributed as signed APK files. Website installation requires Android's **Install unknown apps** permission for the browser or file manager used to open the APK.
 - iOS does not support unrestricted public IPA installation. Public beta distribution uses TestFlight; development or Ad Hoc builds work only on appropriately signed and registered devices.

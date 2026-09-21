@@ -4,7 +4,7 @@ JarzRover source releases and installable applications are separate deliverables
 
 ## Official channels
 
-- Source and release records: `https://github.com/jarzlabs24/JarzRover`
+- Source and release records: `https://github.com/jarzlabs24/JarzRover/releases/latest`
 - Website and installation FAQs: `https://www.jarzlabs.com/`
 - Support: `jarzlabs24@gmail.com`
 

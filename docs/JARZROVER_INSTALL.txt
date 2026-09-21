@@ -1,4 +1,4 @@
-JARzLabs — JarzRover Maker Faire quick start
+JARzLabs — JarzRover Android quick start
 
 What you need
 1. Android phone mounted to the rover.
@@ -23,6 +23,10 @@ Disconnect the battery before changing wiring. Keep hands and loose cables away 
 the wheels. Use a suitable battery, switch, charger, connectors, and insulation.
 
 Full instructions and source
+Latest APK release:
+https://github.com/jarzlabs24/JarzRover/releases/latest
+
+DIY build guide:
 https://github.com/jarzlabs24/JarzRover/tree/jarz-development/body/jarzrover-diy
 https://github.com/jarzlabs24/JarzRover
 

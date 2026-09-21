@@ -1,8 +1,10 @@
-# JarzRover Maker Faire Android release
+# JarzRover Android release
 
-This is the first local binary package for Maker Faire distribution. It is not a Google Play release and does not include an iOS installable binary.
+This is the JarzRover v0.8.0 Android binary package. It is distributed outside Google Play and does not include an iOS installable binary. This build was physically validated with the Maker Faire rover setup.
 
-For website and email distribution, use `MAKER_FAIRE_INSTALL.html` as the Wix page/content source and `MAKER_FAIRE_INSTALL.txt` as the email/plain-text fallback. Replace the two placeholder download links in the HTML after uploading the APKs to Wix Media Manager.
+Canonical release page: https://github.com/jarzlabs24/JarzRover/releases/latest
+
+For website and email distribution, use `JARZROVER_INSTALL.html` as the Wix page/content source and `JARZROVER_INSTALL.txt` as the email/plain-text fallback. Link users to the canonical release page rather than hard-coding an APK URL into future versions.
 
 ## Artifacts
 

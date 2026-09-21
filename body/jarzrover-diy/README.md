@@ -80,12 +80,12 @@ Connect the driver and sensors to a common signal ground. Motor power goes throu
 
 ## Install and configure the apps
 
-Download the reviewed Maker Faire package from the official JarzRover release location or JARzLabs website. The package contains:
+Download the current reviewed JarzRover Android release from the [GitHub Releases page](https://github.com/jarzlabs24/JarzRover/releases/latest) or an official JARzLabs website link. The release contains:
 
 - `robot-standard-release.apk` — install on the phone mounted to the rover (`com.jarzlabs.jarzrover`).
 - `controller-release.apk` — install on the separate controller phone (`com.jarzlabs.jarzrover.controller`).
 
-Allow **Install unknown apps** for the browser or file manager used to open the APK, then disable that permission again if it is no longer needed. Verify the published SHA-256 checksums in the [Maker Faire release record](../../docs/MAKER_FAIRE_RELEASE.md).
+Allow **Install unknown apps** for the browser or file manager used to open the APK, then disable that permission again if it is no longer needed. Verify the published SHA-256 checksums on the release page.
 
 1. Open the Robot app and connect the phone to the Nano with USB OTG.
 2. Grant camera, USB, and local-network permissions when prompted.
@@ -119,5 +119,5 @@ The Android/Nano path is the current tested reference. The native iOS robot path
 - [OpenBot DIY body and CAD options](../diy/README.md)
 - [JarzRover Android apps](../../android/README.md)
 - [JarzRover distribution guide](../../docs/DISTRIBUTION.md)
-- [Maker Faire release record](../../docs/MAKER_FAIRE_RELEASE.md)
+- [JarzRover Android release record](../../docs/JARZROVER_RELEASE.md)
 - [OpenBot attribution and JarzRover brand policy](../../BRAND_POLICY.md)
