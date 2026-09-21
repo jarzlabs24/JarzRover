@@ -51,7 +51,6 @@ The inherited OpenBot DIY page contains the full CAD choices and general assembl
     <td><img src="images/07-open-chassis.jpg" alt="Open chassis with electronics and sensors" width="180" /></td>
     <td><img src="images/08-front-assembly.jpg" alt="Front assembly with sensors and phone mount" width="180" /></td>
     <td><img src="images/09-phone-mounted.jpg" alt="Completed rover with phone mounted" width="180" /></td>
-    <td><img src="images/10-build-overview.png" alt="JarzRover DIY parts and tools overview" width="180" /></td>
   </tr>
 </table>
 
