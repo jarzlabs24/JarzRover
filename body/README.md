@@ -27,12 +27,12 @@ Below are a number of examples with build instructions and further details:
 
 <table style="width:100%;border:none;text-align:center">
   <tr>
-  <td>  <a href="diy">
-    <img  alt="DIY" src="../docs/images/assembly.gif" />
+  <td>  <a href="jarzrover-diy">
+    <img  alt="JarzRover DIY" src="jarzrover-diy/images/tile.jpg" />
   </a>
   </td>
-  <td>  <a href="jarzrover-diy">
-    <img  alt="JarzRover DIY" src="jarzrover-diy/images/09-phone-mounted.jpg" />
+  <td>  <a href="diy">
+    <img  alt="DIY" src="../docs/images/assembly.gif" />
   </a>
   </td>
   <td>
@@ -57,8 +57,8 @@ Below are a number of examples with build instructions and further details:
   </td>
   </tr>
   <tr>
-    <td><a href="diy"> DIY </a></td>
     <td><a href="jarzrover-diy"> JarzRover DIY </a></td>
+    <td><a href="diy"> DIY </a></td>
     <td><a href="lite"> Lite </a></td>
     <td><a href="rc_truck"> RC Truck </a></td>
     <td><a href="mtv"> Multi-Terrain Vehicle </a></td>

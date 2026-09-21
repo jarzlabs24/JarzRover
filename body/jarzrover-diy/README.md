@@ -38,17 +38,22 @@ The inherited OpenBot DIY page contains the full CAD choices and general assembl
 7. Install the top plate and phone mount. Check that the phone camera has a clear forward view.
 8. Install the wheels only after the first electronics and motor-direction checks are complete.
 
-<p align="center">
-  <img src="images/01-motors-and-shell.jpg" alt="Motors, hardware, and lower shell" width="31%" />
-  <img src="images/02-motors-installed.jpg" alt="Four motors installed in the shell" width="31%" />
-  <img src="images/04-driver-and-sonar.jpg" alt="L298N driver and ultrasonic sensor" width="31%" />
-</p>
-
-<p align="center">
-  <img src="images/06-battery-and-driver.jpg" alt="Battery, switch wiring, and motor driver" width="31%" />
-  <img src="images/07-open-chassis.jpg" alt="Open chassis with electronics and sensors" width="31%" />
-  <img src="images/09-phone-mounted.jpg" alt="Completed rover with phone mounted" width="31%" />
-</p>
+<table>
+  <tr>
+    <td><img src="images/01-motors-and-shell.jpg" alt="Motors, hardware, and lower shell" width="180" /></td>
+    <td><img src="images/02-motors-installed.jpg" alt="Four motors installed in the shell" width="180" /></td>
+    <td><img src="images/03-motor-wiring.jpg" alt="Motor wiring inside the chassis" width="180" /></td>
+    <td><img src="images/04-driver-and-sonar.jpg" alt="L298N driver and ultrasonic sensor" width="180" /></td>
+    <td><img src="images/05-top-plate-and-sensors.jpg" alt="Top plate and sensor parts" width="180" /></td>
+  </tr>
+  <tr>
+    <td><img src="images/06-battery-and-driver.jpg" alt="Battery, switch wiring, and motor driver" width="180" /></td>
+    <td><img src="images/07-open-chassis.jpg" alt="Open chassis with electronics and sensors" width="180" /></td>
+    <td><img src="images/08-front-assembly.jpg" alt="Front assembly with sensors and phone mount" width="180" /></td>
+    <td><img src="images/09-phone-mounted.jpg" alt="Completed rover with phone mounted" width="180" /></td>
+    <td><img src="images/10-build-overview.png" alt="JarzRover DIY parts and tools overview" width="180" /></td>
+  </tr>
+</table>
 
 ## Reference wiring
 
@@ -64,16 +69,6 @@ The current checked-in firmware is `OPENBOT DIY` with `MCU NANO`. Preserve these
 | Ultrasonic echo | D11 |
 
 Connect the driver and sensors to a common signal ground. Motor power goes through the battery and L298N; do not route motor current through the Nano or a breadboard. The current source configuration enables sonar and front speed sensors but disables the voltage divider, indicators, and OLED. See the complete [hardware baseline](../../docs/HARDWARE.md), [wiring notes](../../docs/WIRING.md), and [firmware configuration](../../firmware/README.md) before changing a pin or feature flag.
-
-<p align="center">
-  <img src="images/03-motor-wiring.jpg" alt="Motor wiring inside the chassis" width="31%" />
-  <img src="images/05-top-plate-and-sensors.jpg" alt="Top plate and sensor parts" width="31%" />
-  <img src="images/08-front-assembly.jpg" alt="Front assembly with sensors and phone mount" width="31%" />
-</p>
-
-<p align="center">
-  <img src="images/10-build-overview.png" alt="JarzRover DIY parts and tools overview" width="70%" />
-</p>
 
 ## Flash the Nano
 
