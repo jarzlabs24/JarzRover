@@ -2,6 +2,8 @@
 
 This is the first local binary package for Maker Faire distribution. It is not a Google Play release and does not include an iOS installable binary.
 
+For website and email distribution, use `MAKER_FAIRE_INSTALL.html` as the Wix page/content source and `MAKER_FAIRE_INSTALL.txt` as the email/plain-text fallback. Replace the two placeholder download links in the HTML after uploading the APKs to Wix Media Manager.
+
 ## Artifacts
 
 Build source: `jarz-development`, version `v0.8.0`, version code `800`.

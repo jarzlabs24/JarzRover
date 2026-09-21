@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JarzRover Maker Faire Kit | JARzLabs</title>
+  <style>
+    :root { --navy:#071b4d; --blue:#087ee8; --cyan:#15c7dc; --purple:#4b16d8; --ink:#172554; --muted:#52627a; --panel:#f4f8ff; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:#fff; font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    .wrap { max-width:980px; margin:auto; padding:24px; }
+    header { color:#fff; background:linear-gradient(115deg,var(--navy),#0c72db 58%,var(--purple)); padding:42px 0 48px; }
+    header h1 { margin:8px 0 4px; font-size:clamp(2rem,5vw,3.3rem); line-height:1.05; }
+    header p { max-width:680px; margin:12px 0 0; font-size:1.1rem; }
+    .eyebrow { letter-spacing:.13em; text-transform:uppercase; font-weight:700; color:#a8f4ff; }
+    .buttons { display:flex; flex-wrap:wrap; gap:12px; margin-top:24px; }
+    .button { display:inline-block; padding:11px 18px; border-radius:999px; color:#fff; background:var(--purple); text-decoration:none; font-weight:700; }
+    .button.alt { color:var(--navy); background:#fff; }
+    h2 { margin:38px 0 12px; font-size:1.65rem; }
+    h3 { margin:0 0 6px; color:var(--navy); }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; }
+    .card { padding:20px; border:1px solid #dce7f7; border-radius:16px; background:var(--panel); }
+    .step { display:flex; gap:14px; margin:14px 0; }
+    .num { flex:0 0 30px; height:30px; border-radius:50%; color:#fff; background:var(--blue); text-align:center; line-height:30px; font-weight:800; }
+    code { padding:2px 5px; border-radius:4px; background:#e8eef8; font-size:.9em; }
+    .notice { padding:16px 18px; border-left:5px solid var(--cyan); background:#eefcff; }
+    .small { color:var(--muted); font-size:.92rem; }
+    footer { margin-top:42px; padding:24px 0 10px; border-top:1px solid #dce7f7; color:var(--muted); }
+    a { color:#075fca; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="eyebrow">JARzLabs · Maker Faire edition</div>
+      <h1>Build and drive a JarzRover</h1>
+      <p>Assemble the 3D-printed rover, install the two Android apps, and try manual driving, colored-ball behaviors, and Creature Lab.</p>
+      <div class="buttons">
+        <!-- Replace these two # links with Wix Media Manager URLs after uploading the APKs. -->
+        <a class="button alt" href="#robot-apk">Download Robot APK</a>
+        <a class="button alt" href="#controller-apk">Download Controller APK</a>
+        <a class="button" href="https://github.com/jarzlabs24/JarzRover/tree/jarz-development/body/jarzrover-diy">Open full DIY guide</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="notice"><strong>Safety:</strong> Disconnect the battery before changing wiring. Lift the rover or remove its wheels for the first motor test. Keep hands, cables, and clothing away from moving wheels.</div>
+
+    <h2>What is in the kit?</h2>
+    <div class="grid">
+      <section class="card" id="robot-apk">
+        <h3>JarzRover Robot APK</h3>
+        <p>Install this on the Android phone mounted to the rover.</p>
+        <p class="small"><code>com.jarzlabs.jarzrover</code> · v0.8.0 · SHA-256:<br>5f7b07973c0447e870902e0a4b2bc1de86eac62b3292a3f3cf05f4b367dc3e0a</p>
+        <!-- Replace # with the Wix-hosted robot APK URL. -->
+        <a class="button" href="#">Download Robot APK</a>
+      </section>
+      <section class="card" id="controller-apk">
+        <h3>JarzRover Controller APK</h3>
+        <p>Install this on a second Android phone used by the visitor or operator.</p>
+        <p class="small"><code>com.jarzlabs.jarzrover.controller</code> · v0.8.0 · SHA-256:<br>5b3ed4ce8cea58e8de6a3ad50a17b4ebfd637635bb5a159c6cabc4ef6993e57b</p>
+        <!-- Replace # with the Wix-hosted controller APK URL. -->
+        <a class="button" href="#">Download Controller APK</a>
+      </section>
+    </div>
+
+    <h2>Install and connect</h2>
+    <div class="step"><div class="num">1</div><div><strong>Prepare two Android phones.</strong><br>Use one phone on the rover and one as the controller. The rover phone needs a USB OTG connection to the Arduino Nano.</div></div>
+    <div class="step"><div class="num">2</div><div><strong>Install the APKs.</strong><br>Android may ask you to allow the browser or file manager to install unknown apps. Enable it temporarily, install the APK, then disable it again if desired.</div></div>
+    <div class="step"><div class="num">3</div><div><strong>Start the rover.</strong><br>Connect the Robot phone to the Nano, turn on battery power, and open the JarzRover Robot app. Grant USB and camera permissions.</div></div>
+    <div class="step"><div class="num">4</div><div><strong>Connect the controller.</strong><br>Open JarzRover Controller on the second phone and wait for the rover connection. Keep both phones on the same local network when using the phone controller.</div></div>
+    <div class="step"><div class="num">5</div><div><strong>Test safely.</strong><br>Lift the rover for the first drive command, then test manual driving at low speed in a clear area. Try Object Tracking and Creature Lab only after the connection is stable.</div></div>
+
+    <h2>Build and troubleshooting</h2>
+    <div class="grid">
+      <section class="card"><h3>Build reference</h3><p>The DIY build uses four TT motors, an L298N motor driver, Arduino Nano, HC-SR04 sonar, optional front speed sensors, a battery/switch, and a phone mount.</p><a href="https://github.com/jarzlabs24/JarzRover/tree/jarz-development/body/jarzrover-diy">View the photo build guide →</a></section>
+      <section class="card"><h3>Important wiring</h3><p>Reference signal pins are left motor D5/D6, right motor D9/D10, speed sensors D2/D3, sonar trigger D12, and sonar echo D11.</p><a href="https://github.com/jarzlabs24/JarzRover/blob/jarz-development/docs/WIRING.md">Read wiring notes →</a></section>
+      <section class="card"><h3>Need help?</h3><p>Check the full source and release notes before changing pins or firmware. For project support, contact <a href="mailto:jarzlabs24@gmail.com">jarzlabs24@gmail.com</a>.</p><a href="https://github.com/jarzlabs24/JarzRover">Open JarzRover on GitHub →</a></section>
+    </div>
+
+    <footer>
+      JarzRover is a JARzLabs project derived from OpenBot. OpenBot attribution and the software license remain in the source repository. <a href="https://github.com/jarzlabs24/JarzRover/blob/jarz-development/LICENSE">License</a> · <a href="https://github.com/jarzlabs24/JarzRover/blob/jarz-development/docs/MAKER_FAIRE_RELEASE.md">Release record</a>
+    </footer>
+  </main>
+</body>
+</html>

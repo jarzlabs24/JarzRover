@@ -1,0 +1,30 @@
+JARzLabs — JarzRover Maker Faire quick start
+
+What you need
+1. Android phone mounted to the rover.
+2. A second Android phone for the controller.
+3. JarzRover Robot APK and JarzRover Controller APK.
+4. USB OTG cable, charged battery, and the completed Nano/L298N rover.
+
+Install
+1. Install JarzRover-Robot-v0.8.0.apk on the rover phone.
+2. Install JarzRover-Controller-v0.8.0.apk on the controller phone.
+3. If Android asks, temporarily allow the browser/file manager to install unknown apps.
+4. Connect the rover phone to the Arduino Nano with USB OTG.
+5. Turn on the rover, open the Robot app, and grant USB/camera permissions.
+6. Open the Controller app on the second phone and wait for the connection.
+
+First test
+Lift the rover or remove its wheels before the first motor command. Test stop, forward,
+reverse, left, and right at low speed. Then try Object Tracking and Creature Lab.
+
+Safety
+Disconnect the battery before changing wiring. Keep hands and loose cables away from
+the wheels. Use a suitable battery, switch, charger, connectors, and insulation.
+
+Full instructions and source
+https://github.com/jarzlabs24/JarzRover/tree/jarz-development/body/jarzrover-diy
+https://github.com/jarzlabs24/JarzRover
+
+Support
+jarzlabs24@gmail.com
